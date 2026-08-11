@@ -1,0 +1,156 @@
+{% extends "base.html" %}
+{% block title %}Report Hub: Dashboard{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
+{% block page_sub %}{{ today_pretty }}{% endblock %}
+
+{% block content %}
+<div class="hero-banner">
+  <div class="hero-greeting">👋 Welcome back, {{ current_user.name }}</div>
+  <div class="hero-sub">{{ today_pretty }} · {{ in_progress }} project{{ 's' if in_progress != 1 }} in motion, {{ completed }} wrapped up, {{ avg_percent }}% average progress across the board.</div>
+</div>
+
+<div class="stat-grid">
+  <a href="{{ url_for('projects_list') }}" class="stat-card stat-card-link stat-card--total">
+    <div class="stat-icon">▤</div>
+    <div class="stat-value">{{ total }}</div>
+    <div class="stat-label">Total Projects</div>
+  </a>
+  <a href="{{ url_for('projects_list') }}?status=Completed" class="stat-card stat-card-link stat-card--completed">
+    <div class="stat-icon">✓</div>
+    <div class="stat-value">{{ completed }}</div>
+    <div class="stat-label">Completed</div>
+  </a>
+  <a href="{{ url_for('projects_list') }}?status=In+Progress" class="stat-card stat-card-link stat-card--progress">
+    <div class="stat-icon">↻</div>
+    <div class="stat-value">{{ in_progress }}</div>
+    <div class="stat-label">In Progress</div>
+  </a>
+  <a href="{{ url_for('projects_list') }}?status=Not+Started" class="stat-card stat-card-link stat-card--notstarted">
+    <div class="stat-icon">○</div>
+    <div class="stat-value">{{ not_started }}</div>
+    <div class="stat-label">Not Started</div>
+  </a>
+  <div class="stat-card stat-card--avg">
+    <div class="stat-icon">◈</div>
+    <div class="stat-value">{{ avg_percent }}%</div>
+    <div class="stat-label">Average Percent Complete</div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="section-bar has-icon">
+    <div class="section-icon">▤</div>
+    <div>
+      <div class="card-title">Projects Overview</div>
+      <div class="card-sub">Every project the team is running, at a glance.</div>
+    </div>
+  </div>
+  {% if not projects %}
+  <p style="color:#64748B; font-size:0.84rem;">No projects yet.</p>
+  {% else %}
+  <div style="overflow-x:auto;">
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>Project</th><th>Owner</th><th>Status</th><th>Percent</th><th>Deadline</th><th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for p in projects %}
+      <tr>
+        <td><a href="{{ url_for('project_detail', project_id=p.id) }}" style="color:#1C2B3A; font-weight:600; text-decoration:none;">{{ p.name }}</a></td>
+        <td>{{ p.owner }}</td>
+        <td><span class="badge badge-{{ project_status_badge(p.status) }}">{{ p.status }}</span></td>
+        <td style="min-width:100px;">
+          <div class="progress-track"><div class="progress-fill" style="width:{{ p.percent_complete }}%;"></div></div>
+        </td>
+        <td>{{ p.deadline }}</td>
+        <td>
+          {% if current_user.role == 'admin' %}
+          <a href="{{ url_for('project_edit', project_id=p.id) }}" class="btn btn-outline btn-sm">Edit</a>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  </div>
+  {% endif %}
+</div>
+
+<div class="card">
+  <div class="section-bar amber has-icon">
+    <div class="section-icon">⏰</div>
+    <div>
+      <div class="card-title">Upcoming Deadlines</div>
+      <div class="card-sub">Projects with a set deadline, soonest first.</div>
+    </div>
+  </div>
+  {% if not upcoming %}
+  <p style="color:#64748B; font-size:0.84rem;">No projects with a set deadline.</p>
+  {% else %}
+  {% for p in upcoming %}
+  <a href="{{ url_for('project_detail', project_id=p.id) }}" class="pending-item" style="background:{{ '#FEF2F2' if p.overdue else '#FFFBEB' }}; text-decoration:none;">
+    <span class="pending-name" style="color:{{ '#DC2626' if p.overdue else '#D97706' }};">{{ p.name }}</span>
+    <span>
+      {% if p.overdue %}<span class="overdue-tag">Overdue, </span>{% endif %}
+      <span style="font-size:0.75rem; color:#64748B;">{{ p.deadline }}</span>
+    </span>
+  </a>
+  {% endfor %}
+  {% endif %}
+</div>
+
+<div class="card">
+  <div class="section-bar has-icon">
+    <div class="section-icon">↻</div>
+    <div>
+      <div class="card-title">Recent Changes</div>
+      <div class="card-sub">The last 15 changes logged across all projects.</div>
+    </div>
+  </div>
+  {% if not recent_changes %}
+  <p style="color:#64748B; font-size:0.84rem;">No changes logged yet.</p>
+  {% else %}
+  {% for c in recent_changes %}
+  <div class="report-item report-item-accent-{{ change_status_badge(c.status) }}">
+    <div class="report-item-header">
+      <span class="report-item-name"><a href="{{ url_for('project_detail', project_id=c.project_id) }}" style="color:inherit; text-decoration:none;">{{ c.project_name }}</a>, {{ c.change_type }}</span>
+      <span class="badge badge-{{ change_status_badge(c.status) }}">{{ c.status }}</span>
+    </div>
+    <p class="report-item-text">{{ c.summary }}</p>
+    <div style="font-size:0.72rem; color:#94A3B8; margin-top:0.3rem;">{{ c.added_at[:16].replace('T', ' ') }} by {{ c.added_by }}</div>
+  </div>
+  {% endfor %}
+  {% endif %}
+</div>
+
+<div class="card">
+  <div class="section-bar has-icon">
+    <div class="section-icon">☰</div>
+    <div>
+      <div class="card-title">Today's Submissions</div>
+      <div class="card-sub">Who has submitted their daily report today.</div>
+    </div>
+  </div>
+  {% if pending_today %}
+  {% for m in pending_today %}
+  <div class="pending-item">
+    <span class="pending-name">{{ m.name }}</span>
+    <span style="font-size:0.75rem; color:#D97706;">Not submitted</span>
+  </div>
+  {% endfor %}
+  {% endif %}
+  {% for r in submitted_today %}
+  <div class="report-item">
+    <div class="report-item-header">
+      <span class="report-item-name">{{ r.name }}</span>
+      <span class="badge badge-submitted">Submitted</span>
+    </div>
+  </div>
+  {% endfor %}
+  {% if not pending_today and not submitted_today %}
+  <p style="color:#64748B; font-size:0.84rem;">No team members on the roster yet.</p>
+  {% endif %}
+</div>
+{% endblock %}

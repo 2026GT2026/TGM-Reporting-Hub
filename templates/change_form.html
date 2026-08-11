@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}Report Hub: {{ 'Edit Change' if change else 'Log a Change' }}{% endblock %}
+{% block page_title %}{{ 'Edit Change' if change else 'Log a Change' }}{% endblock %}
+{% block page_sub %}{{ 'Update an existing entry' if change else 'Add a new entry to the team change log' }}{% endblock %}
+
+{% block content %}
+<div class="card">
+  <form method="POST">
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Project</label>
+        <select name="project_id" class="form-control" required>
+          <option value="">Select a project</option>
+          {% for p in projects %}
+          <option value="{{ p.id }}"
+            {% if change and change.project_id==p.id %}selected
+            {% elif not change and preselect_project==p.id %}selected{% endif %}>{{ p.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Change Type</label>
+        <select name="change_type" class="form-control">
+          {% for t in change_types %}
+          <option value="{{ t }}" {% if change and change.change_type==t %}selected{% endif %}>{{ t }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Short Summary</label>
+      <input type="text" name="summary" class="form-control" value="{{ change.summary if change else '' }}" required>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Detailed Description</label>
+      <textarea name="description" class="form-control" rows="4" placeholder="What was changed, why, and how">{{ change.description if change else '' }}</textarea>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Status</label>
+      <select name="status" class="form-control">
+        {% for s in change_statuses %}
+        <option value="{{ s }}" {% if change and change.status==s %}selected{% endif %}>{{ s }}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div style="display:flex; gap:0.6rem;">
+      <button type="submit" class="btn btn-teal">{{ 'Save Changes' if change else 'Log Change' }}</button>
+      <a href="{{ url_for('changes_list') }}" class="btn btn-outline">Cancel</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% block title %}Report Hub: {{ 'Edit Project' if project else 'Add Project' }}{% endblock %}
+{% block page_title %}{{ 'Edit Project' if project else 'Add Project' }}{% endblock %}
+{% block page_sub %}{{ project.id if project else 'New project entry' }}{% endblock %}
+
+{% block content %}
+<div class="card">
+  <form method="POST">
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Project ID</label>
+        {% if project %}
+        <input type="text" class="form-control" value="{{ project.id }}" disabled>
+        {% else %}
+        <input type="text" name="id" class="form-control" placeholder="e.g. RD-011" required>
+        {% endif %}
+      </div>
+      <div class="form-group">
+        <label class="form-label">Project Name</label>
+        <input type="text" name="name" class="form-control" value="{{ project.name if project else '' }}" required>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Project Description</label>
+      <textarea name="description" class="form-control" rows="3">{{ project.description if project else '' }}</textarea>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Owner / Team Lead</label>
+        <input type="text" name="owner" class="form-control" value="{{ project.owner if project else '' }}">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Current Status</label>
+        <select name="status" class="form-control">
+          {% for s in statuses %}
+          <option value="{{ s }}" {% if project and project.status==s %}selected{% endif %}>{{ s }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">What Has Been Done (running summary)</label>
+      <textarea name="progress_summary" class="form-control" rows="4">{{ project.progress_summary if project else '' }}</textarea>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Percent Complete</label>
+        <input type="number" name="percent_complete" class="form-control" min="0" max="100" value="{{ project.percent_complete if project else 0 }}">
+      </div>
+      <div class="form-group">
+        <label class="form-label">KPI / Success Metric</label>
+        <input type="text" name="kpi" class="form-control" value="{{ project.kpi if project else '' }}">
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Start Date</label>
+        <input type="text" name="start_date" class="form-control" placeholder="YYYY-MM-DD or Undecided" value="{{ project.start_date if project else '' }}">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Deadline / Due Date</label>
+        <input type="text" name="deadline" class="form-control" placeholder="YYYY-MM-DD or Undecided" value="{{ project.deadline if project else '' }}">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Risks / Challenges and Follow Up</label>
+      <textarea name="risks" class="form-control" rows="3">{{ project.risks if project else '' }}</textarea>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Next Action Step</label>
+      <textarea name="next_action" class="form-control" rows="2">{{ project.next_action if project else '' }}</textarea>
+    </div>
+
+    <div style="display:flex; gap:0.6rem;">
+      <button type="submit" class="btn btn-teal">{{ 'Save Changes' if project else 'Add Project' }}</button>
+      <a href="{{ url_for('project_detail', project_id=project.id) if project else url_for('projects_list') }}" class="btn btn-outline">Cancel</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% block title %}Report Hub: {{ project.name }}{% endblock %}
+{% block page_title %}{{ project.name }}{% endblock %}
+{% block page_sub %}{{ project.id }}{% endblock %}
+{% block topbar_actions %}
+  {% if current_user.role == 'admin' %}
+  <a href="{{ url_for('project_edit', project_id=project.id) }}" class="btn btn-outline btn-sm">Edit Project</a>
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="card card-accent-{{ project_status_badge(project.status) }}">
+  <div class="report-item-header">
+    <span class="badge badge-{{ project_status_badge(project.status) }}">{{ project.status }}</span>
+    <span style="font-size:0.8rem; color:#64748B;">{{ project.percent_complete }}% complete</span>
+  </div>
+  <div class="progress-track" style="margin:0.6rem 0 1rem;"><div class="progress-fill" style="width:{{ project.percent_complete }}%;"></div></div>
+  <div class="detail-grid">
+    <div class="full">
+      <div class="detail-label">Description</div>
+      <div class="detail-value">{{ project.description }}</div>
+    </div>
+    <div>
+      <div class="detail-label">Owner / Team Lead</div>
+      <div class="detail-value">{{ project.owner }}</div>
+    </div>
+    <div>
+      <div class="detail-label">Start Date</div>
+      <div class="detail-value">{{ project.start_date }}</div>
+    </div>
+    <div>
+      <div class="detail-label">Deadline</div>
+      <div class="detail-value">{{ project.deadline }}</div>
+    </div>
+    <div>
+      <div class="detail-label">KPI / Success Metric</div>
+      <div class="detail-value">{{ project.kpi }}</div>
+    </div>
+    <div class="full">
+      <div class="detail-label">What Has Been Done</div>
+      <div class="detail-value">{{ project.progress_summary }}</div>
+    </div>
+    <div class="full">
+      <div class="detail-label">Risks / Challenges and Follow Up</div>
+      <div class="detail-value">{{ project.risks }}</div>
+    </div>
+    <div class="full">
+      <div class="detail-label">Next Action Step</div>
+      <div class="detail-value">{{ project.next_action }}</div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="section-bar has-icon">
+    <div class="section-icon">↻</div>
+    <div>
+      <div class="card-title">Change History</div>
+      <div class="card-sub">Changes logged against this project.</div>
+    </div>
+  </div>
+  <a href="{{ url_for('change_new') }}?project={{ project.id }}" class="btn btn-teal btn-sm" style="margin-bottom:0.9rem;">Log a Change</a>
+  {% if not changes %}
+  <p style="color:#64748B; font-size:0.84rem;">No changes logged for this project yet.</p>
+  {% else %}
+  {% for c in changes %}
+  <div class="report-item report-item-accent-{{ change_status_badge(c.status) }}">
+    <div class="report-item-header">
+      <span class="report-item-name">{{ c.change_type }}, {{ c.summary }}</span>
+      <span class="badge badge-{{ change_status_badge(c.status) }}">{{ c.status }}</span>
+    </div>
+    <p class="report-item-text">{{ c.description }}</p>
+    <div style="font-size:0.72rem; color:#94A3B8; margin-top:0.3rem;">
+      Added {{ c.added_at[:16].replace('T',' ') }} by {{ c.added_by }}.
+      {% if c.edited_at %}Edited {{ c.edited_at[:16].replace('T',' ') }} by {{ c.edited_by }}.{% endif %}
+    </div>
+    <a href="{{ url_for('change_edit', change_id=c.id) }}" class="btn btn-outline btn-sm" style="margin-top:0.5rem;">Edit</a>
+  </div>
+  {% endfor %}
+  {% endif %}
+</div>
+{% endblock %}

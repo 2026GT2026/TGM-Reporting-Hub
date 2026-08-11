@@ -1,0 +1,160 @@
+{% extends "base.html" %}
+{% block title %}Report Hub: Team Overview{% endblock %}
+{% block page_title %}Team Overview{% endblock %}
+{% block page_sub %}{{ today_pretty }}{% endblock %}
+
+{% block content %}
+<div class="hero-banner">
+  <div class="hero-greeting">◈ Team Overview</div>
+  <div class="hero-sub">{{ submitted_today|length }} submitted, {{ pending_today|length }} still pending today · {{ roster|length }} people on the roster.</div>
+</div>
+
+<!-- Pending today -->
+<div class="card">
+  <div class="section-bar amber has-icon">
+    <div class="section-icon">⏳</div>
+    <div>
+      <div class="card-title">Still pending today</div>
+      <div class="card-sub">{% if not pending_today %}Everyone has submitted.{% else %}These members haven't submitted yet.{% endif %}</div>
+    </div>
+  </div>
+  {% if pending_today %}
+  {% for m in pending_today %}
+  <div class="pending-item">
+    <span class="pending-name">{{ m.name }}</span>
+    <span style="font-size:0.75rem; color:#D97706;">Not submitted</span>
+  </div>
+  {% endfor %}
+  {% else %}
+  <p style="color:#6E2A52; font-size:0.84rem; font-weight:500;">All done for today!</p>
+  {% endif %}
+</div>
+
+<!-- Submitted today -->
+<div class="card">
+  <div class="section-bar has-icon">
+    <div class="section-icon">✓</div>
+    <div>
+      <div class="card-title">Submitted today</div>
+      <div class="card-sub">In roster order.</div>
+    </div>
+  </div>
+  {% if not submitted_today %}
+  <p style="color:#64748B; font-size:0.84rem;">Nothing submitted yet.</p>
+  {% else %}
+  {% for r in submitted_today %}
+  <div class="report-item">
+    <div class="report-item-header">
+      <span class="report-item-name">{{ r.name }}</span>
+      <span class="badge badge-submitted">Submitted</span>
+    </div>
+    <p class="report-item-text">{{ r.generated or r.raw_work }}</p>
+  </div>
+  {% endfor %}
+  {% endif %}
+</div>
+
+<!-- Weekly export -->
+<div class="card">
+  <div class="section-bar has-icon">
+    <div class="section-icon">⬇</div>
+    <div>
+      <div class="card-title">Weekly Export</div>
+      <div class="card-sub">Download the week's reports grouped by day, in roster order, ready to paste into your sheet.</div>
+    </div>
+  </div>
+  <div class="week-nav">
+    {% set prev = (monday|string) %}
+    <a href="{{ url_for('team') }}?monday={{ prev }}" class="btn btn-outline btn-sm">← Prev week</a>
+    <a href="{{ url_for('team') }}" class="btn btn-outline btn-sm">This week</a>
+    <a href="{{ url_for('download_week') }}?monday={{ monday }}" class="btn btn-teal btn-sm" style="margin-left:auto;">
+      Download week (.xlsx)
+    </a>
+  </div>
+</div>
+
+<!-- Edit past logs -->
+<div class="card">
+  <div class="section-bar has-icon">
+    <div class="section-icon">✎</div>
+    <div>
+      <div class="card-title">Edit Past Daily Logs</div>
+      <div class="card-sub">Review and correct any team member's previously submitted reports.</div>
+    </div>
+  </div>
+  <a href="{{ url_for('admin_reports') }}" class="btn btn-outline btn-sm">Browse past logs</a>
+</div>
+
+<!-- Projects and Changes export -->
+<div class="card">
+  <div class="section-bar has-icon">
+    <div class="section-icon">▤</div>
+    <div>
+      <div class="card-title">Full Data Export</div>
+      <div class="card-sub">Download the current state of every project, or the full team change log.</div>
+    </div>
+  </div>
+  <div class="week-nav">
+    <a href="{{ url_for('download_projects') }}" class="btn btn-outline btn-sm">Download Projects (.xlsx)</a>
+    <a href="{{ url_for('download_changes') }}" class="btn btn-outline btn-sm">Download Changes Log (.xlsx)</a>
+  </div>
+</div>
+
+<!-- Roster management -->
+<div class="card">
+  <div class="section-bar has-icon">
+    <div class="section-icon">◈</div>
+    <div>
+      <div class="card-title">Team Roster</div>
+      <div class="card-sub">Sets the fixed order for exports. Add members here so they can sign in.</div>
+    </div>
+  </div>
+  {% for m in roster %}
+  <div class="roster-item" style="flex-direction:column; align-items:stretch; gap:0.4rem;">
+    <form method="POST" action="{{ url_for('update_member') }}" style="display:flex; gap:0.5rem; align-items:center; flex-wrap:wrap;">
+      <span class="roster-num">{{ loop.index }}.</span>
+      <input type="hidden" name="id" value="{{ m.id }}">
+      <input type="text" name="name" value="{{ m.name }}" class="form-control" placeholder="Full name" style="flex:1; min-width:110px; padding:0.3rem 0.6rem; font-size:0.84rem;">
+      <input type="text" name="username" value="{{ m.username or '' }}" class="form-control" placeholder="Username" style="width:120px; padding:0.3rem 0.6rem; font-size:0.84rem;">
+      <input type="password" name="password" class="form-control" placeholder="New password (optional)" autocomplete="new-password" style="width:170px; padding:0.3rem 0.6rem; font-size:0.84rem;">
+      <select name="role" class="form-control" style="width:130px; padding:0.3rem 0.55rem; font-size:0.78rem;">
+        <option value="member" {% if m.role != 'admin' %}selected{% endif %}>Team Member</option>
+        <option value="admin" {% if m.role == 'admin' %}selected{% endif %}>Admin</option>
+      </select>
+      {% if not m.password_hash %}
+      <span class="badge badge-pending">Not activated</span>
+      {% endif %}
+      <button type="submit" class="btn btn-outline btn-sm">Save</button>
+      <button type="submit" formaction="{{ url_for('remove_member') }}" formnovalidate
+              class="btn btn-outline btn-sm" style="color:#DC2626; border-color:#FECACA;"
+              onclick="return confirm('Remove {{ m.name }}?')">Remove</button>
+    </form>
+  </div>
+  {% endfor %}
+
+  <div style="margin-top:1rem;">
+    <form method="POST" action="{{ url_for('add_member') }}" style="display:flex; gap:0.6rem; flex-wrap:wrap; align-items:flex-end;">
+      <div class="form-group" style="margin-bottom:0; flex:1; min-width:160px;">
+        <label class="form-label">Full Name</label>
+        <input type="text" name="name" class="form-control" placeholder="e.g. Beulah Dire" required>
+      </div>
+      <div class="form-group" style="margin-bottom:0; min-width:130px;">
+        <label class="form-label">Username</label>
+        <input type="text" name="username" class="form-control" placeholder="e.g. beulah" required>
+      </div>
+      <div class="form-group" style="margin-bottom:0; min-width:150px;">
+        <label class="form-label">Password</label>
+        <input type="password" name="password" class="form-control" autocomplete="new-password" required>
+      </div>
+      <div class="form-group" style="margin-bottom:0;">
+        <label class="form-label">Role</label>
+        <select name="role" class="form-control" style="width:140px;">
+          <option value="member">Team Member</option>
+          <option value="admin">Admin</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-teal">Add Member</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

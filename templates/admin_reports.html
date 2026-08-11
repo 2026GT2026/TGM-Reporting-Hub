@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% block title %}Report Hub: Edit Past Logs{% endblock %}
+{% block page_title %}Edit Past Logs{% endblock %}
+{% block page_sub %}{{ reports|length }} report(s) for {{ member }}{% endblock %}
+
+{% block content %}
+<div class="card">
+  <div class="section-bar has-icon">
+    <div class="section-icon">✎</div>
+    <div>
+      <div class="card-title">Team Member</div>
+      <div class="card-sub">Pick a member to view and edit their submitted daily reports.</div>
+    </div>
+  </div>
+  <form method="GET" action="{{ url_for('admin_reports') }}" style="display:flex; gap:0.6rem; align-items:flex-end; flex-wrap:wrap;">
+    <div class="form-group" style="margin-bottom:0;">
+      <label class="form-label">Member</label>
+      <select name="member" class="form-control" style="width:200px;" onchange="this.form.submit()">
+        {% for m in roster %}
+        <option value="{{ m.name }}" {% if m.name==member %}selected{% endif %}>{{ m.name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <button type="submit" class="btn btn-outline btn-sm">Go</button>
+  </form>
+</div>
+
+{% if roster %}
+<div class="card">
+  <div class="section-bar has-icon">
+    <div class="section-icon">＋</div>
+    <div>
+      <div class="card-title">Log a Past Report</div>
+      <div class="card-sub">Enter a report on a member's behalf for a specific date, e.g. one they sent you outside the app.</div>
+    </div>
+  </div>
+  <form method="POST" action="{{ url_for('log_report') }}">
+    <div style="display:flex; gap:0.6rem; flex-wrap:wrap; margin-bottom:0.9rem;">
+      <div class="form-group" style="margin-bottom:0; min-width:180px;">
+        <label class="form-label">Member</label>
+        <select name="member" class="form-control">
+          {% for m in roster %}
+          <option value="{{ m.name }}" {% if m.name==member %}selected{% endif %}>{{ m.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="form-group" style="margin-bottom:0; min-width:160px;">
+        <label class="form-label">Date</label>
+        <input type="date" name="date" class="form-control" max="{{ today_key }}" required>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Report</label>
+      <textarea name="raw_work" class="form-control" rows="5"
+        placeholder="What did they work on that day?" required></textarea>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Pending / reminders (optional)</label>
+      <textarea name="raw_pending" class="form-control" rows="2"
+        placeholder="Anything they flagged as still pending..."></textarea>
+    </div>
+    <button type="submit" class="btn btn-teal">Log Report</button>
+  </form>
+</div>
+{% endif %}
+
+{% if not reports %}
+<div class="card" style="text-align:center; padding:3rem; color:#64748B;">
+  <div style="font-size:2rem; margin-bottom:0.5rem;">📋</div>
+  <div>No reports yet for {{ member }}.</div>
+</div>
+{% else %}
+{% for r in reports %}
+<div class="report-item report-item-accent-{{ r.status }}">
+  <div class="report-item-header">
+    <span style="font-size:0.84rem; font-weight:600; color:#1C2B3A;">{{ pretty_date(r.date) }}</span>
+    <span style="display:flex; gap:0.5rem; align-items:center;">
+      <span class="badge badge-{{ r.status }}">{{ r.status|title }}</span>
+      <a href="{{ url_for('report_edit', report_id=r.id) }}" class="btn btn-outline btn-sm">Edit</a>
+    </span>
+  </div>
+  <p class="report-item-text">{{ r.generated or r.raw_work }}</p>
+  {% if r.logged_by %}
+  <p style="font-size:0.72rem; color:#94A3B8; margin-top:0.4rem;">Logged by {{ r.logged_by }}</p>
+  {% endif %}
+  {% if r.edited_by %}
+  <p style="font-size:0.72rem; color:#94A3B8; margin-top:0.4rem;">Last edited by {{ r.edited_by }}</p>
+  {% endif %}
+</div>
+{% endfor %}
+{% endif %}
+{% endblock %}

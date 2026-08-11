@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}Report Hub: Changes{% endblock %}
+{% block page_title %}Changes{% endblock %}
+{% block page_sub %}{{ changes|length }} change(s) logged{% endblock %}
+{% block topbar_actions %}
+  <a href="{{ url_for('change_new') }}" class="btn btn-teal btn-sm">Log a Change</a>
+{% endblock %}
+
+{% block content %}
+<div class="card">
+  <form method="GET" class="filter-bar">
+    <div class="form-group">
+      <label class="form-label">Project</label>
+      <select name="project" class="form-control" onchange="this.form.submit()">
+        <option value="">All projects</option>
+        {% for p in projects %}
+        <option value="{{ p.id }}" {% if project_filter==p.id %}selected{% endif %}>{{ p.name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Change Type</label>
+      <select name="change_type" class="form-control" onchange="this.form.submit()">
+        <option value="">All types</option>
+        {% for t in change_types %}
+        <option value="{{ t }}" {% if type_filter==t %}selected{% endif %}>{{ t }}</option>
+        {% endfor %}
+      </select>
+    </div>
+  </form>
+</div>
+
+{% if not changes %}
+<div class="card" style="text-align:center; padding:3rem; color:#64748B;">
+  <div style="font-size:2rem; margin-bottom:0.5rem;">↻</div>
+  <div>No changes match this filter.</div>
+</div>
+{% else %}
+{% for c in changes %}
+<div class="report-item report-item-accent-{{ change_status_badge(c.status) }}">
+  <div class="report-item-header">
+    <span class="report-item-name">{{ c.project_name }}, {{ c.change_type }}</span>
+    <span class="badge badge-{{ change_status_badge(c.status) }}">{{ c.status }}</span>
+  </div>
+  <p class="report-item-text" style="font-weight:600; color:#1C2B3A;">{{ c.summary }}</p>
+  <p class="report-item-text">{{ c.description }}</p>
+  <div style="font-size:0.72rem; color:#94A3B8; margin-top:0.3rem;">
+    {{ c.added_at[:16].replace('T',' ') }} by {{ c.added_by }}
+    {% if c.edited_at %}, edited by {{ c.edited_by }}{% endif %}
+  </div>
+  <a href="{{ url_for('change_edit', change_id=c.id) }}" class="btn btn-outline btn-sm" style="margin-top:0.5rem;">Edit</a>
+</div>
+{% endfor %}
+{% endif %}
+{% endblock %}

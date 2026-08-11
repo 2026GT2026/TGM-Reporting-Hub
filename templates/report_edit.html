@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% block title %}Report Hub: Edit Report{% endblock %}
+{% block page_title %}Edit Report{% endblock %}
+{% block page_sub %}{{ pretty_date(report.date) }}{% if not is_own %} · {{ report.name }}{% endif %}{% endblock %}
+
+{% block content %}
+{% if not is_own %}
+<div class="alert" style="background:var(--amber-bg); color:var(--amber);">
+  Admin edit: you're editing {{ report.name }}'s report for {{ pretty_date(report.date) }}.
+</div>
+{% endif %}
+<div class="card">
+  <form method="POST" action="{{ url_for('report_edit', report_id=report.id) }}" id="edit-form">
+    <div class="form-group">
+      <label class="form-label">What was done</label>
+      <div style="display:flex; gap:0.6rem; align-items:center; margin-bottom:0.5rem;">
+        <button type="button" class="btn btn-outline btn-sm" id="record-btn">🎤 Record Voice Note</button>
+        <span class="record-status" id="record-status"></span>
+      </div>
+      <textarea name="raw_work" id="raw_work" class="form-control" rows="10">{{ report.raw_work }}</textarea>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Pending / reminders (optional)</label>
+      <textarea name="raw_pending" id="raw_pending" class="form-control" rows="2">{{ report.raw_pending }}</textarea>
+    </div>
+
+    <div style="display:flex; gap:0.6rem; margin-bottom:1.2rem; align-items:center; flex-wrap:wrap;">
+      <button type="button" class="btn btn-teal" id="generate-btn">Generate Report</button>
+      <div class="mode-dropdown" id="mode-dropdown">
+        <button type="button" class="mode-btn" id="mode-btn">
+          <span id="mode-label">Standard</span><span class="chev">▾</span>
+        </button>
+        <div class="mode-menu" id="mode-menu">
+          <div class="mode-option selected" data-mode="standard"><span class="mode-option-label">Standard</span><span class="check">✓</span></div>
+          <div class="mode-option" data-mode="fluency"><span class="mode-option-label">Fluency</span><span class="check">✓</span></div>
+          <div class="mode-option" data-mode="humanize"><span class="mode-option-label">Humanize</span><span class="check">✓</span></div>
+          <div class="mode-option" data-mode="formal"><span class="mode-option-label">Formal</span><span class="check">✓</span></div>
+          <div class="mode-option" data-mode="simple"><span class="mode-option-label">Simple</span><span class="check">✓</span></div>
+          <div class="mode-option" data-mode="creative"><span class="mode-option-label">Creative</span><span class="check">✓</span></div>
+          <div class="mode-option" data-mode="expressive"><span class="mode-option-label">Expressive</span><span class="check">✓</span></div>
+          <div class="mode-option" data-mode="expand"><span class="mode-option-label">Expand</span><span class="check">✓</span></div>
+          <div class="mode-option" data-mode="shorten"><span class="mode-option-label">Shorten</span><span class="check">✓</span></div>
+        </div>
+      </div>
+      <span id="gen-error" style="color:#DC2626; font-size:0.82rem; align-self:center;"></span>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Final report text</label>
+      <textarea name="generated" id="generated" class="form-control" rows="12">{{ report.generated or report.raw_work }}</textarea>
+    </div>
+    <div style="display:flex; gap:0.6rem; align-items:center;">
+      <button type="submit" class="btn btn-teal">Save Changes</button>
+      <a href="{{ url_for(back_endpoint, **back_args) }}" class="btn btn-outline">Cancel</a>
+    </div>
+  </form>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+const btn = document.getElementById('generate-btn');
+const errEl = document.getElementById('gen-error');
+const genArea = document.getElementById('generated');
+
+const modeDropdown = document.getElementById('mode-dropdown');
+const modeBtn = document.getElementById('mode-btn');
+const modeMenu = document.getElementById('mode-menu');
+const modeLabel = document.getElementById('mode-label');
+let selectedMode = 'standard';
+
+modeBtn.addEventListener('click', (e) => {
+  e.stopPropagation();
+  modeDropdown.classList.toggle('open');
+});
+
+modeMenu.querySelectorAll('.mode-option').forEach(opt => {
+  opt.addEventListener('click', () => {
+    selectedMode = opt.dataset.mode;
+    modeLabel.textContent = opt.querySelector('.mode-option-label').textContent;
+    modeMenu.querySelectorAll('.mode-option').forEach(o => o.classList.remove('selected'));
+    opt.classList.add('selected');
+    modeDropdown.classList.remove('open');
+  });
+});
+
+document.addEventListener('click', (e) => {
+  if (!modeDropdown.contains(e.target)) modeDropdown.classList.remove('open');
+});
+
+btn.addEventListener('click', async () => {
+  const raw_work    = document.getElementById('raw_work').value.trim();
+  const raw_pending = document.getElementById('raw_pending').value.trim();
+  if (!raw_work) { errEl.textContent = 'Add a note on what you worked on first.'; return; }
+  errEl.textContent = '';
+  btn.textContent = 'Generating...';
+  btn.disabled = true;
+  try {
+    const resp = await fetch('/generate', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({raw_work, raw_pending, mode: selectedMode})
+    });
+    const data = await resp.json();
+    if (data.error) { errEl.textContent = data.error; }
+    else { genArea.value = data.text; }
+  } catch(e) {
+    errEl.textContent = 'Something went wrong, try again.';
+  } finally {
+    btn.textContent = 'Generate Report';
+    btn.disabled = false;
+  }
+});
+</script>
+{% endblock %}

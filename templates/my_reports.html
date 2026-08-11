@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Report Hub: My Reports{% endblock %}
+{% block page_title %}My Reports{% endblock %}
+{% block page_sub %}{{ reports|selectattr('status','eq','submitted')|list|length }} submitted report(s){% endblock %}
+{% block topbar_actions %}
+  <a href="{{ url_for('download_my_reports') }}" class="btn btn-outline btn-sm">Download All (.xlsx)</a>
+{% endblock %}
+
+{% block content %}
+{% if not reports %}
+<div class="card" style="text-align:center; padding:3rem; color:#64748B;">
+  <div style="font-size:2rem; margin-bottom:0.5rem;">📋</div>
+  <div>No reports yet. Submit your first one from Today's Report.</div>
+</div>
+{% else %}
+{% for r in reports %}
+<div class="report-item report-item-accent-{{ r.status }}">
+  <div class="report-item-header">
+    <span style="font-size:0.84rem; font-weight:600; color:#1C2B3A;">{{ pretty_date(r.date) }}</span>
+    <span style="display:flex; gap:0.5rem; align-items:center;">
+      <span class="badge badge-{{ r.status }}">{{ r.status|title }}</span>
+      <a href="{{ url_for('report_edit', report_id=r.id) }}" class="btn btn-outline btn-sm">Edit</a>
+    </span>
+  </div>
+  <p class="report-item-text">{{ r.generated or r.raw_work }}</p>
+</div>
+{% endfor %}
+{% endif %}
+{% endblock %}

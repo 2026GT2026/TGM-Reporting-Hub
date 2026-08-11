@@ -1,0 +1,30 @@
+[
+  {
+    "id": "admin001",
+    "name": "Chiamaka",
+    "role": "admin",
+    "username": "chi_beu",
+    "password_hash": "scrypt:32768:8:1$vgshVBldeVZpYSBR$99c237b49aa3c917296b3c28de91c44fd4be7b30392c2b7914090e7b34c0755a3ed62ed44826c6fe2d187e3419dcd6bfd6252d2a1e1a44250586ab5560445d00"
+  },
+  {
+    "id": "12634b5b",
+    "name": "Totan",
+    "role": "admin",
+    "username": "tots_dan",
+    "password_hash": "scrypt:32768:8:1$vgshVBldeVZpYSBR$99c237b49aa3c917296b3c28de91c44fd4be7b30392c2b7914090e7b34c0755a3ed62ed44826c6fe2d187e3419dcd6bfd6252d2a1e1a44250586ab5560445d00"
+  },
+  {
+    "id": "13d2d215",
+    "name": "Victor",
+    "role": "member",
+    "username": "victor_hills",
+    "password_hash": "scrypt:32768:8:1$vgshVBldeVZpYSBR$99c237b49aa3c917296b3c28de91c44fd4be7b30392c2b7914090e7b34c0755a3ed62ed44826c6fe2d187e3419dcd6bfd6252d2a1e1a44250586ab5560445d00"
+  },
+  {
+    "id": "b2baa487",
+    "name": "Dami",
+    "role": "member",
+    "username": "dami_so",
+    "password_hash": "scrypt:32768:8:1$vgshVBldeVZpYSBR$99c237b49aa3c917296b3c28de91c44fd4be7b30392c2b7914090e7b34c0755a3ed62ed44826c6fe2d187e3419dcd6bfd6252d2a1e1a44250586ab5560445d00"
+  }
+]

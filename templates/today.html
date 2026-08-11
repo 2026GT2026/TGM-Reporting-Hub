@@ -1,0 +1,330 @@
+{% extends "base.html" %}
+{% block title %}Report Hub: Today's Report{% endblock %}
+{% block page_title %}Today's Report{% endblock %}
+{% block page_sub %}{{ today_pretty }}{% endblock %}
+
+{% block content %}
+<div class="card">
+  <div class="section-bar has-icon">
+    <div class="section-icon">✏</div>
+    <div>
+      <div class="card-title">What did you work on today?</div>
+      <div class="card-sub">Jot down rough notes: the generator will turn them into a proper update.</div>
+    </div>
+  </div>
+
+  <form method="POST" action="{{ url_for('save_report') }}" id="report-form">
+    <div class="form-group">
+      <label class="form-label">What I worked on today</label>
+      <div style="display:flex; gap:0.6rem; align-items:center; margin-bottom:0.5rem; flex-wrap:wrap;">
+        <button type="button" class="btn btn-outline btn-sm" id="record-btn">🎤 Record Voice Note</button>
+        <span class="record-status" id="record-status"></span>
+      </div>
+      <div class="record-wave-wrap" id="record-wave-wrap">
+        <div class="record-caption" id="record-caption"></div>
+        <div class="record-wave-row">
+          <span class="record-dot"></span>
+          <canvas id="record-wave" class="record-wave"></canvas>
+        </div>
+      </div>
+      <textarea name="raw_work" id="raw_work" class="form-control" rows="10"
+        placeholder="e.g. Followed up on 3 student applications, updated records for Amina and Segun, called UCLan about missing documents...">{{ existing.raw_work if existing else '' }}</textarea>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Pending / reminders (optional)</label>
+      <textarea name="raw_pending" id="raw_pending" class="form-control" rows="2"
+        placeholder="e.g. Still waiting on James's transcript, need to call Northampton tomorrow...">{{ existing.raw_pending if existing else '' }}</textarea>
+    </div>
+
+    <div style="display:flex; gap:0.6rem; margin-bottom:1.2rem; align-items:center; flex-wrap:wrap;">
+      <button type="button" class="btn btn-teal" id="generate-btn">Generate Report</button>
+      <div class="mode-dropdown" id="mode-dropdown">
+        <button type="button" class="mode-btn" id="mode-btn">
+          <span id="mode-label">Standard</span><span class="chev">▾</span>
+        </button>
+        <div class="mode-menu" id="mode-menu">
+          <div class="mode-option selected" data-mode="standard"><span class="mode-option-label">Standard</span><span class="check">✓</span></div>
+          <div class="mode-option" data-mode="fluency"><span class="mode-option-label">Fluency</span><span class="check">✓</span></div>
+          <div class="mode-option" data-mode="humanize"><span class="mode-option-label">Humanize</span><span class="check">✓</span></div>
+          <div class="mode-option" data-mode="formal"><span class="mode-option-label">Formal</span><span class="check">✓</span></div>
+          <div class="mode-option" data-mode="simple"><span class="mode-option-label">Simple</span><span class="check">✓</span></div>
+          <div class="mode-option" data-mode="creative"><span class="mode-option-label">Creative</span><span class="check">✓</span></div>
+          <div class="mode-option" data-mode="expressive"><span class="mode-option-label">Expressive</span><span class="check">✓</span></div>
+          <div class="mode-option" data-mode="expand"><span class="mode-option-label">Expand</span><span class="check">✓</span></div>
+          <div class="mode-option" data-mode="shorten"><span class="mode-option-label">Shorten</span><span class="check">✓</span></div>
+        </div>
+      </div>
+      <span id="gen-error" style="color:#DC2626; font-size:0.82rem; align-self:center;"></span>
+    </div>
+
+    <div id="generated-section" style="{{ 'display:block' if existing and existing.generated else 'display:none' }}">
+      <div class="form-group">
+        <label class="form-label">Your report, edit freely before submitting</label>
+        <textarea name="generated" id="generated" class="form-control" rows="12">{{ existing.generated if existing else '' }}</textarea>
+      </div>
+      <div style="display:flex; gap:0.6rem; align-items:center; flex-wrap:wrap;">
+        <button type="submit" name="status" value="submitted" class="btn btn-teal">Submit</button>
+        <button type="submit" name="status" value="draft" class="btn btn-outline">Save as draft</button>
+        {% if existing %}
+        <span class="badge badge-{{ existing.status }}">{{ existing.status|title }}</span>
+        {% endif %}
+      </div>
+    </div>
+  </form>
+</div>
+
+{% if existing and existing.status == 'submitted' %}
+<div class="card" style="border-color:var(--green); background:linear-gradient(180deg, var(--green-bg) 0%, white 70px);">
+  <div class="section-bar" style="border-left-color:var(--green); display:flex; align-items:center; gap:0.65rem;">
+    <div class="section-icon" style="background:var(--green-bg); color:var(--green-dark);">✓</div>
+    <div class="card-title" style="color:var(--green-dark);">Submitted for today — nice work!</div>
+  </div>
+  <div style="white-space:pre-wrap; font-size:0.875rem; color:#1C2B3A; line-height:1.65;">{{ existing.generated or existing.raw_work }}</div>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+const btn = document.getElementById('generate-btn');
+const errEl = document.getElementById('gen-error');
+const section = document.getElementById('generated-section');
+const genArea = document.getElementById('generated');
+
+const modeDropdown = document.getElementById('mode-dropdown');
+const modeBtn = document.getElementById('mode-btn');
+const modeMenu = document.getElementById('mode-menu');
+const modeLabel = document.getElementById('mode-label');
+let selectedMode = 'standard';
+
+modeBtn.addEventListener('click', (e) => {
+  e.stopPropagation();
+  modeDropdown.classList.toggle('open');
+});
+
+modeMenu.querySelectorAll('.mode-option').forEach(opt => {
+  opt.addEventListener('click', () => {
+    selectedMode = opt.dataset.mode;
+    modeLabel.textContent = opt.querySelector('.mode-option-label').textContent;
+    modeMenu.querySelectorAll('.mode-option').forEach(o => o.classList.remove('selected'));
+    opt.classList.add('selected');
+    modeDropdown.classList.remove('open');
+  });
+});
+
+document.addEventListener('click', (e) => {
+  if (!modeDropdown.contains(e.target)) modeDropdown.classList.remove('open');
+});
+
+const recordBtn = document.getElementById('record-btn');
+const recordStatus = document.getElementById('record-status');
+const rawWorkArea = document.getElementById('raw_work');
+const waveWrap = document.getElementById('record-wave-wrap');
+const waveCanvas = document.getElementById('record-wave');
+const waveCtx = waveCanvas.getContext('2d');
+const captionEl = document.getElementById('record-caption');
+let mediaRecorder = null;
+let audioChunks = [];
+let recording = false;
+let recordTimer = null;
+let recordStart = null;
+let audioCtx = null;
+let analyser = null;
+let waveRAF = null;
+const WAVE_BARS = 40;
+
+const SpeechRecognitionAPI = window.SpeechRecognition || window.webkitSpeechRecognition;
+let recognition = null;
+let recognitionFinalText = '';
+
+function startCaptioning() {
+  if (!SpeechRecognitionAPI) {
+    captionEl.textContent = 'Live captions aren\'t supported in this browser (try Chrome or Edge).';
+    return;
+  }
+  recognitionFinalText = '';
+  captionEl.textContent = '';
+  recognition = new SpeechRecognitionAPI();
+  recognition.continuous = true;
+  recognition.interimResults = true;
+  recognition.lang = 'en-US';
+  recognition.onresult = (e) => {
+    let interim = '';
+    for (let i = e.resultIndex; i < e.results.length; i++) {
+      const transcript = e.results[i][0].transcript;
+      if (e.results[i].isFinal) recognitionFinalText += transcript + ' ';
+      else interim += transcript;
+    }
+    captionEl.textContent = (recognitionFinalText + interim).trim();
+  };
+  recognition.onerror = (e) => {
+    if (e.error === 'no-speech' || e.error === 'aborted') return;
+    captionEl.textContent = `Live captions unavailable (${e.error}).`;
+  };
+  recognition.onend = () => {
+    if (recording && recognition) { try { recognition.start(); } catch (e) {} }
+  };
+  try { recognition.start(); } catch (e) {
+    captionEl.textContent = 'Could not start live captions.';
+  }
+}
+
+function stopCaptioning() {
+  if (recognition) {
+    recognition.onend = null;
+    recognition.onresult = null;
+    recognition.stop();
+    recognition = null;
+  }
+  captionEl.textContent = '';
+}
+
+function setupWaveform(stream) {
+  audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  const source = audioCtx.createMediaStreamSource(stream);
+  analyser = audioCtx.createAnalyser();
+  analyser.fftSize = 256;
+  analyser.smoothingTimeConstant = 0.75;
+  source.connect(analyser);
+
+  waveWrap.classList.add('active');
+  const dpr = window.devicePixelRatio || 1;
+  const rect = waveCanvas.getBoundingClientRect();
+  waveCanvas.width = rect.width * dpr;
+  waveCanvas.height = rect.height * dpr;
+  waveCtx.scale(dpr, dpr);
+
+  drawWaveform(rect.width, rect.height);
+}
+
+function drawWaveform(width, height) {
+  const data = new Uint8Array(analyser.frequencyBinCount);
+  analyser.getByteFrequencyData(data);
+
+  waveCtx.clearRect(0, 0, width, height);
+  const step = Math.floor(data.length / WAVE_BARS) || 1;
+  const barWidth = width / WAVE_BARS;
+  waveCtx.fillStyle = '#6E2A52';
+  for (let i = 0; i < WAVE_BARS; i++) {
+    let sum = 0;
+    for (let j = 0; j < step; j++) sum += data[i * step + j] || 0;
+    const avg = sum / step;
+    const barHeight = Math.max(2, (avg / 255) * height);
+    const x = i * barWidth + barWidth * 0.25;
+    const y = (height - barHeight) / 2;
+    const w = barWidth * 0.5;
+    const r = Math.min(w / 2, barHeight / 2);
+    waveCtx.beginPath();
+    waveCtx.roundRect(x, y, w, barHeight, r);
+    waveCtx.fill();
+  }
+  waveRAF = requestAnimationFrame(() => drawWaveform(width, height));
+}
+
+function teardownWaveform() {
+  if (waveRAF) cancelAnimationFrame(waveRAF);
+  waveRAF = null;
+  if (audioCtx) { audioCtx.close(); audioCtx = null; }
+  analyser = null;
+  waveWrap.classList.remove('active');
+  waveCtx.clearRect(0, 0, waveCanvas.width, waveCanvas.height);
+}
+
+async function startRecording() {
+  if (!navigator.mediaDevices || !window.MediaRecorder) {
+    recordStatus.textContent = 'Voice recording is not supported in this browser.';
+    return;
+  }
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    audioChunks = [];
+    mediaRecorder = new MediaRecorder(stream);
+    mediaRecorder.ondataavailable = (e) => { if (e.data.size > 0) audioChunks.push(e.data); };
+    mediaRecorder.onstop = async () => {
+      stream.getTracks().forEach(track => track.stop());
+      clearInterval(recordTimer);
+      teardownWaveform();
+      stopCaptioning();
+      const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+      await sendForTranscription(audioBlob);
+    };
+    mediaRecorder.start();
+    recording = true;
+    recordStart = Date.now();
+    recordBtn.textContent = '⏹ Stop Recording';
+    setupWaveform(stream);
+    startCaptioning();
+    recordTimer = setInterval(() => {
+      const secs = Math.floor((Date.now() - recordStart) / 1000);
+      recordStatus.innerHTML = `<span class="record-dot"></span> Recording... ${secs}s`;
+    }, 400);
+  } catch (e) {
+    recordStatus.textContent = 'Microphone access denied or unavailable.';
+  }
+}
+
+function stopRecording() {
+  if (mediaRecorder && recording) {
+    mediaRecorder.stop();
+    recording = false;
+    recordBtn.textContent = '🎤 Record Voice Note';
+  }
+}
+
+async function sendForTranscription(blob) {
+  recordStatus.textContent = 'Transcribing...';
+  recordBtn.disabled = true;
+  const formData = new FormData();
+  formData.append('audio', blob, 'note.webm');
+  try {
+    const resp = await fetch('/transcribe', { method: 'POST', body: formData });
+    const data = await resp.json();
+    if (data.error) {
+      recordStatus.textContent = data.error;
+    } else {
+      rawWorkArea.value = rawWorkArea.value.trim()
+        ? rawWorkArea.value.trim() + '\n' + data.text
+        : data.text;
+      recordStatus.textContent = 'Transcribed and added below ✓';
+      setTimeout(() => { recordStatus.textContent = ''; }, 3000);
+    }
+  } catch (e) {
+    recordStatus.textContent = 'Something went wrong, try again.';
+  } finally {
+    recordBtn.disabled = false;
+  }
+}
+
+recordBtn.addEventListener('click', () => {
+  if (!recording) startRecording();
+  else stopRecording();
+});
+
+btn.addEventListener('click', async () => {
+  const raw_work    = document.getElementById('raw_work').value.trim();
+  const raw_pending = document.getElementById('raw_pending').value.trim();
+  if (!raw_work) { errEl.textContent = 'Add a note on what you worked on first.'; return; }
+  errEl.textContent = '';
+  btn.textContent = 'Generating...';
+  btn.disabled = true;
+  try {
+    const resp = await fetch('/generate', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({raw_work, raw_pending, mode: selectedMode})
+    });
+    const data = await resp.json();
+    if (data.error) { errEl.textContent = data.error; }
+    else {
+      genArea.value = data.text;
+      section.style.display = 'block';
+    }
+  } catch(e) {
+    errEl.textContent = 'Something went wrong, try again.';
+  } finally {
+    btn.textContent = 'Generate Report';
+    btn.disabled = false;
+  }
+});
+</script>
+{% endblock %}

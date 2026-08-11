@@ -1,0 +1,1904 @@
+[
+  {
+    "id": "89b5d22d",
+    "name": "Chiamaka",
+    "date": "2026-05-18",
+    "raw_work": "•   AI Bot review\n•   Created a seamless dashboard for Application department\n•   Imported UCLAN and Northampton leads\n•   Create a google sheet to our progress track all projects \n•   Learnt how to create a seamsless dashboard using python and ai tools",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-05-18T17:00:00"
+  },
+  {
+    "id": "9f3ffb71",
+    "name": "Totan",
+    "date": "2026-05-18",
+    "raw_work": "•   Meeting with RGU Team and Mr. Donald on RGU bot review\n•   Advisors Academy application setup\n•   General Meeting with advisors academy team\n•   Fixing bot nudge and response time\n•   Creating a seamsless dashboard for application team\n•  Instructing Chi on how to build ai tools and dashboards",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-05-18T17:00:00"
+  },
+  {
+    "id": "44715250",
+    "name": "Victor",
+    "date": "2026-05-18",
+    "raw_work": "•   Tested advisors mobile app\n•   Started working on custom questiobs for HR website\n•   Completed the publishing for word press\n•   Completed landing page for bot - fix an issue-corrupted file error",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-05-18T17:00:00"
+  },
+  {
+    "id": "19140728",
+    "name": "Chiamaka",
+    "date": "2026-05-19",
+    "raw_work": "•   AI Bot review\n•   Created a seamless dashboard for Application department\n•   Designed R&D Organizational Organogram\n•   Integrated whatsapp update on all the AI bots\n•   Imported UCLAN and Northampton leads\n•   Created an additional tab to the google sheet for daily login activities.",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-05-19T17:00:00"
+  },
+  {
+    "id": "fa7487e4",
+    "name": "Totan",
+    "date": "2026-05-19",
+    "raw_work": "•   Meeting with Mr. Donald on bot setup for Navitas AI bot review\n•   Advisors Academy systems check\n•   Implemented changes with Victor on Advisors Academy\n(Counselors can now upload document and Super admin changes completed)\n•   Updated Apple & Android requirements for app upload.\n•   Meeting with Jimmy on how to update and use the blog posting",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-05-19T17:00:00"
+  },
+  {
+    "id": "d82fe0c8",
+    "name": "Victor",
+    "date": "2026-05-19",
+    "raw_work": "•   Counselors upload documents for students\n•   Status change for questionnaires on admin\n•   Failing endpoint for mobile app\n•   Refactor emails for counselors\n•   Added HR application questions",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-05-19T17:00:00"
+  },
+  {
+    "id": "33546b37",
+    "name": "Chiamaka",
+    "date": "2026-05-20",
+    "raw_work": "•   Ai bot review, corrected some minor responses on some of the\nai bots\n•   Created a dashboard for application team such that application\nofficers and counsellors have access to it",
+    "raw_pending": "•  Update leads for RGU, \nUCLAN, KENT, Northampton",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-05-20T17:00:00"
+  },
+  {
+    "id": "64bfb358",
+    "name": "Totan",
+    "date": "2026-05-20",
+    "raw_work": "•   Created a list of testers for advisors academy for google play [5]",
+    "raw_pending": "Create a list of testers  for \nadvisors academy for google play\nComplete the list of the testers",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-05-20T17:00:00"
+  },
+  {
+    "id": "7842ba19",
+    "name": "Victor",
+    "date": "2026-05-20",
+    "raw_work": "•   Worked on the Advisors Academy website to enable counsellors \nselect schools for students when creating applications\n•   Fixed the file size constraint issue affecting document uploads on \nthe Advisors Academy website.\n•   Tested HR features on the HR website (pending deployment).\n•   Deployed the document upload flow for counsellors on the \nAdvisors Academy website. (pending)",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-05-20T17:00:00"
+  },
+  {
+    "id": "8a72a00f",
+    "name": "Chiamaka",
+    "date": "2026-05-21",
+    "raw_work": "•   Extracted top-up programmes for the uniersities in UK that TGM is in patnership\n with.\n•   Corrected notification feature and added access to counsellors portal to apply for \nmore than 1 school to application officer",
+    "raw_pending": "Finish data extraction of top-up \nprograms",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-05-21T17:00:00"
+  },
+  {
+    "id": "ceb79ea8",
+    "name": "Totan",
+    "date": "2026-05-21",
+    "raw_work": "•  Worked with Victor to apply updates on Advisors Academy, including super admin \nmodifications and enabling counselors to upload documents.\n•  Conducted a systems review/check for Advisors Academy.\n•  Revised the requirements needed for Apple and Android for Advisors app",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-05-21T17:00:00"
+  },
+  {
+    "id": "ce388adb",
+    "name": "Victor",
+    "date": "2026-05-21",
+    "raw_work": "•   Deployed the document upload flow for counsellors on the \nAdvisors Academy website. (pending)",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-05-21T17:00:00"
+  },
+  {
+    "id": "cd73a610",
+    "name": "Chiamaka",
+    "date": "2026-05-22",
+    "raw_work": "•   Corrected notification feature and added access to counsellors portal to apply for \nmore than 1 school to application officer \n•   Updated the tracking sheet while having a meeting with Victor and Totan",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-05-22T17:00:00"
+  },
+  {
+    "id": "57d308b9",
+    "name": "Totan",
+    "date": "2026-05-22",
+    "raw_work": "•  Guided Chi on the process of developing AI tools and dashboard systems.\n•  Worked on improving bot response speed and fixing nudge-related issues.\n•  Participated in a general discussion with the Advisors Academy team.\n•  Set up the Advisors Academy application system.\n•  Supervised the dashboard corrections by Chi for the application team.",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-05-22T17:00:00"
+  },
+  {
+    "id": "bb96cb49",
+    "name": "Victor",
+    "date": "2026-05-22",
+    "raw_work": "•   Completed selecting a course for a student\n•   Started working on TGM travels {Admin pages, Autenctication page, login, \ndashboard and flights} Current link: https://tgmtravels.org/services/\n•   Meeting with Advisors Academy general counsellors concerning the update on the\nwebsite",
+    "raw_pending": "Design a landing page for tgm travels: \nhttps://tgmtravels.org/home/",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-05-22T17:00:00"
+  },
+  {
+    "id": "bfe53cbd",
+    "name": "Chiamaka",
+    "date": "2026-05-25",
+    "raw_work": "•   Import, download and upload of UCLAN, Northampton and KENT leads\n•   Updated the tracking sheet while having a meeting with Victor and Totan\n•   AI Bot review: updated knowledge base of Northampton regarding MRes",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-05-25T17:00:00"
+  },
+  {
+    "id": "01f3e5e9",
+    "name": "Totan",
+    "date": "2026-05-25",
+    "raw_work": "•   Botpress monitoring and optimization\n•   Follow-up on Advisors team (at the back) on new leads and campaign\n•   Had a meeting with the HR\n•   Creating proof of consent for HR Dashboard",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-05-25T17:00:00"
+  },
+  {
+    "id": "5ff59d0a",
+    "name": "Victor",
+    "date": "2026-05-25",
+    "raw_work": "•   Completed Admin design for TGM Travel Admin\n•   Added the configuration for TGM Travels Website Maintenace Mode\n•   Configuring Amadeus and Galileo for flight search\n•   Designed landing page for TGM Travels",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-05-25T17:00:00"
+  },
+  {
+    "id": "12ef62e3",
+    "name": "Chiamaka",
+    "date": "2026-05-26",
+    "raw_work": "•   Import, download and upload of RGU leads\n•   AI Bot Review\n•   Updated the tracking sheet while having a meeting with Victor and Totan",
+    "raw_pending": "• Import, Download and Upload RGU Leads",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-05-26T17:00:00"
+  },
+  {
+    "id": "1f327ce9",
+    "name": "Totan",
+    "date": "2026-05-26",
+    "raw_work": "•   Botpress monitoring optimization\n•   Follow-up on Advisors team[at the back] on new leads and campaign\n•    Had a meeting with HR\n•   Created proof of consent for HR dasboard",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-05-26T17:00:00"
+  },
+  {
+    "id": "4076a9a6",
+    "name": "Victor",
+    "date": "2026-05-26",
+    "raw_work": "•  Integrate Amadeus to the TGM Travels platform in order to search for flight rates",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-05-26T17:00:00"
+  },
+  {
+    "id": "f70b9f02",
+    "name": "Totan",
+    "date": "2026-05-27",
+    "raw_work": "PUBLIC HOLIDAY - Children's Day",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-05-27T17:00:00"
+  },
+  {
+    "id": "90319601",
+    "name": "Totan",
+    "date": "2026-05-28",
+    "raw_work": "PUBLIC HOLIDAY - Ileya",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-05-28T17:00:00"
+  },
+  {
+    "id": "66eff37c",
+    "name": "Chiamaka",
+    "date": "2026-05-29",
+    "raw_work": "•  Deployment for application hub has started\n•  AI Bot Review\n•  Work on Swansea bot concerning hubspot integration",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-05-29T17:00:00"
+  },
+  {
+    "id": "8b3f61b4",
+    "name": "Dami",
+    "date": "2026-05-29",
+    "raw_work": "•  Setup hubspot integration\n•  Closed ot Advisors Academy leads from previous department\n•  Helped train the bots \n• Got introduced to advisors database",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-05-29T17:00:00"
+  },
+  {
+    "id": "db217828",
+    "name": "Totan",
+    "date": "2026-05-29",
+    "raw_work": "•  Implementing botpress regarding integration for hubspot\n•  Having meeting with adisors team\n•  Advisors database optimization",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-05-29T17:00:00"
+  },
+  {
+    "id": "29fa3660",
+    "name": "Victor",
+    "date": "2026-05-29",
+    "raw_work": "•  Integrate Amadeus to the TGM Travels platform in order to search for flight rates\n•  Reach out to TGM Travels Rep to get the details for the integration for Galileo",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-05-29T17:00:00"
+  },
+  {
+    "id": "558499e4",
+    "name": "Chiamaka",
+    "date": "2026-06-01",
+    "raw_work": "•   Imported, Downloaded and Uploaded UCLAN & North Leads \n•   Updated the tracking sheet while having a meeting with Victor and Totan\n•   Made enquires in the application department for the application dashboard\n•   Update on Application Dashboard and continue process of deployment",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-06-01T17:00:00"
+  },
+  {
+    "id": "269252bf",
+    "name": "Dami",
+    "date": "2026-06-01",
+    "raw_work": "•  Hubspot Integration and configuration of response\n•  Imorting of leads for kent \n•  Work on a solution that recommend courses for students [population of data]",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-06-01T17:00:00"
+  },
+  {
+    "id": "1ba27962",
+    "name": "Totan",
+    "date": "2026-06-01",
+    "raw_work": "•   Supervised hubspot integration for TGM bot\n•   Follow up on leads in jotsform\n•   Presentation with University of Hall\n•   A follow-up meeting with Advisors Academy [at the back]",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-06-01T17:00:00"
+  },
+  {
+    "id": "205cdafa",
+    "name": "Victor",
+    "date": "2026-06-01",
+    "raw_work": "• Update on HR platform to add users\n•  UI Update on HR platform\n•  Updated on application stats on HR platform\n•  Remove email notification for certain status on HR application\n•  Confirgure default email templates (status that have email) on HR application",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-06-01T17:00:00"
+  },
+  {
+    "id": "07fb07aa",
+    "name": "Chiamaka",
+    "date": "2026-06-02",
+    "raw_work": "•   Imported, Downloaded and Uploaded RGU & KENT Leads \n•   Updated the tracking sheet while having a meeting with Victor and Totan\n•   Changed the UI interface of the application dashboard and added schools to search\n•   Update on Application Dashboard and continue process of deployment",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-06-02T17:00:00"
+  },
+  {
+    "id": "eb9ec418",
+    "name": "Dami",
+    "date": "2026-06-02",
+    "raw_work": "•   Worked with Totan on Bot Configuration\n•   Responded to Bot escalation to human",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-06-02T17:00:00"
+  },
+  {
+    "id": "a6739be4",
+    "name": "Totan",
+    "date": "2026-06-02",
+    "raw_work": "•   Apple setup with the developers\n•   Bot configuration with hubspot\n•   Meeting with advisors team[at the back]\n•   Helped Chi to deploy application dashboard\n•   Worked on Advisors databse\n•   Follow-up on customer service leads",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-06-02T17:00:00"
+  },
+  {
+    "id": "9f881d5a",
+    "name": "Victor",
+    "date": "2026-06-02",
+    "raw_work": "•   Completed application status feature\n•   Started deployment for TGM Travels\n•   Worked on minor UI Tweaks on advisors\n•   Added a filter feature on advisors in applicaton section",
+    "raw_pending": "Application Dashboard for advisors academy",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-06-02T17:00:00"
+  },
+  {
+    "id": "9341d981",
+    "name": "Chiamaka",
+    "date": "2026-06-03",
+    "raw_work": "•   Imported, Downloaded and Uploaded RGU & KENT Leads \n•   Updated the tracking sheet while having a meeting with Victor and Totan\n•   Changed the UI interface of the application dashboard and added schools to search\n•   Update on Application Dashboard and continue process of deployment",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-06-03T17:00:00"
+  },
+  {
+    "id": "62968d9e",
+    "name": "Chiamaka",
+    "date": "2026-06-04",
+    "raw_work": "•   Created a Bot change log for the changes made on all the bots\n•   Updated the tracking sheet while having a meeting with Victor and Totan\n•   Made 8 changes to all the bots and Bot review\n•   Meeting with Doctor Tolu concerning TGM Bot changes\n•   Collation of tuition fees data for TGM bot",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-06-04T17:00:00"
+  },
+  {
+    "id": "72ddd3ab",
+    "name": "Dami",
+    "date": "2026-06-04",
+    "raw_work": "•   Created a Bot change log for the changes made on all the bots\n•   Meeting with Doctor Tolu concerning TGM Bot changes\n•   Collation of TGM Data for a new bot for counsellors\n•   Escalated conversation on TGM Bot",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-06-04T17:00:00"
+  },
+  {
+    "id": "78949db3",
+    "name": "Totan",
+    "date": "2026-06-04",
+    "raw_work": "•   Meeting with Customer service[Tutu] for Instagram integration of the TGM bot \n•   Meeting with Doctor Tolu concerning Advisrs Academy App",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-06-04T17:00:00"
+  },
+  {
+    "id": "27987972",
+    "name": "Victor",
+    "date": "2026-06-04",
+    "raw_work": "•   Meeting with Doctor Tolu concerning Advisrs Academy App\n•   Worked on TGM Travels making major updates",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-06-04T17:00:00"
+  },
+  {
+    "id": "b09d7c5b",
+    "name": "Dami",
+    "date": "2026-06-05",
+    "raw_work": "•   Made changes on the bot (users that have quick question and directs back to fill the \nform\n•   Escalated a conversation from the bot about a potential collaboration to the head of IT\n•   Editted a conversational flow for the bot to make more recommendations of \nuniversitities outside specified city by the user\n•   Followed up with a previous student from Advisors Academy\n•   Had a presentation with Doctor Tolu and a client",
+    "raw_pending": "•   Data gathering of courses, tuition fees and \ndeposit for 25 universities in UK",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-06-05T17:00:00"
+  },
+  {
+    "id": "cf4cd7e7",
+    "name": "Chiamaka",
+    "date": "2026-06-08",
+    "raw_work": "•  Imported, Downloaded and Uploaded NORTH, UCLAN & RGU Leads\n•   Made changes on TGM bot [correct link to fill and Dependent Requirement]\n•   Overrall onboarding process with Kingsley on all the bots we manage \n•   Review Bot conversation and correct accordingly\n•   Updated infomation on a previous student to the current counsellor\n•   Updated the tracking sheet while having a meeting with colleagues",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-06-08T17:00:00"
+  },
+  {
+    "id": "ba79eb9c",
+    "name": "Dami",
+    "date": "2026-06-08",
+    "raw_work": "•   Attended introductory meeting for Kingsley and corrected the major eror on TGM Bot\n•   Enables the vision agent into TGM & RGU Bot\n•   Data gathering for UK Patnerned schools; courses and fees\n•   AI Bot conversation review and made changes accordingly",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-06-08T17:00:00"
+  },
+  {
+    "id": "eb1ba727",
+    "name": "Totan",
+    "date": "2026-06-08",
+    "raw_work": "•   Introductory meeting for Kingsley as a new \n•   Corrected a major conversational error on TGM Bot with colleagues\n•   Had a meeting with Mr Donald",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-06-08T17:00:00"
+  },
+  {
+    "id": "ca5820aa",
+    "name": "Victor",
+    "date": "2026-06-08",
+    "raw_work": "•   Meeting with TGM Travels head\n•   Made major UI & flow changes for TGM Travels\n•   Implementation to production and production configuration update\n•   Google  sign up and course fee currency for Advisors Academy Website\n•   Had a meeting with TGM Travels Lead on review of TGM Travels and Admin",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-06-08T17:00:00"
+  },
+  {
+    "id": "45df15c8",
+    "name": "Chiamaka",
+    "date": "2026-06-09",
+    "raw_work": "•   Gathered chat data from Top 3 selected counsellors to improve the bot conversation.\n•   Review Bot conversation and correct accordingly\n•   Updated the tracking sheet while having a meeting with colleagues\n•   Data gathering for UK Patnerned schools; courses and fees",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-06-09T17:00:00"
+  },
+  {
+    "id": "e747c4c8",
+    "name": "Dami",
+    "date": "2026-06-09",
+    "raw_work": "•   Reviewed bot conversations to check for errors or inconsistencies \n•   Added an image and video feature to TGM & RGU's Bot\n•   Gathered chat data from counsellors to train TGM Bot on conversations\n•   Added the vision agent on Kent, ICP, Navitas and Northampton's Bot",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-06-09T17:00:00"
+  },
+  {
+    "id": "ae36012f",
+    "name": "Totan",
+    "date": "2026-06-09",
+    "raw_work": "•   New design on Advisors Academy \n•   Bot training with team on RGU Bot\n•   Data analysis on CRM against RGU applications to ensure that RGU applications to \nensure that there was proper capturing of leads.\n•   Meeting with Graduate Trainees Counsellors under NORTH & UCLAN Leads concerning\ntheir current and new upcoming leads from customer service [which was discussed with\nBranch Manager]\n•   Review of Adv App design & customer journey with Mr Donald",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-06-09T17:00:00"
+  },
+  {
+    "id": "89d2d5dc",
+    "name": "Victor",
+    "date": "2026-06-09",
+    "raw_work": "SICK LEAVE",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-06-09T17:00:00"
+  },
+  {
+    "id": "95e7df8c",
+    "name": "Chiamaka",
+    "date": "2026-06-10",
+    "raw_work": "•   Gathered chat data from Top 3 selected counsellors to improve the bot conversation.\n•   Review Bot conversation and correct accordingly\n•   Updated the tracking sheet while having a meeting with colleagues\n•   Data gathering for UK Patnerned schools; courses and fees",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-06-10T17:00:00"
+  },
+  {
+    "id": "80bb5315",
+    "name": "Dami",
+    "date": "2026-06-10",
+    "raw_work": "•   Review of Advisors Academy super admin dashboard and created a document on \nrecommendation\n•   Gathering of data for TGM patner schools\n•   Review of Advisors Academy webapp and testing of it functionalities\n•   Conversation training of TGM Bot with chats gotten from counsellors",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-06-10T17:00:00"
+  },
+  {
+    "id": "5bf718c5",
+    "name": "Totan",
+    "date": "2026-06-10",
+    "raw_work": "•   Bot review on all the bots\n•   Meeting with advisors changes made \n•   Review with Kingsley\n•   General meeting with country manager",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-06-10T17:00:00"
+  },
+  {
+    "id": "8465d11c",
+    "name": "Victor",
+    "date": "2026-06-10",
+    "raw_work": "Made changes on Advisors Application\n•   Google sign in and sign up \n•   Updated course fee",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-06-10T17:00:00"
+  },
+  {
+    "id": "cefc25c8",
+    "name": "Chiamaka",
+    "date": "2026-06-11",
+    "raw_work": "Fell sick",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-06-11T17:00:00"
+  },
+  {
+    "id": "49a0a444",
+    "name": "Totan",
+    "date": "2026-06-12",
+    "raw_work": "Democracy Day",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-06-12T17:00:00"
+  },
+  {
+    "id": "bf92e456",
+    "name": "Chiamaka",
+    "date": "2026-06-15",
+    "raw_work": "•   Review Bot conversation and correct accordingly\n•   Data gathering for Canada & UK Patnerned schools; courses and fees\n•   Upgraded whatsapp integration on all bots\n•   Worked on testing of deployment of application dashboard\n•   Updated the tracking sheet while having a meeting with colleagues",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-06-15T17:00:00"
+  },
+  {
+    "id": "5f431fea",
+    "name": "Dami",
+    "date": "2026-06-15",
+    "raw_work": "•   Preposition of a new solution (AI travel assistant). Automating intenational travel process\n•   Worked on integration of hubspot into Jotform to automate contact creation\n•   Gathering of data (courses and fees) for TGM partner schools.\n•   Meeting with Victor on implementation of changes to Advisers SuperAdmin dashboard [Adv]\n•   Review of bot conversations to check for errors in conversational flow.",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-06-15T17:00:00"
+  },
+  {
+    "id": "0a350cba",
+    "name": "Totan",
+    "date": "2026-06-15",
+    "raw_work": "•   Created the new AI policy checker\n•   Meeting with advisors team[at the back]\n•   Had a meeting with Mr Donald\n•   Integration of hubspot with Jotform\n•   Meeting with application officer (Emmanuel) on update of Application Status feature on Adviors",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-06-15T17:00:00"
+  },
+  {
+    "id": "659791b7",
+    "name": "Victor",
+    "date": "2026-06-15",
+    "raw_work": "•   Worked on Advisors; storing user choice, course, school and country\n•   From the user selected choice, worked on course and school recommendation",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-06-15T17:00:00"
+  },
+  {
+    "id": "2af7cb0f",
+    "name": "Chiamaka",
+    "date": "2026-06-16",
+    "raw_work": "•   Review Bot conversation and correct accordingly\n•   Data gathering for Canada & UK Patnerned schools; courses and fees\n•   Enabled translator agents on RGU, NORTH, KENT & UCLAN Bot\n•   Worked on testing of deployment of application dashboard\n•   Updated RGU Leads by GT Kent Counsellors to RGU leads [Oluchi & Adeyinka]\n•   Updated the tracking sheet while having a meeting with colleagues",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-06-16T17:00:00"
+  },
+  {
+    "id": "8d5896fa",
+    "name": "Dami",
+    "date": "2026-06-16",
+    "raw_work": "•  Review of bot conversations to evaluate efficiency and detect errors\n•   Corrected the nudge seequence on Kent bot\n•   Worked with Totan on uploading of newly gathered courses for 4 universities on the advisors portal\n•   Data collection for new partner schools in Canada\n•   Worked on the in-house bot being built for counsellors\n•   Followed up on the recommendations made on advisors super admin\n•   Worked on a walkthrough on Advisros website to make sure all features are working well",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-06-16T17:00:00"
+  },
+  {
+    "id": "87313b7a",
+    "name": "Totan",
+    "date": "2026-06-16",
+    "raw_work": "•   Finished up the AI policy and advisors\n•   Updates advisors database\n•   Had a meeting with Mr Donald\n•   Had a follow-up meeting with Advisors team[at the back]\n•  Meeting GT Kent counsellors concerning their new leads [RGU Leads]",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-06-16T17:00:00"
+  },
+  {
+    "id": "f6f4548c",
+    "name": "Victor",
+    "date": "2026-06-16",
+    "raw_work": "•   Tested the new feature added from yesterday on Adv App\n•   Tested previous implementation \n•   Deployed the Adv App\n•   Worked on SuperAdmin recommendation",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-06-16T17:00:00"
+  },
+  {
+    "id": "9bfe58d6",
+    "name": "Chiamaka",
+    "date": "2026-06-17",
+    "raw_work": "•   Review Bot conversation and correct accordingly\n•   Data gathering for UK Patnerned schools; courses and fees\n•   Data filtering and cleaning for Executive One data\n•   Worked on testing of deployment of application dashboard\n•   Updated the tracking sheet while having a meeting with colleagues.\n•   Upgraded whatsapp integration on all the bots",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-06-17T17:00:00"
+  },
+  {
+    "id": "34bab69c",
+    "name": "Dami",
+    "date": "2026-06-17",
+    "raw_work": "•   Worked on executiveone bot (configurations and learning)\n•   Responded to bot human hand-off\n•   Assisted Totan on data cleaning\n•   Reviewed bot conversations\n•   Worked on the in-house bot being built for counsellors",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-06-17T17:00:00"
+  },
+  {
+    "id": "d98ff13a",
+    "name": "Totan",
+    "date": "2026-06-17",
+    "raw_work": "• Worked on deployment of Executive One dashboard",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-06-17T17:00:00"
+  },
+  {
+    "id": "b50899e6",
+    "name": "Victor",
+    "date": "2026-06-17",
+    "raw_work": "• Worked on end point and fixes for mobile app for advisors academy\n• Created a pipline for automatic deploymenent for Advisors Academy\n• Worked on super admin recommendation",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-06-17T17:00:00"
+  },
+  {
+    "id": "ac6f655b",
+    "name": "Chiamaka",
+    "date": "2026-06-18",
+    "raw_work": "•   Created an admin portal for applicaton dashboard\n•   Review Bot conversation and correct accordingly\n•   Worked on deployment & UI changes of application dashboard\n•   Data gathering for UK Patnerned schools; courses and fees\n•   Updated & designed profile pictures for RGU, Northampton, Kent & UCLAN Bot whatsapp\n•   Escalated conversation on TGM Bot\n•   Updated the tracking sheet while having a meeting with colleagues",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-06-18T17:00:00"
+  },
+  {
+    "id": "0e55a49a",
+    "name": "Dami",
+    "date": "2026-06-18",
+    "raw_work": "•   Worked on executiveone bot (forms integration, perfecting of response, attempt automation of\nemail collection and verification)\n•   Responded to bot human hand-off\n•   Upload of courses to advisors platform [3 universities]\n•   Reviewed bot conversations\n•   Worked on bot being built for internal use by counselors.",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-06-18T17:00:00"
+  },
+  {
+    "id": "69890d8f",
+    "name": "Totan",
+    "date": "2026-06-18",
+    "raw_work": "• Cleaned up Executive one dashboard\n• Worked on Botpress\n• Follow-up with Advisors Team",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-06-18T17:00:00"
+  },
+  {
+    "id": "4165cddf",
+    "name": "Victor",
+    "date": "2026-06-18",
+    "raw_work": "• Completed the CICD pipline deployment on Advisors\n• Worked on super admin recommendation",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-06-18T17:00:00"
+  },
+  {
+    "id": "41b753fb",
+    "name": "Chiamaka",
+    "date": "2026-06-19",
+    "raw_work": "•  Conducted ongoing reviews of active bot conversations and implemented necessary backend\n corrections.\n•  Sourced a new list of institutions and conducted data gathering of updated courses for the \nJan 2026 intake across both Canada and UK schools.\n•  Processed and compiled the graduate data for the Executive One database.\n•  Worked on the newly filtered data  for Executive One\n•  Worked with Totan on Executive One records directly onto the live application dashboard.",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-06-19T17:00:00"
+  },
+  {
+    "id": "350d9b27",
+    "name": "Totan",
+    "date": "2026-06-19",
+    "raw_work": "• Worked on Exective One dashboard with the executive one team",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-06-19T17:00:00"
+  },
+  {
+    "id": "cfdacedd",
+    "name": "Victor",
+    "date": "2026-06-19",
+    "raw_work": "• Completed superadmin on Advisors academy\n• Added new feature to Advisors [charts, filter section, counsellor & admin]",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-06-19T17:00:00"
+  },
+  {
+    "id": "c1025cf0",
+    "name": "Chiamaka",
+    "date": "2026-06-22",
+    "raw_work": "•   Review Bot conversation and correct accordingly\n•   Deployed the application dashboard\n•   Imported and downloaded RGU leads \n•   Updated the tracking sheet while having a meeting with colleagues",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-06-22T17:00:00"
+  },
+  {
+    "id": "27958a66",
+    "name": "Dami",
+    "date": "2026-06-22",
+    "raw_work": "•   Conducted data collection and compilation for Canadian universities and colleges.\n•   Worked on the Executive One bot, including email configuration and confirmation workflows, \nand enabled the bot to identify new sign-ups and users who have successfully completed forms.\n•   Created and configured the Meta Business Suite account for Advisors Academy.\n•   Reviewed bot conversations to improve performance, accuracy, and user experience.\n•   Contributed to the development of the in-house Counsellor Bot, including UI design, database \nsetup, and system configuration.",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-06-22T17:00:00"
+  },
+  {
+    "id": "0079171a",
+    "name": "Totan",
+    "date": "2026-06-22",
+    "raw_work": "•   Presented the campaign application demo to Mr. Donald and Mr. Bolade, highlighting its key \nfeatures and functionality\n•  Worked on the Executive One dashboard, contributing to its development and improvement.\n•  Assisted Chi with the deployment process, helping to ensure a successful release.",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-06-22T17:00:00"
+  },
+  {
+    "id": "5930f91b",
+    "name": "Victor",
+    "date": "2026-06-22",
+    "raw_work": "•  Tested and validated the newly updated features on the Advisors platform.\n•  Identified and resolved three bugs on the Advisors platform.\n•  Worked on implementing updates for the TGM Travels project.\n•  Updated the CICD pipeline to enable automatic deployment for the Admin Executive modules on\n both Executive One Capital and Advisors.",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-06-22T17:00:00"
+  },
+  {
+    "id": "05591faf",
+    "name": "Chiamaka",
+    "date": "2026-06-23",
+    "raw_work": "•   Review Bot conversation and correct accordingly\n•   Deployed the application dashboard\n•    Imported, downloaded, and uploaded new leads RGU, KENT, UCLAN, NORTH\n•   Updated the tracking sheet while having a meeting with colleagues\n•   Upgraded the WhatsApp integrations for all the bots",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-06-23T17:00:00"
+  },
+  {
+    "id": "0e7ce5d9",
+    "name": "Dami",
+    "date": "2026-06-23",
+    "raw_work": "•   Uploaded updated data courses to Advisors academy\n•   Gathering of updated Jan 2026 courses and fees to update TGM Knowledge base\n•   Review of bot conversations\n•   Review of recommended changes eeffected on advisors super admin dashboard with Victor",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-06-23T17:00:00"
+  },
+  {
+    "id": "80d119f4",
+    "name": "Totan",
+    "date": "2026-06-23",
+    "raw_work": "•   Worked on Executive One Dashboardd",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-06-23T17:00:00"
+  },
+  {
+    "id": "8b946493",
+    "name": "Victor",
+    "date": "2026-06-23",
+    "raw_work": "•   Made a couple of changes on TGM Travels",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-06-23T17:00:00"
+  },
+  {
+    "id": "f892d26b",
+    "name": "Chiamaka",
+    "date": "2026-06-24",
+    "raw_work": "•   Review Bot conversation and correct accordingly\n•   Escalated a conversation on TGM Bot\n•   Worked on data collection for the new bot [Portsmouth]\n•   Updated the tracking sheet while having a meeting with colleagues\n•   Had a meeting with Doctor Tolu concerning Portsmouth Bot Project",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-06-24T17:00:00"
+  },
+  {
+    "id": "ddaedde3",
+    "name": "Dami",
+    "date": "2026-06-24",
+    "raw_work": "•   Uploaded updated data courses to Advisors academy\n•   Made correction to RGU's Bot to handle enquiry messages and welcome properly\n•   Review of bot conversations\n•   Escalated a conversation on TGM Bot\n•   Had a meeting with Doctor Tolu concerning Portsmouth Bot Project",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-06-24T17:00:00"
+  },
+  {
+    "id": "aafcd42a",
+    "name": "Totan",
+    "date": "2026-06-24",
+    "raw_work": "•   Created business portfolio\n•   Had a meeting with Doctor Tolu & Victor\n•   Worked on a new bot [Portmouth] with AI Bot team",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-06-24T17:00:00"
+  },
+  {
+    "id": "2a6e87ce",
+    "name": "Victor",
+    "date": "2026-06-24",
+    "raw_work": "•   Made a couple of changes on TGM Travels",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-06-24T17:00:00"
+  },
+  {
+    "id": "d797c778",
+    "name": "Chiamaka",
+    "date": "2026-06-25",
+    "raw_work": "•   Review Bot conversation and correct accordingly\n•   Made changes on TGM AppHub and pushed for deployment\n•   Review of TGM AppHub with the Head of Applications\n•   Updated the tracking sheet while having a meeting with colleagues\n•   Worked with Victor on fixing the URL of TGM ApphHub [Proper deployment]",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-06-25T17:00:00"
+  },
+  {
+    "id": "2da23355",
+    "name": "Dami",
+    "date": "2026-06-25",
+    "raw_work": "•   Uploaded updated data courses to Advisors academy\n•   Creation of custom link with prefill message forPortsmouth Bot\n•   Review of bot conversations\n•   Collection of data [Courses for Canadian school]\n•   Working on Portsmouth Bot [Configurations and conversational flows]",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-06-25T17:00:00"
+  },
+  {
+    "id": "1be6713e",
+    "name": "Totan",
+    "date": "2026-06-25",
+    "raw_work": "•   Created business portfolio\n•   Had a meeting with Doctor Tolu & Victor\n•   Worked on a new bot [Portmouth] with AI Bot team",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-06-25T17:00:00"
+  },
+  {
+    "id": "1f461bdd",
+    "name": "Victor",
+    "date": "2026-06-25",
+    "raw_work": "•   Review of TGM Travels with TGM Travels Manager\n•   Fixed bugs on TGM Travels\n•   Deployed on TGM Travels\n•   Configured domain function and redeployed TGM AppHub [in orer to have a proper url]",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-06-25T17:00:00"
+  },
+  {
+    "id": "c241e705",
+    "name": "Chiamaka",
+    "date": "2026-06-26",
+    "raw_work": "•  Continued routine bot conversation reviews and performance optimization checks.\n•  Finalized pending changes on the TGM AppHub and pushed the final stable build for deployment.\n•  Review of the TGM AppHub platform with the Head of Applications.\n•  Updated the tracking sheet alongside colleagues during team meetings.\n•  Completed troubleshooting with Victor to ensure the TGM AppHub URL routing functions correctly\nin production.",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-06-26T17:00:00"
+  },
+  {
+    "id": "80a1526e",
+    "name": "Dami",
+    "date": "2026-06-26",
+    "raw_work": "•   Worked on Portsmouth Bot\n•   Assisted with the preparation for Portsmouth presentation",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-06-26T17:00:00"
+  },
+  {
+    "id": "07290c74",
+    "name": "Totan",
+    "date": "2026-06-26",
+    "raw_work": "•   Worked on preparation for Navitas\n•   HWorked with Executive One Team on the platform\n•   Worked on Customemr Serrvice platform\n•   Trained the Portsmouth Bot on Friday",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-06-26T17:00:00"
+  },
+  {
+    "id": "913137cd",
+    "name": "Victor",
+    "date": "2026-06-26",
+    "raw_work": "•   TGM Travels",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-06-26T17:00:00"
+  },
+  {
+    "id": "cf10f06a",
+    "name": "Chiamaka",
+    "date": "2026-06-29",
+    "raw_work": "•   Had a review and changes to make on Advisors Academy app\n•  Had a review with Head of Applications concerning the Application Dashboard an gave her access to\nthe paltform\n•  Finalized pending changes on the TGM AppHub and pushed the final stable build for deployment.\n•  Updated the tracking sheet alongside colleagues during team meetings.\n•  Completed troubleshooting with Victor to ensure the TGM AppHub URL routing functions correctly\nin production.\n•  Imported, downloaded, and uploaded new leads RGU, KENT",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-06-29T17:00:00"
+  },
+  {
+    "id": "306f40ca",
+    "name": "Dami",
+    "date": "2026-06-29",
+    "raw_work": "•   Bot conversation review\n•   Worked on tgm in house counselor AI assistant\n•  Gathering of courses to update tgm's knowlwdge base as well as to make the AI assistant knowledge base robust",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-06-29T17:00:00"
+  },
+  {
+    "id": "44d9c083",
+    "name": "Totan",
+    "date": "2026-06-29",
+    "raw_work": "Went to the Hospital",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-06-29T17:00:00"
+  },
+  {
+    "id": "92e26383",
+    "name": "Victor",
+    "date": "2026-06-29",
+    "raw_work": "•   Worked TGM Travels platform\n•   Had a review of TGM Travels Platform with Head of TGM Travels\n•   Worked on Caravan (Events Platform) - created a landing page and created an adminalso n",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-06-29T17:00:00"
+  },
+  {
+    "id": "22869ec5",
+    "name": "Chiamaka",
+    "date": "2026-06-30",
+    "raw_work": "•  Had a presentation with Doctor Tolu and GT Counsellors concerning the Application Dashboard an gave \nthem access to the paltform.\n•  Finalized pending changes on the TGM AppHub and pushed the final stable build for deployment.\n•  Review of the TGM AppHub platform with the Head of Applications.\n•  Updated the tracking sheet alongside colleagues during team meetings.\n•   Configuration of notifications on dashboard to receive emails",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-06-30T17:00:00"
+  },
+  {
+    "id": "4fe9a4f5",
+    "name": "Dami",
+    "date": "2026-06-30",
+    "raw_work": "•   Assisted with the creation of a finance dashboard for TGM to help the compaany manage and track commission from partner schools\n•   Made changes to executive one dashboard\n•  Reviewed bot conversations   •  Handled a human handoff on the bot and escalated the potentital student to customer service •  Worked on the counselor AI assistant (TGMAI)",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-06-30T17:00:00"
+  },
+  {
+    "id": "9b72b945",
+    "name": "Totan",
+    "date": "2026-06-30",
+    "raw_work": "•   Worked on Finance platform \n•   Meeting with Executive One team and added new features on the dashboard\n•   Worked on Customemr Serrvice platform",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-06-30T17:00:00"
+  },
+  {
+    "id": "686beef0",
+    "name": "Victor",
+    "date": "2026-06-30",
+    "raw_work": "•   Worked TGM Travels platform\n•   Had a review of TGM Travels Platform with Head of TGM Travels\n•   Worked on Caravan (Events Platform) - created a landing page and created an admin",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-06-30T17:00:00"
+  },
+  {
+    "id": "f7a88454",
+    "name": "Chiamaka",
+    "date": "2026-07-01",
+    "raw_work": "•  Escalated a conversaton on TGM Bot\n•  Finalized pending changes on the TGM AppHub and pushed the final stable build for deployment.\n•  Review of the TGM AppHub platform with the Head of Applications.\n•  Updated the tracking sheet alongside colleagues during team meetings.\n•   Configuration of notifications on dashboard to receive emails",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-07-01T17:00:00"
+  },
+  {
+    "id": "b5139479",
+    "name": "Dami",
+    "date": "2026-07-01",
+    "raw_work": "•   Reviewed jotform integration into CRM to populate for phone number on the CRM\n•   Worked on TGMAI (counselor AI assistant)\n•   Review of bot conversations\n•   Changed the file format of the document in our bot knowledge base on botpress to a markdown file",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-07-01T17:00:00"
+  },
+  {
+    "id": "b2aee123",
+    "name": "Totan",
+    "date": "2026-07-01",
+    "raw_work": "•   Made changes and worked on deployement for Executive One dashboard with the Exective One team\n•   Made changes and worked on deployement for Finance dashboard\n•   Worked on TGM Bot integration and fix the errors",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-07-01T17:00:00"
+  },
+  {
+    "id": "83c178f0",
+    "name": "Victor",
+    "date": "2026-07-01",
+    "raw_work": "•   Deployed the Finance app\n•   Updated TGM Travels admin operations\n•   Updated admin and super admin dashboards",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-07-01T17:00:00"
+  },
+  {
+    "id": "5a17834a",
+    "name": "Chiamaka",
+    "date": "2026-07-02",
+    "raw_work": "•   Meeting with Doctor Tolu on status of my current project [TGM AppHub]\n•   Finalized pending changes on the TGM AppHub and pushed the final stable build for deployment.\n•   Presentation with All counsellors and All Application officers of the introduction of TGM AppHub\n•   Updated the tracking sheet alongside colleagues during team meetings.\n•   Made enquires on changes made and new features for TGM AppHub\n•   Bot conversation reviews and performance optimization checks.",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-07-02T17:00:00"
+  },
+  {
+    "id": "1cc19e9f",
+    "name": "Dami",
+    "date": "2026-07-02",
+    "raw_work": "•  Deployment of TGMAI and updating of the AI knowledge-base\n•   Reviewed Bot Conversations\n•   Making of changes to the deployed platform",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-07-02T17:00:00"
+  },
+  {
+    "id": "6272667f",
+    "name": "Totan",
+    "date": "2026-07-02",
+    "raw_work": "•   Changes on Executive One Dashboard \n•   Changes on the finance platform\n•   Prepared presentation for Chi with Chi\n•   Meeting with Doctor Tolu",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-07-02T17:00:00"
+  },
+  {
+    "id": "7e581570",
+    "name": "Victor",
+    "date": "2026-07-02",
+    "raw_work": "•   Worked on Carvan and TGM Travels",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-07-02T17:00:00"
+  },
+  {
+    "id": "d7916e88",
+    "name": "Chiamaka",
+    "date": "2026-07-03",
+    "raw_work": "•   Implemented the structural feedback and final platform adjustments requested by the committee. \n•   Pushed the updated build to production and ran full system checks to guarantee everything \ndeployed and runs smoothly. \n•   Created and provisioned new platform user accounts for the incoming counsellors using the staff \ndata provided by the Branch Manager, Mrs. Dami.",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-07-03T17:00:00"
+  },
+  {
+    "id": "25d667e4",
+    "name": "Dami",
+    "date": "2026-07-03",
+    "raw_work": "•   Worked on TGMAI and updated the knowledge-base\n•   Reviewed Bot Conversations\n•   Pushed to Github abd started on the process of deployment by working with Victor",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-07-03T17:00:00"
+  },
+  {
+    "id": "c8eb3b7e",
+    "name": "Totan",
+    "date": "2026-07-03",
+    "raw_work": "•   Changes on Executive One Dashboard \n•   Changes on the finance platform\n•   Prepared presentation for Chi with Chi\n•   Meeting with Doctor Tolu",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-07-03T17:00:00"
+  },
+  {
+    "id": "8939c7a4",
+    "name": "Victor",
+    "date": "2026-07-03",
+    "raw_work": "•   Worked on the Admin dashboard for event owner and event creator for Carvan",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-07-03T17:00:00"
+  },
+  {
+    "id": "c30f4c84",
+    "name": "Chiamaka",
+    "date": "2026-07-06",
+    "raw_work": "•   Conducted a cross-branch onboarding session with the Branch Manager, Mrs. Dami, introducing staff \nto the application dashboard.\n•   Created and configured user accounts, distributed login credentials, and supported staff onboarding.\n•   Trained a new department intern on the organization's core software platforms.\n•   Reviewed daily team logs to monitor technical activities \n•   Monitored AI bot conversation logs to assess response quality and system performance.",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-07-06T17:00:00"
+  },
+  {
+    "id": "5ab8f09a",
+    "name": "Dami",
+    "date": "2026-07-06",
+    "raw_work": "•   Worked on TGMAI and updated the knowledge-base\n•   Reviewed Bot Conversations\n•   Pushed to Github abd started on the process of deployment by working with Victor",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-07-06T17:00:00"
+  },
+  {
+    "id": "6a50080e",
+    "name": "Totan",
+    "date": "2026-07-06",
+    "raw_work": "On leave",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-07-06T17:00:00"
+  },
+  {
+    "id": "14090126",
+    "name": "Victor",
+    "date": "2026-07-06",
+    "raw_work": "•   Worked on the Admin dashboard for event owner and event creator for Carvan",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-07-06T17:00:00"
+  },
+  {
+    "id": "41072ca5",
+    "name": "Chiamaka",
+    "date": "2026-07-07",
+    "raw_work": "•   Completed routine AI bot conversation reviews and checked for system errors.\nAudited the main application dashboard, identified several technical bugs, and successfully implemented fixes.\n•  Programmed and deployed new custom features requested by the application officers to improve their dashboard \nworkflow.\n•  Partnered with Dami to design and build a new local job board dashboard called \"Job Locale\" (structured like Indeed) \nfor Mr. Dotun, successfully running the initial prototype in a local environment.\n•  Conducted a comprehensive training session with the new intern, Ini, to walk him through our development tools",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-07-07T17:00:00"
+  },
+  {
+    "id": "58f2e613",
+    "name": "Dami",
+    "date": "2026-07-07",
+    "raw_work": "•   Worked on TGMAI and updated the knowledge-base\n•   Reviewed Bot Conversations\n•   Pushed to Github abd started on the process of deployment by working with Victor",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-07-07T17:00:00"
+  },
+  {
+    "id": "2440121f",
+    "name": "Totan",
+    "date": "2026-07-07",
+    "raw_work": "On leave",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-07-07T17:00:00"
+  },
+  {
+    "id": "d804c3a7",
+    "name": "Victor",
+    "date": "2026-07-07",
+    "raw_work": "On leave",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-07-07T17:00:00"
+  },
+  {
+    "id": "3158ba2b",
+    "name": "Chiamaka",
+    "date": "2026-07-08",
+    "raw_work": "•  Ran daily AI bot reviews to maintain conversational quality.\n•  Troubleshot and resolved recurring technical bugs on the main application dashboard alongside the engineering team.\n•  Co-hosted a platform presentation for all Counsellors to demonstrate the latest system updates and dashboard features \nfor TGM-AI\n•  Merged Sodiq’s new counselor dashboard (TGM-AI) into the TGM AppHub, creating a smooth redirection flow for \ncounselors submitting applications.\n•  Continued hands-on practical training and orientation sessions with the new intern, Ini.",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-07-08T17:00:00"
+  },
+  {
+    "id": "335a0e20",
+    "name": "Dami",
+    "date": "2026-07-08",
+    "raw_work": "•   Worked on TGMAI and updated the knowledge-base\n•   Reviewed Bot Conversations\n•   Pushed to Github abd started on the process of deployment by working with Victor",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-07-08T17:00:00"
+  },
+  {
+    "id": "a2c65844",
+    "name": "Totan",
+    "date": "2026-07-08",
+    "raw_work": "On leave",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-07-08T17:00:00"
+  },
+  {
+    "id": "e4c383ab",
+    "name": "Victor",
+    "date": "2026-07-08",
+    "raw_work": "On leave",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-07-08T17:00:00"
+  },
+  {
+    "id": "532f5374",
+    "name": "Chiamaka",
+    "date": "2026-07-09",
+    "raw_work": "•  Initiated the final optimization and feature-locking process for the newly created application modules to ensure stable \ndeployment.\n•  Implemented specific structural updates and logic modifications on the Portsmouth bot based on guidelines provided \nby Dr. Tolu.\n•  Attended a technical project review meeting with Dr. Tolu to discuss optimization strategies and next steps for the \nPortsmouth bot.\n•  Performed routine AI bot checks and applied quick fixes to conversational flows where needed.",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-07-09T17:00:00"
+  },
+  {
+    "id": "57cfb8cc",
+    "name": "Dami",
+    "date": "2026-07-09",
+    "raw_work": "•   Worked on TGMAI and updated the knowledge-base\n•   Reviewed Bot Conversations\n•   Pushed to Github abd started on the process of deployment by working with Victor",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-07-09T17:00:00"
+  },
+  {
+    "id": "0e2af320",
+    "name": "Totan",
+    "date": "2026-07-09",
+    "raw_work": "On leave",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-07-09T17:00:00"
+  },
+  {
+    "id": "66330f02",
+    "name": "Victor",
+    "date": "2026-07-09",
+    "raw_work": "On leave",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-07-09T17:00:00"
+  },
+  {
+    "id": "887ebf12",
+    "name": "Chiamaka",
+    "date": "2026-07-10",
+    "raw_work": "•  Finalized the end-to-end deployment of all requested features on the live platform and ran final functionality checks to \nensure optimal performance.\n•  Completed post-deployment monitoring to confirm the application dashboard and its newly merged modules run \nwithout disruption.\n•  Attended the company-wide Town Hall meeting and participated in departmental syncs.\n•  Created and provisioned two extra user accounts for the Super Admin role on the platform.",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-07-10T17:00:00"
+  },
+  {
+    "id": "51443d8c",
+    "name": "Dami",
+    "date": "2026-07-10",
+    "raw_work": "•   Worked on TGMAI and updated the knowledge-base\n•   Reviewed Bot Conversations\n•   Pushed to Github abd started on the process of deployment by working with Victor",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-07-10T17:00:00"
+  },
+  {
+    "id": "05834cab",
+    "name": "Totan",
+    "date": "2026-07-10",
+    "raw_work": "On leave",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-07-10T17:00:00"
+  },
+  {
+    "id": "e662593b",
+    "name": "Victor",
+    "date": "2026-07-10",
+    "raw_work": "On leave",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-07-10T17:00:00"
+  },
+  {
+    "id": "9cbe1d54",
+    "name": "Chiamaka",
+    "date": "2026-07-13",
+    "raw_work": "•  AI Bot review\n•  Merged TGM-AI into TGM AppHub and configured\n•  Add new features and changes to TGM AppHub\n•  Imported UCLAN Leads\n•  Worked on a new project for R&D Department [Report Hub]\n•  Added a new user to TGM AppHub [Developer's account]",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-07-13T17:00:00"
+  },
+  {
+    "id": "0d4529c2",
+    "name": "Dami",
+    "date": "2026-07-13",
+    "raw_work": "•   Confirguration of Portsmouth bot to be able to capture number of users chatting with it to enable proper function of \none of the integrated workflow with Totan. \n•   Merging of TGM-AI into TGM AppHub and configuration across pages with Chi\n•   Review of Bot conversation.\n•   Gathering of data to boost TGM AI Knowledge base on new locations\n•   Follow up on a previous student from advisors\n•   Instructing the intern",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-07-13T17:00:00"
+  },
+  {
+    "id": "4715f761",
+    "name": "Totan",
+    "date": "2026-07-13",
+    "raw_work": "•   Integrated Jotsform incustomer service Dashboard\n•   Made some changes in Executive One with the Executive One team\n•   Bot update [for template to reach every number]\n•   Taught Ini[Intern] Data Analytics concept and practicals",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-07-13T17:00:00"
+  },
+  {
+    "id": "90285228",
+    "name": "Victor",
+    "date": "2026-07-13",
+    "raw_work": "•   Started Ethopian Airline API Integration for TGM Travels\n•   Updated Caravan, added speaker feature and updated security",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-07-13T17:00:00"
+  },
+  {
+    "id": "55d5d079",
+    "name": "Chiamaka",
+    "date": "2026-07-14",
+    "raw_work": "•  AI Bot review\n•  Imported, Downloaded and Uploaded KENT, NORTH & KENT Leads\n•  Merged TGM-AI into TGM AppHub and configured and Deployed with Victor\n•  Worked on the new changes for TGM AppHub [creation of 3 new super admins for the management]\n•   Presentation of Portsmouth Bot to stakeholders with respective R&D Team\n•  Added a new user to TGM AppHub [Developer's account] and deployed",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-07-14T17:00:00"
+  },
+  {
+    "id": "bfd5daa9",
+    "name": "Dami",
+    "date": "2026-07-14",
+    "raw_work": "•   Reviewed Bot conversations and made changes to RGU's and TGM's Bot learning\n•   Included a learning on scholarship offers for RGU's bot\n•   Updated TGM's bot learning to have detailed direction to our expo locations.\n•   Updated courses on advisor's academy platform\n•   Updated the knowledge base of TGM's aI on new locations\n•   Presentation of Portsmouth Bot to stakeholders with respective R&D Team",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-07-14T17:00:00"
+  },
+  {
+    "id": "85d26570",
+    "name": "Totan",
+    "date": "2026-07-14",
+    "raw_work": "•   Worked on customer service platform \n•   Presentation of Portsmouth Bot to stakeholders with respective R&D Team\n•   Meeting with Josephine concerning the customer service platform\n•   Discussed a new proposed dashboard with Dami\n•   Discussed a new R&D department dashboard with Chi\n•   Worked on the finance dashboard",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-07-14T17:00:00"
+  },
+  {
+    "id": "47c7bcaf",
+    "name": "Victor",
+    "date": "2026-07-14",
+    "raw_work": "•   Deployed the Caravan platform and review changes with the team and added some fixes accordingly",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-07-14T17:00:00"
+  },
+  {
+    "id": "165aa65d",
+    "name": "Chiamaka",
+    "date": "2026-07-15",
+    "raw_work": "•  AI Bot review\n•  Imported, Downloaded and Uploaded KENT, NORTH & KENT Leads\n•  Merged TGM-AI into TGM AppHub and configured and Deployed with Victor\n•  Worked on the new changes for TGM AppHub [ creation of 3 new super admins for the management]\n•   Presentation of Portsmouth Bot to stakeholders with respective R&D Team\n•  Added a new user to TGM AppHub [Developer's account] and deployed",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-07-15T17:00:00"
+  },
+  {
+    "id": "66ab0a77",
+    "name": "Dami",
+    "date": "2026-07-15",
+    "raw_work": "•   Reviewed Bot conversations and made changes to RGU's and TGM's Bot learning\n•   Included a learning on scholarship offers for RGU's bot\n•   Updated TGM's bot learning to have detailed direction to our expo locations.\n•   Updated courses on advisor's academy platform\n•   Updated the knowledge base of TGM's aI on new locations\n•   Presentation of Portsmouth Bot to stakeholders with respective R&D Team",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-07-15T17:00:00"
+  },
+  {
+    "id": "f4739c74",
+    "name": "Totan",
+    "date": "2026-07-15",
+    "raw_work": "•   Worked on customer service platform \n•   Presentation of Portsmouth Bot to stakeholders with respective R&D Team\n•   Meeting with Josephine concerning the customer service platform\n•   Discussed a new proposed dashboard with Dami\n•   Discussed a new R&D department dashboard with Chi\n•   Worked on the finance dashboard",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-07-15T17:00:00"
+  },
+  {
+    "id": "ff5fd9fb",
+    "name": "Victor",
+    "date": "2026-07-15",
+    "raw_work": "•   Deployed the Caravan platform and review changes with the team and added some fixes accordingly",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-07-15T17:00:00"
+  },
+  {
+    "id": "e59a1e18",
+    "name": "Chiamaka",
+    "date": "2026-07-16",
+    "raw_work": "•  AI Bot review\r\n•  Imported, Downloaded and Uploaded KENT, NORTH & KENT Leads\r\n•  Merged TGM-AI into TGM AppHub and configured and Deployed with Victor\r\n•  Worked on the new changes for TGM AppHub [ creation of 3 new super admins for the management]\r\n•   Presentation of Portsmouth Bot to stakeholders with respective R&D Team\r\n•  Added a new user to TGM AppHub [Developer's account] and deployed",
+    "raw_pending": "",
+    "generated": "- Reviewed the AI Bot performance and identified areas for improvement.  \r\n- Imported, downloaded, and uploaded the Leads for KENT and NORTH & KENT as part of our data management efforts.  \r\n- Merged the TGM-AI system into the TGM AppHub, then configured and deployed it alongside Victor.  \r\n- Worked on implementing changes in TGM AppHub, including the creation of three new super admin accounts for management purposes.  \r\n- Presented the Portsmouth Bot to stakeholders, collaborating with the R&D team to address their feedback.  \r\n- Added a new developer's account user to TGM AppHub and completed the deployment.",
+    "status": "submitted",
+    "submitted_at": "2026-07-16T16:28:16.380923"
+  },
+  {
+    "id": "203e732e",
+    "name": "Chiamaka",
+    "date": "2026-07-17",
+    "raw_work": "•  AI Bot review\n•  Imported, Downloaded and Uploaded KENT, NORTH & KENT Leads\n•  Merged TGM-AI into TGM AppHub and configured and Deployed with Victor\n•  Worked on the new changes for TGM AppHub [ creation of 3 new super admins for the management]\n•   Presentation of Portsmouth Bot to stakeholders with respective R&D Team\n•  Added a new user to TGM AppHub [Developer's account] and deployed",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-07-17T17:00:00"
+  },
+  {
+    "id": "ab42ad5a",
+    "name": "Dami",
+    "date": "2026-07-17",
+    "raw_work": "•   Review of Bot conversations \n•   Review of advisors academy super admin dashboard, report preparation and submission of recommendations.\n•   Updated courses on advisor's academy platform for students",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-07-17T17:00:00"
+  },
+  {
+    "id": "5de36e77",
+    "name": "Chiamaka",
+    "date": "2026-07-20",
+    "raw_work": "•  Participated in strategic planning meetings with the R&D team and Dr. Tolu to prepare and refine product\ndemonstration materials for upcoming collaborator presentations. \n• Applied initial code updates to the TGM AppHub platform in preparation for upcoming feature. \n• Processed inbound student lead channels by importing and downloading Northampton lead batches.",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-07-20T17:00:00"
+  },
+  {
+    "id": "334618f6",
+    "name": "Dami",
+    "date": "2026-07-20",
+    "raw_work": "•   Preparation for Portsmouth preparation \n•   Updating of course on Advisors platform\n•   AI Bot conversation review",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-07-20T17:00:00"
+  },
+  {
+    "id": "07b81143",
+    "name": "Totan",
+    "date": "2026-07-20",
+    "raw_work": "•   Worked on the presentation for Potential Universities with R&D Team and Legal team [Nimi]\n•   Worked on some changes/update on finance and legal dashboard\n•   Showed TGM Travels team lead the Stride app being worked on",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-07-20T17:00:00"
+  },
+  {
+    "id": "3e9c0d2a",
+    "name": "Victor",
+    "date": "2026-07-20",
+    "raw_work": "•   Updated the super admin analytics; added view analytical cards\n•   Deployed changes to the Finance dashboard\n•   Reviewed and tested the latest changes on the mobile app\n•   Added admin changes to Caravan",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-07-20T17:00:00"
+  },
+  {
+    "id": "593f5bde",
+    "name": "Chiamaka",
+    "date": "2026-07-21",
+    "raw_work": "•  Completed final presentation preparations and alignment checks ahead of product demonstration sessions. \n• Implemented and deployed key feature upgrades on the TGM AppHub as requested by Dr. Tolu and Mrs. Medile, \nincluding the new Deposit tracking and University Compare tools. \n• Collaborated with Totan and Dami on UI and structural enhancements for the Job Locale platform. \n• Conducted a product review and provided strategic feature feedback for Totan on the new TGM Travels\napplication. \n• Evaluated and reviewed the current development progress of the Caravan platform with Victor. \n• Imported and downloaded lead batches for the University of Central Lancashire (UCLAN) and the University of Kent (KENT)",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-07-21T17:00:00"
+  },
+  {
+    "id": "9eec00c5",
+    "name": "Dami",
+    "date": "2026-07-21",
+    "raw_work": "•   Preparation for Portsmouth Bot presentation\n•   Updating the learning on RGU bot to handle off conversations\n•   AI Bot conversation review\n•   Purchase of domain name for Mr Dotun's platform [JobLocale] with Totan.",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-07-21T17:00:00"
+  },
+  {
+    "id": "f6b2571b",
+    "name": "Totan",
+    "date": "2026-07-21",
+    "raw_work": "•   Prepared the presentation but the presentation was rescheduled \n•   Worked on TGM travel app and made changes on executive one platform",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-07-21T17:00:00"
+  },
+  {
+    "id": "ec0f3bd8",
+    "name": "Victor",
+    "date": "2026-07-21",
+    "raw_work": "•   Worked on super admin changes that Dami highlighted on Advisors Acadmey platform",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-07-21T17:00:00"
+  },
+  {
+    "id": "fb5c5a61",
+    "name": "Chiamaka",
+    "date": "2026-07-22",
+    "raw_work": "•  Worked alongside Totan to execute major updates and refinements on the Job Locale platform. \n• Finalized the integration of the Deposit feature and pushed key performance updates to the TGM AppHub. \n• Imported and downloaded lead batches for Robert Gordon University (RGU). \n• Formatted, compiled, and uploaded the full week’s lead data (Northampton, UCLAN, Kent, and RGU) onto\nthe central tracking sheet.",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-07-22T17:00:00"
+  },
+  {
+    "id": "fa8b6674",
+    "name": "Dami",
+    "date": "2026-07-22",
+    "raw_work": "•   Preparation for Portsmouth Bot presentation\n•   Updating the learning on RGU bot to handle off conversations\n•   AI Bot conversation review\n•   Purchase of domain name for Mr Dotun's platform [JobLocale] with Totan.",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-07-22T17:00:00"
+  },
+  {
+    "id": "cb88401c",
+    "name": "Totan",
+    "date": "2026-07-22",
+    "raw_work": "•   Bot changes with Dami\n•   Review with Doctor Tolu on the travels app",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-07-22T17:00:00"
+  },
+  {
+    "id": "6b0628e6",
+    "name": "Chiamaka",
+    "date": "2026-07-23",
+    "raw_work": "•  Collaborated directly with the Head of Applications to troubleshoot and resolve application processing\nissues encountered on the TGM AppHub. \n• Implemented system stability updates on the TGM AppHub platform to address reported user errors. \n• Participated in company-wide corporate activities and team celebrations for Doctor Tolu’s birthday.",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-07-23T17:00:00"
+  },
+  {
+    "id": "76b1d09f",
+    "name": "Dami",
+    "date": "2026-07-23",
+    "raw_work": "CELEBRATION OF DOCTOR TOLU'S BIRTHDAY",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-07-23T17:00:00"
+  },
+  {
+    "id": "c85d43fe",
+    "name": "Totan",
+    "date": "2026-07-23",
+    "raw_work": "CELEBRATION OF DOCTOR TOLU'S BIRTHDAY",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-07-23T17:00:00"
+  },
+  {
+    "id": "071660be",
+    "name": "Chiamaka",
+    "date": "2026-07-24",
+    "raw_work": "•  Participated in an executive review and demonstration of the TGM AppHub with Mr. Donald and the R&D\nteam to gather high-level feedback. \n• Joined the R&D team in presenting the TEUG platform to potential partner universities. \n• Implemented all requested structural changes and feature refinements highlighted by Mr. Donald during the\nreview. \n• Conducted routine AI bot conversation audits and performance quality checks.",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-07-24T17:00:00"
+  },
+  {
+    "id": "dcddc61e",
+    "name": "Dami",
+    "date": "2026-07-24",
+    "raw_work": "•   Had a presentation of TEUG to potential universities with the R&D TEAM",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-07-24T17:00:00"
+  },
+  {
+    "id": "91f7606d",
+    "name": "Totan",
+    "date": "2026-07-24",
+    "raw_work": "•   Had a presentation of TEUG to potential universities with the R&D TEAM\n•   Worked on finance platform",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-07-24T17:00:00"
+  },
+  {
+    "id": "c8ef1e48",
+    "name": "Victor",
+    "date": "2026-07-24",
+    "raw_work": "•   Had a presentation of TEUG to potential universities with the R&D TEAM",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-07-24T17:00:00"
+  },
+  {
+    "id": "4c394405",
+    "name": "Chiamaka",
+    "date": "2026-07-27",
+    "raw_work": "•  Worked on new changes on AppHub",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-07-27T17:00:00"
+  },
+  {
+    "id": "6715fac1",
+    "name": "Dami",
+    "date": "2026-07-27",
+    "raw_work": "•   Meeting with Doctor Tolu, Mr Donald and Totan on briefing for the October 2026 road show campaign\n•   Updating of courses on Advisors to prepare for 2027 intake session\n•   AI Bot conversation review",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-07-27T17:00:00"
+  },
+  {
+    "id": "55ecfc78",
+    "name": "Totan",
+    "date": "2026-07-27",
+    "raw_work": "•   Worked on the presentation for Potential Universities with R&D Team and Legal team [Nimi]\n•   Worked on some changes/update on finance and legal dashboard\n•   Showed TGM Travels team lead the Stride app being worked on",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-07-27T17:00:00"
+  },
+  {
+    "id": "6a6c0138",
+    "name": "Chiamaka",
+    "date": "2026-07-28",
+    "raw_work": "•  Worked on new changes on AppHub\n•   Meeting with Doctor Tolu, review of bot learning, AppHub, Caravan, engaging in AppHub presentation of solutions built so far\n•   Gave reviews on Caravan and worked on new changes with Victor on Caravan",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-07-28T17:00:00"
+  },
+  {
+    "id": "f35a61a8",
+    "name": "Dami",
+    "date": "2026-07-28",
+    "raw_work": "•   Meeting with Doctor Tolu, review of bot learning, AppHub, Caravan, engaging in presentation of solutions built so far\n•   Meeting with Mr Donald to get briefing on campaign and needed into to train the campaign bot\n•   AI Bot conversation review",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-07-28T17:00:00"
+  },
+  {
+    "id": "30a9efc6",
+    "name": "Totan",
+    "date": "2026-07-28",
+    "raw_work": "•   Worked on the presentation for Potential Universities with R&D Team and Legal team [Nimi]\n•   Worked on some changes/update on finance and legal dashboard\n•   Showed TGM Travels team lead the Stride app being worked on",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-07-28T17:00:00"
+  },
+  {
+    "id": "0a267968",
+    "name": "Chiamaka",
+    "date": "2026-07-29",
+    "raw_work": "•  Worked on new changes on AppHub with Totan\n•   Had a meeting with Mr Donald concerning new update on the AppHub\n•   Meeting with Doctor Tolu, review of bot learning, AppHub, Caravan, engaging in AppHub presentation of solutions built so far",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-07-29T17:00:00"
+  },
+  {
+    "id": "5bbf325d",
+    "name": "Dami",
+    "date": "2026-07-29",
+    "raw_work": "•   Modified, corrected and updated the learning for the campaign bot\n•   Setting up of the whatsapp manager account for the bot campaign number \n•   Worked on a new platform [TGM Community] with Totan\n•   AI Bot conversation review",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-07-29T17:00:00"
+  },
+  {
+    "id": "498c6467",
+    "name": "Totan",
+    "date": "2026-07-29",
+    "raw_work": "•   Worked on the presentation for Potential Universities with R&D Team and Legal team [Nimi]\n•   Worked on some changes/update on finance and legal dashboard\n•   Showed TGM Travels team lead the Stride app being worked on",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-07-29T17:00:00"
+  },
+  {
+    "id": "6d248246",
+    "name": "Chiamaka",
+    "date": "2026-07-30",
+    "raw_work": "•  Worked on new changes on AppHub with Totan\n•   Had a meeting with Mr Donald concerning new update on the AppHub\n•   Meeting with Dr Tolu on changes to be made on Apphub",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-07-30T17:00:00"
+  },
+  {
+    "id": "a61eac1e",
+    "name": "Dami",
+    "date": "2026-07-30",
+    "raw_work": "•   Review of bot conversations across bots\n•   Meeting with Dr Tolu on changes to be made on Apphub and presentation of backend for the TGM AI\n•   Modification of Campaign bot learning \n•   Learning on deployment to digitalocean, worked on TGM community with Totan",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-07-30T17:00:00"
+  },
+  {
+    "id": "b892c726",
+    "name": "Totan",
+    "date": "2026-07-30",
+    "raw_work": "•   Worked on the presentation for Potential Universities with R&D Team and Legal team [Nimi]\n•   Worked on some changes/update on finance and legal dashboard\n•   Showed TGM Travels team lead the Stride app being worked on",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-07-30T17:00:00"
+  },
+  {
+    "id": "ae156362",
+    "name": "Chiamaka",
+    "date": "2026-07-31",
+    "raw_work": "•  Worked on new changes on AppHub with Totan",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-07-31T17:00:00"
+  },
+  {
+    "id": "cde1742a",
+    "name": "Dami",
+    "date": "2026-07-31",
+    "raw_work": "•   Review of bot conversations on the campaign bot and across other bots\n•   Addition of learning on the campaign bot to respond accurately to persons willing to begin their application process (communication of needed documents and forward of link to collect their submission)\n•   Escalation of a complaint from a student on the tgm bot to Totan.\n•   Addition of human handoff procedure to the campaign bot (human in the loop) if needed.\n•   Worked a on TGM community (a new platform)\n•   Modification of the learning on TGM bot answer properly on the upcoming exhibition.",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-07-31T17:00:00"
+  },
+  {
+    "id": "40e88fe1",
+    "name": "Totan",
+    "date": "2026-07-31",
+    "raw_work": "•   Worked on executive one chnages \n•   Worked on finance dashboard and made some updates\n•   Bot creation for campaign\n•   Foloow-up on customer service",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-07-31T17:00:00"
+  },
+  {
+    "id": "9ae0be7e",
+    "name": "Chiamaka",
+    "date": "2026-08-03",
+    "raw_work": "•  Had a meeting with application head [Shola] on the new changes on TGM AppHub that has been published\n•  Had a meeting with Mr Donald on the new changes on TGM AppHub\n•  Had a meeting with Mrs Medile on the new changes on TGM AppHub and made corrections to these changes\n•  Imported and downloaded leads for RGU, KENT, UCLAN & NORTH",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-08-03T17:00:00"
+  },
+  {
+    "id": "ae543ac0",
+    "name": "Dami",
+    "date": "2026-08-03",
+    "raw_work": "•   Review of bot conversations on the campaign bot and across other bots\n•   Addition of learning on the campaign bot to respond accurately to persons willing to begin their application process (communication of needed documents and forward of link to collect their submission)\n•   Escalation of a complaint from a student on the tgm bot to Totan.\n•   Addition of human handoff procedure to the campaign bot (human in the loop) if needed.\n•   Worked a on TGM community (a new platform)\n•   Modification of the learning on TGM bot answer properly on the upcoming exhibition.",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-08-03T17:00:00"
+  },
+  {
+    "id": "f1204431",
+    "name": "Totan",
+    "date": "2026-08-03",
+    "raw_work": "•   Worked on executive one chnages \n•  Follow ups with legal and R&D Department\n•   Built a migration flow for campaign bot",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-08-03T17:00:00"
+  },
+  {
+    "id": "837539e2",
+    "name": "Victor",
+    "date": "2026-08-03",
+    "raw_work": "•  Depaa\n•  Had",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-08-03T17:00:00"
+  },
+  {
+    "id": "ce4d577e",
+    "name": "Chiamaka",
+    "date": "2026-08-04",
+    "raw_work": "•  Had a meeting with application head [Shola] on the new changes on TGM AppHub that has been published\n•  Had a meeting with Mr Donald on the new changes on TGM AppHub\n•  Had a meeting with Mrs Medile on the new changes on TGM AppHub and made corrections to these changes\n•  Imported and downloaded leads for RGU, KENT, UCLAN & NORTH",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-08-04T17:00:00"
+  },
+  {
+    "id": "3351e2b9",
+    "name": "Dami",
+    "date": "2026-08-04",
+    "raw_work": "•   Review of bot conversations on the campaign bot and across other bots\n•   Addition of learning on the campaign bot to respond accurately to persons willing to begin their application process (communication of needed documents and forward of link to collect their submission)\n•   Escalation of a complaint from a student on the tgm bot to Totan.\n•   Addition of human handoff procedure to the campaign bot (human in the loop) if needed.\n•   Worked a on TGM community (a new platform)\n•   Modification of the learning on TGM bot answer properly on the upcoming exhibition.",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-08-04T17:00:00"
+  },
+  {
+    "id": "04853f81",
+    "name": "Totan",
+    "date": "2026-08-04",
+    "raw_work": "•   Worked on executive one chnages \n•  Follow ups with legal and R&D Department\n•   Built a migration flow for campaign bot",
+    "raw_pending": "",
+    "generated": "",
+    "status": "submitted",
+    "submitted_at": "2026-08-04T17:00:00"
+  },
+  {
+    "id": "3f8af60c",
+    "name": "Victor",
+    "date": "2026-08-04",
+    "raw_work": "- Had a meeting with application head [Shola] on the new changes on TGM AppHub",
+    "raw_pending": "",
+    "generated": "- Had a meeting with application head [Shola] on the new changes on TGM AppHub",
+    "status": "submitted",
+    "submitted_at": "2026-08-04T17:00:00",
+    "edited_by": "Chi",
+    "edited_at": "2026-08-06T09:14:41.682599"
+  }
+]
