@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}Report Hub: Team Overview{% endblock %}
+{% block title %}Reportly: Team Overview{% endblock %}
 {% block page_title %}Team Overview{% endblock %}
 {% block page_sub %}{{ today_pretty }}{% endblock %}
 
@@ -91,13 +91,29 @@
     <div class="section-icon">▤</div>
     <div>
       <div class="card-title">Full Data Export</div>
-      <div class="card-sub">Download the current state of every project, or the full team change log.</div>
+      <div class="card-sub">Download the current state of every project, the full team change log, or everything at once — roster, projects, changes and every daily log.</div>
     </div>
   </div>
   <div class="week-nav">
     <a href="{{ url_for('download_projects') }}" class="btn btn-outline btn-sm">Download Projects (.xlsx)</a>
     <a href="{{ url_for('download_changes') }}" class="btn btn-outline btn-sm">Download Changes Log (.xlsx)</a>
+    <a href="{{ url_for('download_all') }}" class="btn btn-teal btn-sm">Download Everything (.xlsx)</a>
   </div>
+</div>
+
+<!-- Spreadsheet import -->
+<div class="card">
+  <div class="section-bar has-icon">
+    <div class="section-icon">⇧</div>
+    <div>
+      <div class="card-title">Import from Spreadsheet</div>
+      <div class="card-sub">Upload the R&amp;D tracking sheet and it fills in both Projects and Daily Logs the same way it used to locally. Projects match by Project ID; daily logs match by person + date. Existing rows get updated, new ones get added — nothing gets wiped, and Roster/Changes aren't touched.</div>
+    </div>
+  </div>
+  <form method="POST" action="{{ url_for('data_upload') }}" enctype="multipart/form-data" style="display:flex; gap:0.6rem; align-items:center; flex-wrap:wrap;">
+    <input type="file" name="file" accept=".xlsx" required class="form-control" style="max-width:320px;">
+    <button type="submit" class="btn btn-teal btn-sm">Upload &amp; Import</button>
+  </form>
 </div>
 
 <!-- Roster management -->
@@ -106,7 +122,7 @@
     <div class="section-icon">◈</div>
     <div>
       <div class="card-title">Team Roster</div>
-      <div class="card-sub">Sets the fixed order for exports. Add members here so they can sign in.</div>
+      <div class="card-sub">Sets the fixed order for exports. Add members here so they can sign in. Email is optional but lets that person sign in with either their username or their email.</div>
     </div>
   </div>
   {% for m in roster %}
@@ -116,6 +132,7 @@
       <input type="hidden" name="id" value="{{ m.id }}">
       <input type="text" name="name" value="{{ m.name }}" class="form-control" placeholder="Full name" style="flex:1; min-width:110px; padding:0.3rem 0.6rem; font-size:0.84rem;">
       <input type="text" name="username" value="{{ m.username or '' }}" class="form-control" placeholder="Username" style="width:120px; padding:0.3rem 0.6rem; font-size:0.84rem;">
+      <input type="email" name="email" value="{{ m.email or '' }}" class="form-control" placeholder="Email (optional)" style="width:170px; padding:0.3rem 0.6rem; font-size:0.84rem;">
       <input type="password" name="password" class="form-control" placeholder="New password (optional)" autocomplete="new-password" style="width:170px; padding:0.3rem 0.6rem; font-size:0.84rem;">
       <select name="role" class="form-control" style="width:130px; padding:0.3rem 0.55rem; font-size:0.78rem;">
         <option value="member" {% if m.role != 'admin' %}selected{% endif %}>Team Member</option>
@@ -141,6 +158,10 @@
       <div class="form-group" style="margin-bottom:0; min-width:130px;">
         <label class="form-label">Username</label>
         <input type="text" name="username" class="form-control" placeholder="e.g. beulah" required>
+      </div>
+      <div class="form-group" style="margin-bottom:0; min-width:160px;">
+        <label class="form-label">Email (optional)</label>
+        <input type="email" name="email" class="form-control" placeholder="e.g. beulah@tgm.com">
       </div>
       <div class="form-group" style="margin-bottom:0; min-width:150px;">
         <label class="form-label">Password</label>

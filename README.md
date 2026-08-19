@@ -1,4 +1,4 @@
-# TGM Report Hub
+# Reportly
 
 Daily reporting tool for TGM Education team.
 

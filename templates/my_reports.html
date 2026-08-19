@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}Report Hub: My Reports{% endblock %}
+{% block title %}Reportly: My Reports{% endblock %}
 {% block page_title %}My Reports{% endblock %}
 {% block page_sub %}{{ reports|selectattr('status','eq','submitted')|list|length }} submitted report(s){% endblock %}
 {% block topbar_actions %}

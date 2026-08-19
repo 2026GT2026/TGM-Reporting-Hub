@@ -6,21 +6,21 @@ from dotenv import load_dotenv
 from flask import (Flask, render_template, request, redirect,
                    url_for, session, flash, jsonify, send_file)
 from werkzeug.security import generate_password_hash, check_password_hash
+import openpyxl
 from openpyxl import Workbook
 from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
 from openai import OpenAI
+
+import db
+from import_projects import import_projects as parse_projects_workbook
+from import_daily_log import import_daily_logs
 
 load_dotenv()
 
 app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", "reporthub-secret-2026")
 
-DATA_DIR     = "data"
-ROSTER_FILE  = os.path.join(DATA_DIR, "roster.json")
-REPORTS_FILE = os.path.join(DATA_DIR, "reports.json")
-PROJECTS_FILE= os.path.join(DATA_DIR, "projects.json")
-CHANGES_FILE = os.path.join(DATA_DIR, "changes.json")
-os.makedirs(DATA_DIR, exist_ok=True)
+db.init_db()
 
 PROJECT_STATUSES = ["Not Started", "In Progress", "Completed"]
 CHANGE_TYPES  = ["Behaviour Rule", "Instruction Update", "New Feature",
@@ -43,37 +43,14 @@ GENERATE_MODES = {
 }
 
 # ── Data helpers ───────────────────────────────────────────────────────────────
-def load_roster():
-    if os.path.exists(ROSTER_FILE):
-        with open(ROSTER_FILE, encoding="utf-8") as f: return json.load(f)
-    return []
-
-def save_roster(data):
-    with open(ROSTER_FILE, "w", encoding="utf-8") as f: json.dump(data, f, indent=2, ensure_ascii=False)
-
-def load_reports():
-    if os.path.exists(REPORTS_FILE):
-        with open(REPORTS_FILE, encoding="utf-8") as f: return json.load(f)
-    return []
-
-def save_reports(data):
-    with open(REPORTS_FILE, "w", encoding="utf-8") as f: json.dump(data, f, indent=2, ensure_ascii=False)
-
-def load_projects():
-    if os.path.exists(PROJECTS_FILE):
-        with open(PROJECTS_FILE, encoding="utf-8") as f: return json.load(f)
-    return []
-
-def save_projects(data):
-    with open(PROJECTS_FILE, "w", encoding="utf-8") as f: json.dump(data, f, indent=2, ensure_ascii=False)
-
-def load_changes():
-    if os.path.exists(CHANGES_FILE):
-        with open(CHANGES_FILE, encoding="utf-8") as f: return json.load(f)
-    return []
-
-def save_changes(data):
-    with open(CHANGES_FILE, "w", encoding="utf-8") as f: json.dump(data, f, indent=2, ensure_ascii=False)
+load_roster    = db.load_roster
+save_roster    = db.save_roster
+load_reports   = db.load_reports
+save_reports   = db.save_reports
+load_projects  = db.load_projects
+save_projects  = db.save_projects
+load_changes   = db.load_changes
+save_changes   = db.save_changes
 
 def try_parse_date(value):
     if not value:
@@ -151,10 +128,14 @@ def login():
     if "user" in session:
         return redirect(url_for("dashboard"))
     if request.method == "POST":
-        username = request.form.get("username", "").strip()
+        identifier = request.form.get("username", "").strip()
         password = request.form.get("password", "")
         roster = load_roster()
-        member = next((m for m in roster if m.get("username","").lower() == username.lower()), None)
+        member = None
+        if identifier:
+            member = next((m for m in roster if
+                            m.get("username", "").lower() == identifier.lower() or
+                            (m.get("email") or "").lower() == identifier.lower()), None)
         if not member:
             flash("Invalid username or password.", "error")
         elif not member.get("password_hash"):
@@ -764,6 +745,146 @@ def download_changes():
     return send_file(buf, download_name=f"changes_{today_key()}.xlsx", as_attachment=True,
                      mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
 
+@app.route("/download-all")
+@login_required
+@admin_required
+def download_all():
+    """Everything in Reportly in one workbook: roster, projects, changes, and
+    every daily log ever submitted. This is the up-to-date source of truth —
+    unlike the original spreadsheet import, it includes every edit made
+    directly in the app since — so it's what you'd hand someone (or re-import
+    elsewhere) instead of the old sheet."""
+    roster   = load_roster()
+    reports  = sorted(load_reports(), key=lambda r: r.get("date") or "")
+    projects = load_projects()
+    changes  = sorted(load_changes(), key=lambda c: c.get("added_at") or "")
+    project_names = {p["id"]: p["name"] for p in projects}
+
+    wb = Workbook()
+
+    ws = wb.active
+    ws.title = "Roster"
+    bd = styled_export_sheet(ws, ["Name", "Role", "Username"], [26, 14, 22])
+    row = 2
+    for m in roster:
+        values = [m["name"], m.get("role", ""), m.get("username", "")]
+        for col, val in enumerate(values, 1):
+            c = ws.cell(row=row, column=col, value=val)
+            c.alignment = Alignment(vertical="top")
+            c.border = bd
+        row += 1
+
+    ws = wb.create_sheet("Projects")
+    headers = ["Project ID", "Project Name", "Description", "Owner", "What Has Been Done",
+               "Status", "Percent Complete", "Start Date", "Deadline", "Risks",
+               "Next Action", "KPI", "Created At", "Updated At"]
+    widths = [12, 26, 45, 18, 45, 14, 10, 14, 14, 40, 40, 30, 20, 20]
+    bd = styled_export_sheet(ws, headers, widths)
+    row = 2
+    for p in projects:
+        values = [p["id"], p["name"], p["description"], p["owner"], p["progress_summary"],
+                  p["status"], p["percent_complete"], p["start_date"], p["deadline"],
+                  p["risks"], p["next_action"], p["kpi"], p.get("created_at", ""), p.get("updated_at", "")]
+        for col, val in enumerate(values, 1):
+            c = ws.cell(row=row, column=col, value=val)
+            c.alignment = Alignment(wrap_text=True, vertical="top")
+            c.border = bd
+        ws.row_dimensions[row].height = 40
+        row += 1
+
+    ws = wb.create_sheet("Changes")
+    headers = ["Date", "Time", "Project", "Change Type", "Summary", "Description",
+               "Status", "Added By"]
+    widths = [14, 10, 22, 18, 30, 45, 14, 16]
+    bd = styled_export_sheet(ws, headers, widths)
+    row = 2
+    for ch in changes:
+        added = datetime.fromisoformat(ch["added_at"])
+        values = [added.strftime("%d %B %Y"), added.strftime("%H:%M"),
+                  project_names.get(ch["project_id"], "Unknown project"),
+                  ch["change_type"], ch["summary"], ch["description"],
+                  ch["status"], ch["added_by"]]
+        for col, val in enumerate(values, 1):
+            c = ws.cell(row=row, column=col, value=val)
+            c.alignment = Alignment(wrap_text=True, vertical="top")
+            c.border = bd
+        ws.row_dimensions[row].height = 40
+        row += 1
+
+    ws = wb.create_sheet("Daily Logs")
+    headers = ["Name", "Date", "Status", "Report", "Pending", "Submitted At"]
+    widths = [20, 14, 14, 70, 40, 20]
+    bd = styled_export_sheet(ws, headers, widths)
+    row = 2
+    for r in reports:
+        text = r.get("generated") or r.get("raw_work", "")
+        values = [r["name"], r["date"], r["status"], text,
+                  r.get("raw_pending", ""), r.get("submitted_at") or ""]
+        for col, val in enumerate(values, 1):
+            c = ws.cell(row=row, column=col, value=val)
+            c.alignment = Alignment(wrap_text=True, vertical="top")
+            c.border = bd
+        ws.row_dimensions[row].height = 40
+        row += 1
+
+    buf = io.BytesIO()
+    wb.save(buf); buf.seek(0)
+    return send_file(buf, download_name=f"reportly_full_export_{today_key()}.xlsx", as_attachment=True,
+                     mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+
+@app.route("/upload", methods=["POST"])
+@login_required
+@admin_required
+def data_upload():
+    """Admin uploads the R&D tracking spreadsheet and it fills in Projects and
+    Daily Logs the same way dropping the .xlsx into the project folder used to
+    (back when import_projects.py wrote straight to data/projects.json) —
+    except everything here upserts (matches by Project ID for projects, by
+    (name, date) for daily logs — reports have no ID column in the sheet)
+    instead of overwriting, so it's safe to re-run after production already
+    has data added through the UI. Roster and Changes aren't touched: nothing
+    in this workbook maps onto either of those (checked directly against the
+    sheet — see PLAN.md)."""
+    file = request.files.get("file")
+    if not file or file.filename == "":
+        flash("Choose a spreadsheet to upload first.", "error")
+        return redirect(url_for("team"))
+    try:
+        wb = openpyxl.load_workbook(io.BytesIO(file.read()), data_only=True)
+    except Exception as e:
+        flash(f"Couldn't read that spreadsheet: {e}", "error")
+        return redirect(url_for("team"))
+
+    imported = []
+
+    try:
+        projects = parse_projects_workbook(wb)
+    except ValueError:
+        projects = []
+    if projects:
+        db.upsert_projects(projects)
+        imported.append(f"{len(projects)} project(s)")
+
+    roster_names = {m["name"] for m in load_roster()}
+    try:
+        reports, skipped_names = import_daily_logs(wb, roster_names=roster_names)
+    except ValueError:
+        reports, skipped_names = [], []
+    if reports:
+        db.upsert_reports(reports)
+        imported.append(f"{len(reports)} daily log entr{'y' if len(reports)==1 else 'ies'}")
+
+    if not imported:
+        flash("No recognizable Projects or Daily Log data found in that file.", "error")
+        return redirect(url_for("team"))
+
+    msg = "Imported " + " and ".join(imported) + " from the spreadsheet."
+    if skipped_names:
+        msg += (f" Skipped log entries for name(s) not on the roster: "
+                f"{', '.join(skipped_names)} — add them to the roster first if they should be included.")
+    flash(msg, "success")
+    return redirect(url_for("team"))
+
 @app.route("/add-member", methods=["POST"])
 @login_required
 @admin_required
@@ -772,6 +893,7 @@ def add_member():
     username = request.form.get("username","").strip()
     password = request.form.get("password","")
     role     = request.form.get("role","member")
+    email    = request.form.get("email","").strip().lower() or None
     if not name or not username or not password:
         flash("Name, username and password are all required.", "error")
         return redirect(url_for("team"))
@@ -782,12 +904,16 @@ def add_member():
     if any(m.get("username","").lower()==username.lower() for m in roster):
         flash(f"Username {username} is already taken.", "error")
         return redirect(url_for("team"))
+    if email and any((m.get("email") or "").lower()==email for m in roster):
+        flash(f"Email {email} is already in use on another account.", "error")
+        return redirect(url_for("team"))
     roster.append({
         "id": str(uuid.uuid4())[:8],
         "name": name,
         "username": username.lower(),
         "password_hash": generate_password_hash(password),
         "role": role,
+        "email": email,
     })
     save_roster(roster)
     flash(f"{name}'s account created.", "success")
@@ -802,6 +928,7 @@ def update_member():
     new_username = request.form.get("username","").strip()
     new_password = request.form.get("password","")
     new_role     = request.form.get("role", "member")
+    new_email    = request.form.get("email","").strip().lower() or None
     if new_role not in ("member", "admin"):
         new_role = "member"
     if not new_name or not new_username:
@@ -818,6 +945,9 @@ def update_member():
     if any(m["id"] != member_id and m.get("username","").lower() == new_username.lower() for m in roster):
         flash(f"Username {new_username} is already taken.", "error")
         return redirect(url_for("team"))
+    if new_email and any(m["id"] != member_id and (m.get("email") or "").lower() == new_email for m in roster):
+        flash(f"Email {new_email} is already in use on another account.", "error")
+        return redirect(url_for("team"))
     if member["role"] == "admin" and new_role != "admin":
         admin_count = sum(1 for m in roster if m["role"] == "admin")
         if admin_count <= 1:
@@ -828,6 +958,7 @@ def update_member():
     member["name"] = new_name
     member["username"] = new_username.lower()
     member["role"] = new_role
+    member["email"] = new_email
     if new_password:
         member["password_hash"] = generate_password_hash(new_password)
     save_roster(roster)

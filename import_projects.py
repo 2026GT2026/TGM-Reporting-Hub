@@ -53,11 +53,16 @@ def find_projects_sheet(wb):
     for name in wb.sheetnames:
         if "project" in name.lower():
             return wb[name]
-    raise SystemExit("No sheet with 'Projects' in its name was found in the workbook.")
+    raise ValueError("No sheet with 'Projects' in its name was found in the workbook.")
 
 
-def import_projects():
-    wb = openpyxl.load_workbook(XLSX_FILE, read_only=True, data_only=True)
+def import_projects(wb=None):
+    """Parse the Projects sheet into a list of project dicts. Pass an already-open
+    `wb` (e.g. from an uploaded file) to reuse this parsing without touching disk;
+    omitting it falls back to reading XLSX_FILE, for the CLI one-time-import use
+    below."""
+    if wb is None:
+        wb = openpyxl.load_workbook(XLSX_FILE, read_only=True, data_only=True)
     ws = find_projects_sheet(wb)
     rows = list(ws.iter_rows(values_only=True))
 
@@ -103,7 +108,10 @@ def main():
                   "Re-run with --force to overwrite.")
             return
 
-    projects = import_projects()
+    try:
+        projects = import_projects()
+    except ValueError as e:
+        raise SystemExit(str(e))
     os.makedirs("data", exist_ok=True)
     with open(PROJECTS_FILE, "w", encoding="utf-8") as f:
         json.dump(projects, f, indent=2, ensure_ascii=False)

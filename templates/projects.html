@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}Report Hub: Projects{% endblock %}
+{% block title %}Reportly: Projects{% endblock %}
 {% block page_title %}Projects{% endblock %}
 {% block page_sub %}{{ projects|length }} project(s) · {{ projects|selectattr('status','equalto','In Progress')|list|length }} actively in motion{% endblock %}
 {% block topbar_actions %}

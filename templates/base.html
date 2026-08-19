@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>{% block title %}TGM Report Hub{% endblock %}</title>
+<title>{% block title %}Reportly{% endblock %}</title>
+<link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='logo.svg') }}">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 body {
@@ -38,18 +39,8 @@ body {
 .sidebar-logo-mark {
   display: flex; align-items: center; gap: 8px;
 }
-.sidebar-logo-icon {
-  width: 32px; height: 32px; flex-shrink: 0;
-  background: linear-gradient(135deg, var(--teal) 52%, var(--teal-dark) 52%);
-  border-radius: 50%; position: relative; overflow: hidden;
-  font-weight: 800; color: white; font-size: 0.85rem;
-}
-.sidebar-logo-icon .r, .sidebar-logo-icon .h {
-  position: absolute; line-height: 1; font-size: 0.8em;
-}
-.sidebar-logo-icon .r { top: 20%; left: 22%; }
-.sidebar-logo-icon .h { bottom: 16%; right: 18%; }
-.sidebar-logo-icon.lg { width: 40px; height: 40px; border-radius: 50%; font-size: 1rem; }
+.brand-logo { width: 32px; height: 32px; flex-shrink: 0; border-radius: 9px; display: block; }
+.brand-logo.lg { width: 40px; height: 40px; border-radius: 11px; }
 .sidebar-logo-text { color: #F1F5F9; font-weight: 700; font-size: 0.9rem; }
 .sidebar-sub { color: #64748B; font-size: 0.68rem; margin-top: 2px; }
 .sidebar-user {
@@ -293,9 +284,9 @@ hr { border: none; border-top: 1px solid var(--border); margin: 1rem 0; }
   <aside class="sidebar">
     <div class="sidebar-logo">
       <div class="sidebar-logo-mark">
-        <div class="sidebar-logo-icon"><span class="r">R</span><span class="h">h</span></div>
+        <img class="brand-logo" src="{{ url_for('static', filename='logo.svg') }}" alt="Reportly">
         <div>
-          <div class="sidebar-logo-text">Report Hub</div>
+          <div class="sidebar-logo-text">Reportly</div>
           <div class="sidebar-sub">TGM Education</div>
         </div>
       </div>
