@@ -37,7 +37,7 @@
   </div>
   <p class="card-sub" style="margin:0.4rem 0 0.6rem;">{{ p.description }}</p>
   <div class="progress-track"><div class="progress-fill" style="width:{{ p.percent_complete }}%;"></div></div>
-  <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.75rem; color:#64748B; margin-top:0.35rem;">
+  <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.75rem; color:#64748B; margin-top:0.35rem; flex-wrap:wrap; gap:0.4rem;">
     <span>Owner: {{ p.owner }}</span>
     <span>{{ p.percent_complete }}% complete</span>
     <span>Deadline: {{ p.deadline }}</span>

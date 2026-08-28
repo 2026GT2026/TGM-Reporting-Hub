@@ -144,6 +144,7 @@ def login():
             flash("Invalid username or password.", "error")
         else:
             session["user"] = {k: v for k, v in member.items() if k != "password_hash"}
+            db.log_audit(member["name"], "Logged in")
             return redirect(url_for("dashboard"))
     return render_template("login.html")
 
@@ -223,6 +224,8 @@ def save_report():
     if idx is not None: reports[idx] = entry
     else:               reports.append(entry)
     save_reports(reports)
+    db.log_audit(user["name"], "Submitted daily report" if status=="submitted" else "Saved draft report",
+                 f"{tk}")
     flash("Submitted!" if status=="submitted" else "Saved as draft.", "success")
     return redirect(url_for("today"))
 
@@ -336,6 +339,8 @@ def report_edit(report_id):
             reports[idx]["edited_by"] = user["name"]
             reports[idx]["edited_at"] = datetime.now().isoformat()
         save_reports(reports)
+        detail = reports[idx]["date"] if is_own else f"{reports[idx]['name']}'s report, {reports[idx]['date']}"
+        db.log_audit(user["name"], "Edited report", detail)
         flash("Report updated.", "success")
         return redirect(url_for(back_endpoint, **back_args))
     return render_template("report_edit.html", report=reports[idx], pretty_date=pretty_date,
@@ -355,34 +360,41 @@ def admin_reports():
 
 @app.route("/team/log-report", methods=["POST"])
 @login_required
-@admin_required
 def log_report():
     user        = session["user"]
+    is_admin    = user.get("role") == "admin"
     roster      = load_roster()
-    member_name = request.form.get("member", "").strip()
+    # Non-admins can only ever log a report under their own name — the
+    # submitted "member" field, if any, is ignored for them rather than
+    # trusted, so no one can backfill a report as someone else.
+    member_name = request.form.get("member", "").strip() if is_admin else user["name"]
     report_date = request.form.get("date", "").strip()
     raw_work    = request.form.get("raw_work", "").strip()
     raw_pending = request.form.get("raw_pending", "").strip()
 
+    back_endpoint = "admin_reports" if is_admin else "my_reports"
+    back_args     = {"member": member_name} if is_admin else {}
+
     if not any(m["name"] == member_name for m in roster):
         flash("Member not found.", "error")
-        return redirect(url_for("admin_reports"))
+        return redirect(url_for(back_endpoint, **back_args))
 
     parsed = try_parse_date(report_date)
     if not parsed:
         flash("Enter a valid date.", "error")
-        return redirect(url_for("admin_reports", member=member_name))
+        return redirect(url_for(back_endpoint, **back_args))
     if parsed > date.today():
         flash("Can't log a report for a future date.", "error")
-        return redirect(url_for("admin_reports", member=member_name))
+        return redirect(url_for(back_endpoint, **back_args))
     if not raw_work:
         flash("Add the report text before logging it.", "error")
-        return redirect(url_for("admin_reports", member=member_name))
+        return redirect(url_for(back_endpoint, **back_args))
 
     reports = load_reports()
     existing = next((r for r in reports if r["name"]==member_name and r["date"]==report_date), None)
     if existing:
-        flash(f"{member_name} already has a report for {pretty_date(report_date)}. Edit it instead.", "error")
+        whose = f"{member_name} already has" if is_admin else "You already have"
+        flash(f"{whose} a report for {pretty_date(report_date)}. Edit it instead.", "error")
         return redirect(url_for("report_edit", report_id=existing["id"]))
 
     now = datetime.now().isoformat()
@@ -399,8 +411,13 @@ def log_report():
         "logged_at":    now,
     })
     save_reports(reports)
-    flash(f"Logged {pretty_date(report_date)}'s report for {member_name}.", "success")
-    return redirect(url_for("admin_reports", member=member_name))
+    if is_admin:
+        db.log_audit(user["name"], "Logged past report", f"for {member_name}, {report_date}")
+        flash(f"Logged {pretty_date(report_date)}'s report for {member_name}.", "success")
+    else:
+        db.log_audit(user["name"], "Logged past report", report_date)
+        flash(f"Logged {pretty_date(report_date)}'s report.", "success")
+    return redirect(url_for(back_endpoint, **back_args))
 
 @app.route("/my-reports")
 @login_required
@@ -410,7 +427,7 @@ def my_reports():
     mine    = sorted([r for r in reports if r["name"]==user["name"]],
                      key=lambda x: x["date"], reverse=True)
     return render_template("my_reports.html", user=user, reports=mine,
-                           pretty_date=pretty_date)
+                           pretty_date=pretty_date, today_key=today_key())
 
 @app.route("/download-my-reports")
 @login_required
@@ -475,6 +492,7 @@ def project_new():
             "updated_at": now,
         })
         save_projects(projects)
+        db.log_audit(session["user"]["name"], "Added project", f"{project_id} ({projects[-1]['name']})")
         flash(f"Project {project_id} added.", "success")
         return redirect(url_for("projects_list"))
     return render_template("project_form.html", project=None, statuses=PROJECT_STATUSES)
@@ -505,8 +523,16 @@ def project_edit(project_id):
         flash("Project not found.", "error")
         return redirect(url_for("projects_list"))
     if request.method == "POST":
+        new_id = request.form.get("id","").strip()
+        if not new_id:
+            flash("Project ID is required.", "error")
+            return redirect(url_for("project_edit", project_id=project_id))
+        if new_id != project_id and any(p["id"]==new_id for p in projects):
+            flash(f"Project ID {new_id} already exists.", "error")
+            return redirect(url_for("project_edit", project_id=project_id))
         p = projects[idx]
         p.update({
+            "id": new_id,
             "name": request.form.get("name","").strip(),
             "description": request.form.get("description","").strip(),
             "owner": request.form.get("owner","").strip(),
@@ -521,9 +547,45 @@ def project_edit(project_id):
             "updated_at": datetime.now().isoformat(),
         })
         save_projects(projects)
-        flash(f"Project {project_id} updated.", "success")
-        return redirect(url_for("project_detail", project_id=project_id))
+
+        if new_id != project_id:
+            changes = load_changes()
+            for c in changes:
+                if c["project_id"] == project_id:
+                    c["project_id"] = new_id
+            save_changes(changes)
+
+        detail = f"{project_id} -> {new_id}" if new_id != project_id else new_id
+        db.log_audit(session["user"]["name"], "Updated project", f"{detail} ({p['name']})")
+        flash(f"Project {new_id} updated.", "success")
+        return redirect(url_for("project_detail", project_id=new_id))
     return render_template("project_form.html", project=projects[idx], statuses=PROJECT_STATUSES)
+
+@app.route("/projects/<project_id>/delete", methods=["POST"])
+@login_required
+@admin_required
+def project_delete(project_id):
+    projects = load_projects()
+    idx = next((i for i,p in enumerate(projects) if p["id"]==project_id), None)
+    if idx is None:
+        flash("Project not found.", "error")
+        return redirect(url_for("projects_list"))
+    name = projects[idx]["name"]
+    del projects[idx]
+    save_projects(projects)
+
+    changes = load_changes()
+    remaining = [c for c in changes if c["project_id"] != project_id]
+    removed = len(changes) - len(remaining)
+    if removed:
+        save_changes(remaining)
+
+    detail = f"{project_id} ({name})" + (f", with {removed} change(s)" if removed else "")
+    db.log_audit(session["user"]["name"], "Deleted project", detail)
+    msg = f"Deleted project {name}"
+    msg += f" and its {removed} logged change(s)." if removed else "."
+    flash(msg, "success")
+    return redirect(url_for("projects_list"))
 
 @app.route("/changes")
 @login_required
@@ -565,6 +627,7 @@ def change_new():
             "edited_at": None,
         })
         save_changes(changes)
+        db.log_audit(user["name"], "Logged a change", f"{changes[-1]['project_id']}: {changes[-1]['summary']}")
         flash("Change logged.", "success")
         return redirect(url_for("changes_list"))
     return render_template("change_form.html", change=None, projects=projects,
@@ -593,6 +656,7 @@ def change_edit(change_id):
             "edited_at": datetime.now().isoformat(),
         })
         save_changes(changes)
+        db.log_audit(user["name"], "Updated a change", f"{c['project_id']}: {c['summary']}")
         flash("Change updated.", "success")
         return redirect(url_for("changes_list"))
     return render_template("change_form.html", change=changes[idx], projects=projects,
@@ -606,11 +670,33 @@ def team():
     reports = load_reports()
     tk      = today_key()
     monday  = request.args.get("monday", get_monday())
+    monday_date = try_parse_date(monday) or datetime.strptime(get_monday(), "%Y-%m-%d").date()
+    prev_monday = (monday_date - timedelta(days=7)).isoformat()
+    next_monday = (monday_date + timedelta(days=7)).isoformat()
+
+    week_days = week_dates(monday_date.isoformat())
+    week_preview = []
+    for day in week_days:
+        day_reports = [r for r in reports if r["date"] == day and r["status"] == "submitted"]
+        week_preview.append({
+            "date": day,
+            "names": [r["name"] for r in day_reports],
+        })
+    week_total = sum(len(d["names"]) for d in week_preview)
+
     pending_today, submitted_today = today_submission_status(roster, reports)
     return render_template("team.html", user=session["user"], roster=roster,
                            pending_today=pending_today, submitted_today=submitted_today,
-                           monday=monday, pretty_date=pretty_date,
-                           today_pretty=pretty_date(tk))
+                           monday=monday_date.isoformat(), prev_monday=prev_monday, next_monday=next_monday,
+                           week_preview=week_preview, week_total=week_total,
+                           pretty_date=pretty_date, today_pretty=pretty_date(tk))
+
+@app.route("/audit")
+@login_required
+@admin_required
+def audit_log():
+    entries = db.load_audit_log(limit=300)
+    return render_template("audit_log.html", entries=entries)
 
 @app.route("/download-week")
 @login_required
@@ -882,6 +968,7 @@ def data_upload():
     if skipped_names:
         msg += (f" Skipped log entries for name(s) not on the roster: "
                 f"{', '.join(skipped_names)} — add them to the roster first if they should be included.")
+    db.log_audit(session["user"]["name"], "Imported spreadsheet", ", ".join(imported))
     flash(msg, "success")
     return redirect(url_for("team"))
 
@@ -916,6 +1003,7 @@ def add_member():
         "email": email,
     })
     save_roster(roster)
+    db.log_audit(session["user"]["name"], "Added team member", f"{name} ({role})")
     flash(f"{name}'s account created.", "success")
     return redirect(url_for("team"))
 
@@ -974,6 +1062,8 @@ def update_member():
         session["user"]["name"] = new_name
         session["user"]["role"] = new_role
 
+    detail = f"{old_name} -> {new_name}" if old_name != new_name else new_name
+    db.log_audit(session["user"]["name"], "Updated team member", detail)
     flash(f"{new_name}'s details updated.", "success")
     return redirect(url_for("team"))
 
@@ -983,8 +1073,10 @@ def update_member():
 def remove_member():
     member_id = request.form.get("id")
     roster = load_roster()
+    removed = next((m for m in roster if m["id"] == member_id), None)
     roster = [m for m in roster if m["id"] != member_id]
     save_roster(roster)
+    db.log_audit(session["user"]["name"], "Removed team member", removed["name"] if removed else member_id)
     flash("Member removed.", "success")
     return redirect(url_for("team"))
 

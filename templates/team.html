@@ -64,13 +64,28 @@
     </div>
   </div>
   <div class="week-nav">
-    {% set prev = (monday|string) %}
-    <a href="{{ url_for('team') }}?monday={{ prev }}" class="btn btn-outline btn-sm">← Prev week</a>
+    <span style="font-size:0.82rem; font-weight:600; color:var(--ink);">Week of {{ pretty_date(monday) }}</span>
+    <a href="{{ url_for('team') }}?monday={{ prev_monday }}" class="btn btn-outline btn-sm">← Prev week</a>
+    <a href="{{ url_for('team') }}?monday={{ next_monday }}" class="btn btn-outline btn-sm">Next week →</a>
     <a href="{{ url_for('team') }}" class="btn btn-outline btn-sm">This week</a>
     <a href="{{ url_for('download_week') }}?monday={{ monday }}" class="btn btn-teal btn-sm" style="margin-left:auto;">
       Download week (.xlsx)
     </a>
   </div>
+  <hr>
+  {% if week_total == 0 %}
+  <p style="color:#64748B; font-size:0.84rem;">No submitted reports for this week — the download will be empty. Try a different week above.</p>
+  {% else %}
+  <p class="card-sub" style="margin-bottom:0.6rem;">{{ week_total }} report(s) submitted this week — this is what the download will contain:</p>
+  {% for d in week_preview %}
+  {% if d.names %}
+  <div class="pending-item" style="background:var(--teal-light);">
+    <span class="pending-name" style="color:var(--teal-dark);">{{ pretty_date(d.date) }}</span>
+    <span style="font-size:0.78rem; color:var(--teal-dark);">{{ d.names|join(', ') }}</span>
+  </div>
+  {% endif %}
+  {% endfor %}
+  {% endif %}
 </div>
 
 <!-- Edit past logs -->
@@ -110,8 +125,8 @@
       <div class="card-sub">Upload the R&amp;D tracking sheet and it fills in both Projects and Daily Logs the same way it used to locally. Projects match by Project ID; daily logs match by person + date. Existing rows get updated, new ones get added — nothing gets wiped, and Roster/Changes aren't touched.</div>
     </div>
   </div>
-  <form method="POST" action="{{ url_for('data_upload') }}" enctype="multipart/form-data" style="display:flex; gap:0.6rem; align-items:center; flex-wrap:wrap;">
-    <input type="file" name="file" accept=".xlsx" required class="form-control" style="max-width:320px;">
+  <form method="POST" action="{{ url_for('data_upload') }}" enctype="multipart/form-data" class="upload-form" style="display:flex; gap:0.6rem; align-items:center; flex-wrap:wrap;">
+    <input type="file" name="file" accept=".xlsx" required class="form-control" style="flex:1 1 auto; min-width:180px; max-width:320px;">
     <button type="submit" class="btn btn-teal btn-sm">Upload &amp; Import</button>
   </form>
 </div>
@@ -150,7 +165,7 @@
   {% endfor %}
 
   <div style="margin-top:1rem;">
-    <form method="POST" action="{{ url_for('add_member') }}" style="display:flex; gap:0.6rem; flex-wrap:wrap; align-items:flex-end;">
+    <form method="POST" action="{{ url_for('add_member') }}" class="add-member-form" style="display:flex; gap:0.6rem; flex-wrap:wrap; align-items:flex-end;">
       <div class="form-group" style="margin-bottom:0; flex:1; min-width:160px;">
         <label class="form-label">Full Name</label>
         <input type="text" name="name" class="form-control" placeholder="e.g. Beulah Dire" required>

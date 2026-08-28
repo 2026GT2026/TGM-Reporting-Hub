@@ -7,6 +7,33 @@
 {% endblock %}
 
 {% block content %}
+<div class="card">
+  <div class="section-bar has-icon">
+    <div class="section-icon">＋</div>
+    <div>
+      <div class="card-title">Log a Past Report</div>
+      <div class="card-sub">Missed a day? Add a report for an earlier date here — today's still goes through Today's Report.</div>
+    </div>
+  </div>
+  <form method="POST" action="{{ url_for('log_report') }}">
+    <div class="form-group">
+      <label class="form-label">Date</label>
+      <input type="date" name="date" class="form-control" max="{{ today_key }}" required>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Report</label>
+      <textarea name="raw_work" class="form-control" rows="5"
+        placeholder="What did you work on that day?" required></textarea>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Pending / reminders (optional)</label>
+      <textarea name="raw_pending" class="form-control" rows="2"
+        placeholder="Anything still pending..."></textarea>
+    </div>
+    <button type="submit" class="btn btn-teal">Log Report</button>
+  </form>
+</div>
+
 {% if not reports %}
 <div class="card" style="text-align:center; padding:3rem; color:#64748B;">
   <div style="font-size:2rem; margin-bottom:0.5rem;">📋</div>
@@ -17,7 +44,7 @@
 <div class="report-item report-item-accent-{{ r.status }}">
   <div class="report-item-header">
     <span style="font-size:0.84rem; font-weight:600; color:#1C2B3A;">{{ pretty_date(r.date) }}</span>
-    <span style="display:flex; gap:0.5rem; align-items:center;">
+    <span style="display:flex; gap:0.5rem; align-items:center; flex-wrap:wrap;">
       <span class="badge badge-{{ r.status }}">{{ r.status|title }}</span>
       <a href="{{ url_for('report_edit', report_id=r.id) }}" class="btn btn-outline btn-sm">Edit</a>
     </span>

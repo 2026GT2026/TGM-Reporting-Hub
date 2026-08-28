@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Reportly: Audit Log{% endblock %}
+{% block page_title %}Audit Log{% endblock %}
+{% block page_sub %}Most recent {{ entries|length }} action(s), newest first{% endblock %}
+
+{% block content %}
+{% if not entries %}
+<div class="card" style="text-align:center; padding:3rem; color:#64748B;">
+  <div style="font-size:2rem; margin-bottom:0.5rem;">🗒</div>
+  <div>Nothing logged yet.</div>
+</div>
+{% else %}
+{% for e in entries %}
+<div class="report-item">
+  <div class="report-item-header">
+    <span class="report-item-name">{{ e.action }}</span>
+    <span style="font-size:0.72rem; color:#94A3B8;">{{ e.at[:16].replace('T', ' ') }}</span>
+  </div>
+  <p class="report-item-text">
+    <strong style="color:#1C2B3A;">{{ e.actor }}</strong>{% if e.details %} — {{ e.details }}{% endif %}
+  </p>
+</div>
+{% endfor %}
+<p class="card-sub" style="text-align:center; margin-top:0.5rem;">Showing the most recent {{ entries|length }} action(s).</p>
+{% endif %}
+{% endblock %}

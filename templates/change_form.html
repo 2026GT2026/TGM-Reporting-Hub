@@ -47,7 +47,7 @@
       </select>
     </div>
 
-    <div style="display:flex; gap:0.6rem;">
+    <div style="display:flex; gap:0.6rem; flex-wrap:wrap;">
       <button type="submit" class="btn btn-teal">{{ 'Save Changes' if change else 'Log Change' }}</button>
       <a href="{{ url_for('changes_list') }}" class="btn btn-outline">Cancel</a>
     </div>

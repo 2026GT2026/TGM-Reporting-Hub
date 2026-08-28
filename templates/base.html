@@ -7,10 +7,12 @@
 <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='logo.svg') }}">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { max-width: 100%; overflow-x: hidden; }
 body {
   font-family: 'Segoe UI', 'Inter', Arial, sans-serif;
   background: radial-gradient(circle at 0% 0%, #F8F1F5 0%, #F4F6F9 32%) fixed;
   color: #1C2B3A; min-height: 100vh;
+  overflow-wrap: break-word; word-break: break-word;
 }
 :root {
   --teal: #6E2A52; --teal-dark: #4A1B38; --teal-light: #F1DCE7;
@@ -74,13 +76,14 @@ body {
   text-decoration: none; transition: all 0.15s;
 }
 .sidebar-logout:hover { background: rgba(220,38,38,0.1); color: #F87171; }
-.main { margin-left: 220px; flex: 1; }
+.main { margin-left: 220px; flex: 1; min-width: 0; }
 .topbar {
   background: white; border-bottom: 1px solid var(--border);
   padding: 0 1.5rem; height: 52px;
   display: flex; align-items: center; justify-content: space-between;
   position: sticky; top: 0; z-index: 40;
 }
+.topbar-left { display: flex; align-items: center; gap: 0.6rem; }
 .topbar-title { font-weight: 700; font-size: 0.95rem; color: var(--ink); }
 .topbar-sub { font-size: 0.75rem; color: var(--ink-soft); }
 .content { padding: 1.4rem; }
@@ -248,7 +251,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 1rem 0; }
 .stat-grid > *:nth-child(3) { animation-delay: 0.1s; }
 .stat-grid > *:nth-child(4) { animation-delay: 0.14s; }
 .stat-grid > *:nth-child(5) { animation-delay: 0.18s; }
-.data-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+.data-table { width: 100%; min-width: 620px; border-collapse: collapse; font-size: 0.82rem; }
 .data-table th { text-align: left; color: var(--ink-soft); font-weight: 600; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.03em; padding: 0.5rem 0.6rem; border-bottom: 2px solid var(--border); }
 .data-table td { padding: 0.55rem 0.6rem; border-bottom: 1px solid var(--border); vertical-align: top; }
 .data-table tr:last-child td { border-bottom: none; }
@@ -276,11 +279,61 @@ hr { border: none; border-top: 1px solid var(--border); margin: 1rem 0; }
 .report-item-accent-reverted      { border-left: 4px solid var(--red); }
 .report-item-accent-submitted     { border-left: 4px solid var(--teal); }
 .report-item-accent-draft         { border-left: 4px solid var(--amber); }
+.report-item-header { flex-wrap: wrap; gap: 0.4rem; }
+.pending-item { flex-wrap: wrap; gap: 0.4rem; }
+
+/* ── Mobile nav (hamburger + slide-in sidebar) ─────────────────────────────── */
+.menu-toggle {
+  display: none; align-items: center; justify-content: center;
+  width: 40px; height: 40px; border-radius: 9px; flex-shrink: 0;
+  border: 1px solid var(--border); background: white; color: var(--ink);
+  font-size: 1.15rem; cursor: pointer;
+}
+.sidebar-backdrop {
+  display: none; position: fixed; inset: 0; background: rgba(15,23,42,0.45); z-index: 45;
+}
+.sidebar-backdrop.show { display: block; }
+
+@media (max-width: 860px) {
+  .menu-toggle { display: inline-flex; }
+  .sidebar {
+    transform: translateX(-100%);
+    transition: transform 0.22s ease-out;
+    box-shadow: 0 0 0 rgba(0,0,0,0);
+  }
+  .sidebar.open { transform: translateX(0); box-shadow: 4px 0 24px rgba(0,0,0,0.18); }
+  .main { margin-left: 0; }
+  .topbar {
+    height: auto; min-height: 52px; padding: 0.6rem 1rem;
+    flex-wrap: wrap; gap: 0.5rem; row-gap: 0.5rem;
+  }
+  .topbar-left { display: flex; align-items: center; gap: 0.6rem; min-width: 0; }
+  .topbar-title, .topbar-sub { overflow-wrap: anywhere; }
+  .content { padding: 1rem; }
+  .form-row { grid-template-columns: 1fr; }
+  .detail-grid { grid-template-columns: 1fr; }
+  .filter-bar select { min-width: 0; flex: 1 1 140px; }
+}
+
+@media (max-width: 480px) {
+  .card { padding: 1rem; }
+  .hero-banner { padding: 1.1rem 1.2rem; }
+  .hero-greeting { font-size: 1.1rem; }
+  .roster-item form input[type="text"],
+  .roster-item form input[type="email"],
+  .roster-item form input[type="password"],
+  .roster-item form select {
+    width: 100%; flex: 1 1 100%;
+  }
+  .add-member-form .form-group { flex: 1 1 100%; min-width: 0; }
+  .upload-form input[type="file"] { flex: 1 1 auto; min-width: 0; max-width: 100%; }
+}
 </style>
 </head>
 <body>
 {% if current_user %}
 <div class="layout">
+  <div class="sidebar-backdrop"></div>
   <aside class="sidebar">
     <div class="sidebar-logo">
       <div class="sidebar-logo-mark">
@@ -318,6 +371,9 @@ hr { border: none; border-top: 1px solid var(--border); margin: 1rem 0; }
       <a href="{{ url_for('admin_reports') }}" class="nav-link {% if request.endpoint in ['admin_reports','report_edit'] %}active{% endif %}">
         ✎ Edit Past Logs
       </a>
+      <a href="{{ url_for('audit_log') }}" class="nav-link {% if request.endpoint=='audit_log' %}active{% endif %}">
+        🗒 Audit Log
+      </a>
       {% endif %}
     </nav>
     <div class="sidebar-bottom">
@@ -326,9 +382,12 @@ hr { border: none; border-top: 1px solid var(--border); margin: 1rem 0; }
   </aside>
   <div class="main">
     <div class="topbar">
-      <div>
-        <div class="topbar-title">{% block page_title %}{% endblock %}</div>
-        <div class="topbar-sub">{% block page_sub %}{% endblock %}</div>
+      <div class="topbar-left">
+        <button type="button" class="menu-toggle" aria-label="Open menu">☰</button>
+        <div>
+          <div class="topbar-title">{% block page_title %}{% endblock %}</div>
+          <div class="topbar-sub">{% block page_sub %}{% endblock %}</div>
+        </div>
       </div>
       <div>{% block topbar_actions %}{% endblock %}</div>
     </div>
@@ -347,6 +406,19 @@ hr { border: none; border-top: 1px solid var(--border); margin: 1rem 0; }
 {% endif %}
 <script>
 document.querySelectorAll('.alert').forEach(a => setTimeout(() => { a.style.transition='opacity .4s'; a.style.opacity='0'; setTimeout(()=>a.remove(),400); }, 4000));
+
+(function () {
+  const sidebar  = document.querySelector('.sidebar');
+  const backdrop = document.querySelector('.sidebar-backdrop');
+  const toggle   = document.querySelector('.menu-toggle');
+  if (!sidebar || !backdrop || !toggle) return;
+  const closeMenu = () => { sidebar.classList.remove('open'); backdrop.classList.remove('show'); };
+  const openMenu  = () => { sidebar.classList.add('open'); backdrop.classList.add('show'); };
+  toggle.addEventListener('click', () => {
+    sidebar.classList.contains('open') ? closeMenu() : openMenu();
+  });
+  backdrop.addEventListener('click', closeMenu);
+})();
 </script>
 {% block scripts %}{% endblock %}
 </body>

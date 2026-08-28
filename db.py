@@ -163,6 +163,14 @@ _SCHEMA = [
             edited_at     VARCHAR(32),
             INDEX idx_changes_project (project_id)
         ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci""",
+    """CREATE TABLE IF NOT EXISTS audit_log (
+            id       BIGINT AUTO_INCREMENT PRIMARY KEY,
+            at       VARCHAR(32) NOT NULL,
+            actor    VARCHAR(255) NOT NULL,
+            action   VARCHAR(64) NOT NULL,
+            details  TEXT,
+            INDEX idx_audit_at (at)
+        ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci""",
 ]
 
 
@@ -312,3 +320,23 @@ def upsert_reports(rows):
                         "Spreadsheet Import", datetime.now().isoformat(),
                     ),
                 )
+
+
+def log_audit(actor, action, details=""):
+    """Appends one row to the audit trail. Deliberately not built on the
+    load_x()/save_x() whole-table-replace pattern the other tables use — that
+    would mean re-reading and rewriting the entire, ever-growing audit log on
+    every single tracked action. A single INSERT instead."""
+    with _db() as (conn, cur):
+        cur.execute(
+            "INSERT INTO audit_log (at, actor, action, details) VALUES (%s, %s, %s, %s)",
+            (datetime.now().isoformat(), actor, action, details),
+        )
+
+
+def load_audit_log(limit=300):
+    """Most recent entries first, capped at `limit` — this table only ever
+    grows, so unlike everything else in this file it's never loaded in full."""
+    with _db() as (conn, cur):
+        cur.execute("SELECT * FROM audit_log ORDER BY id DESC LIMIT %s", (limit,))
+        return list(cur.fetchall())
