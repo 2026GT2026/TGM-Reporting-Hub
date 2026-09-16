@@ -83,7 +83,7 @@
         <th class="nowrap">Hours Est / Actual</th>
         <th>Notes</th>
         <th>Justification</th>
-        <th></th>
+        <th class="sticky-action"></th>
       </tr>
     </thead>
     <tbody>
@@ -165,7 +165,7 @@
               >{{ t.justification or '' }}</textarea>
           </form>
         </td>
-        <td class="nowrap"><a href="{{ url_for('todo_edit', todo_id=t.id) }}" class="btn btn-outline btn-sm">Edit</a></td>
+        <td class="sticky-action"><a href="{{ url_for('todo_edit', todo_id=t.id) }}" class="btn btn-outline btn-sm">Edit</a></td>
       </tr>
       {% endfor %}
     </tbody>

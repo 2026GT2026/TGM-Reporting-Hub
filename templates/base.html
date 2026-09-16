@@ -288,6 +288,16 @@ hr { border: none; border-top: 1px solid var(--border); margin: 1rem 0; }
 .data-table th:last-child, .data-table td:last-child { border-right: none; }
 .data-table tr:last-child td { border-bottom: none; }
 .data-table th.nowrap, .data-table td.nowrap { white-space: nowrap; }
+/* Action column pinned to the right edge so it stays visible on wide tables */
+.data-table th.sticky-action, .data-table td.sticky-action {
+  position: sticky; right: 0; white-space: nowrap;
+  box-shadow: -6px 0 6px -4px rgba(28,43,58,0.12);
+  border-right: none;
+}
+.data-table th.sticky-action { background: #F8FAFC; z-index: 3; }
+.data-table td.sticky-action { background: var(--card); z-index: 2; }
+.data-table tbody tr:nth-child(even) td.sticky-action { background: #FCFCFD; }
+.data-table tbody tr:hover td.sticky-action { background: #F1F5F9; }
 .data-table td.truncate {
   max-width: 260px; white-space: nowrap; overflow: hidden;
   text-overflow: ellipsis; cursor: pointer;
