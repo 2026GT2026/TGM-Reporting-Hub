@@ -1,0 +1,176 @@
+{% extends "base.html" %}
+{% block title %}Reportly: To Do{% endblock %}
+{% block page_title %}To Do{% endblock %}
+{% block page_sub %}{{ todos|length }} item(s){% if project_filter_name %} in {{ project_filter_name }}{% endif %}{% if status_filter %}, {{ status_filter }}{% endif %}{% endblock %}
+{% block topbar_actions %}
+  <a href="{{ url_for('todo_new', project=project_filter) }}" class="btn btn-teal btn-sm">Insert To Do</a>
+{% endblock %}
+
+{% block content %}
+<div class="tab-bar">
+  <a href="{{ url_for('todo_new', project=project_filter) }}" class="tab-link">Insert To Do</a>
+  <a href="{{ url_for('todos_list') }}" class="tab-link active">Tracker</a>
+</div>
+
+<div class="stat-grid">
+  <a href="{{ url_for('todos_list', project=project_filter) }}" class="stat-card stat-card-link stat-card--total">
+    <div class="stat-icon">☑</div>
+    <div class="stat-value">{{ stats.total }}</div>
+    <div class="stat-label">Total{% if project_filter_name %} in this project{% endif %}</div>
+  </a>
+  <a href="{{ url_for('todos_list', project=project_filter, status='Not Started') }}" class="stat-card stat-card-link stat-card--notstarted">
+    <div class="stat-icon">○</div>
+    <div class="stat-value">{{ stats['Not Started'] }}</div>
+    <div class="stat-label">Not Started</div>
+  </a>
+  <a href="{{ url_for('todos_list', project=project_filter, status='In Progress') }}" class="stat-card stat-card-link stat-card--progress">
+    <div class="stat-icon">↻</div>
+    <div class="stat-value">{{ stats['In Progress'] }}</div>
+    <div class="stat-label">In Progress</div>
+  </a>
+  <a href="{{ url_for('todos_list', project=project_filter, status='Completed') }}" class="stat-card stat-card-link stat-card--completed">
+    <div class="stat-icon">✓</div>
+    <div class="stat-value">{{ stats['Completed'] }}</div>
+    <div class="stat-label">Completed</div>
+  </a>
+</div>
+
+<div class="card">
+  <form method="GET" class="filter-bar">
+    <div class="form-group">
+      <label class="form-label">Project</label>
+      <select name="project" class="form-control" onchange="this.form.submit()">
+        <option value="">All projects ({{ project_counts.values()|sum }})</option>
+        {% for p in projects %}
+        <option value="{{ p.id }}" {% if project_filter==p.id %}selected{% endif %}>{{ p.name }} ({{ project_counts.get(p.id, 0) }})</option>
+        {% endfor %}
+      </select>
+    </div>
+    {% if status_filter %}<input type="hidden" name="status" value="{{ status_filter }}">{% endif %}
+    {% if project_filter or status_filter %}
+    <a href="{{ url_for('todos_list') }}" class="btn btn-outline btn-sm">Clear filters</a>
+    {% endif %}
+  </form>
+</div>
+
+{% if not todos %}
+<div class="card" style="text-align:center; padding:3rem; color:#64748B;">
+  <div style="font-size:2rem; margin-bottom:0.5rem;">☑</div>
+  <div>No to-do items match this filter.</div>
+</div>
+{% else %}
+<div class="card">
+  <div class="section-bar has-icon">
+    <div class="section-icon">☑</div>
+    <div>
+      <div class="card-title">{{ project_filter_name or 'All Projects' }}</div>
+      <div class="card-sub">Priority, view, task, owner, dates, hours and latest progress notes.</div>
+    </div>
+  </div>
+  <div class="table-scroll">
+  <table class="data-table">
+    <thead>
+      <tr>
+        {% if not project_filter %}<th class="nowrap">Project</th>{% endif %}
+        <th class="nowrap">Priority</th>
+        <th class="nowrap">User View</th>
+        <th>Task</th>
+        <th class="nowrap">Assigned To</th>
+        <th class="nowrap">Start Date</th>
+        <th class="nowrap">Expected End / Duration</th>
+        <th class="nowrap">Status</th>
+        <th class="nowrap">Completed / Duration</th>
+        <th class="nowrap">Hours Est / Actual</th>
+        <th>Notes</th>
+        <th>Justification</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for t in todos %}
+      <tr>
+        {% if not project_filter %}<td class="nowrap" style="font-weight:600;">{{ t.project_name }}</td>{% endif %}
+        <td class="nowrap">
+          <form method="POST" action="{{ url_for('todo_priority', todo_id=t.id) }}">
+            <input type="hidden" name="project_filter" value="{{ project_filter }}">
+            <input type="hidden" name="status_filter" value="{{ status_filter }}">
+            <select name="priority" class="status-select {{ priority_badge(t.priority) }}" onchange="this.form.submit()">
+              {% if not t.priority %}<option value="" selected>Set priority</option>{% endif %}
+              {% for p in priorities %}
+              <option value="{{ p }}" {% if t.priority==p %}selected{% endif %}>{{ p }}</option>
+              {% endfor %}
+            </select>
+          </form>
+        </td>
+        <td class="nowrap">{{ t.user_view or '—' }}</td>
+        <td class="truncate" title="{{ t.task }}" onclick="this.classList.toggle('expanded')">{{ t.task }}</td>
+        <td class="nowrap">
+          <span class="assignee-cell">
+            <span class="avatar-circle">{{ t.assignee[:1]|upper }}</span>{{ t.assignee }}
+          </span>
+        </td>
+        <td class="nowrap">
+          {{ t.start_date or '—' }}
+          {% if t.start_date %}<div style="font-size:0.7rem; color:#94A3B8;">{{ pretty_time(t.start_time) or '9:00 AM' }}</div>{% endif %}
+        </td>
+        <td class="nowrap">
+          {{ t.expected_end_date or '—' }}
+          {% if t.expected_end_date %}<div style="font-size:0.7rem; color:#94A3B8;">{{ pretty_time(t.expected_end_time) }} · {{ t.duration_hours }} hr{{ 's' if t.duration_hours != 1 }}</div>{% endif %}
+          {% if t.overdue %}<span class="overdue-tag">Overdue</span>{% endif %}
+        </td>
+        <td class="nowrap">
+          <form method="POST" action="{{ url_for('todo_status', todo_id=t.id) }}">
+            <input type="hidden" name="project_filter" value="{{ project_filter }}">
+            <input type="hidden" name="status_filter" value="{{ status_filter }}">
+            <select name="status" class="status-select {{ project_status_badge(t.status) }}" onchange="this.form.submit()">
+              {% for s in statuses %}
+              <option value="{{ s }}" {% if t.status==s %}selected{% endif %}>{{ s }}</option>
+              {% endfor %}
+            </select>
+          </form>
+        </td>
+        <td class="nowrap">
+          <form method="POST" action="{{ url_for('todo_completed', todo_id=t.id) }}" class="inline-datetime-form">
+            <input type="hidden" name="project_filter" value="{{ project_filter }}">
+            <input type="hidden" name="status_filter" value="{{ status_filter }}">
+            <input type="date" name="completed_date" class="inline-date-input" value="{{ t.completed_date or '' }}" onchange="this.form.submit()">
+            <input type="time" name="completed_time" class="inline-date-input" value="{{ t.completed_time or '' }}" onchange="this.form.submit()">
+          </form>
+          {% if t.actual_duration_hours is not none %}<div style="font-size:0.7rem; color:#94A3B8;">{{ t.actual_duration_hours }} hr{{ 's' if t.actual_duration_hours != 1 }}</div>{% endif %}
+        </td>
+        <td class="nowrap">
+          <span {% if t.hours_estimate_approved %}style="color:var(--green-dark); font-weight:700;"{% endif %}>{{ t.hours_estimate if t.hours_estimate is not none else '—' }}</span>
+          {% if t.hours_estimate_approved %}<span title="Estimate approved" style="color:var(--green-dark);">✓</span>{% endif %}
+          <span style="color:#94A3B8;"> / </span>{{ t.hours_actual if t.hours_actual is not none else '—' }}
+        </td>
+        <td>
+          <form method="POST" action="{{ url_for('todo_notes', todo_id=t.id) }}">
+            <input type="hidden" name="project_filter" value="{{ project_filter }}">
+            <input type="hidden" name="status_filter" value="{{ status_filter }}">
+            <textarea name="notes" class="inline-notes-input" rows="1"
+              data-original="{{ t.notes or '' }}"
+              onfocus="this.rows=3"
+              onblur="this.rows=1; if (this.value !== this.dataset.original) { this.form.submit(); }"
+              >{{ t.notes or '' }}</textarea>
+          </form>
+        </td>
+        <td>
+          <form method="POST" action="{{ url_for('todo_justification', todo_id=t.id) }}">
+            <input type="hidden" name="project_filter" value="{{ project_filter }}">
+            <input type="hidden" name="status_filter" value="{{ status_filter }}">
+            <textarea name="justification" class="inline-notes-input" rows="1"
+              data-original="{{ t.justification or '' }}"
+              onfocus="this.rows=3"
+              onblur="this.rows=1; if (this.value !== this.dataset.original) { this.form.submit(); }"
+              >{{ t.justification or '' }}</textarea>
+          </form>
+        </td>
+        <td class="nowrap"><a href="{{ url_for('todo_edit', todo_id=t.id) }}" class="btn btn-outline btn-sm">Edit</a></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  </div>
+</div>
+{% endif %}
+{% endblock %}

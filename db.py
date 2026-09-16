@@ -163,6 +163,31 @@ _SCHEMA = [
             edited_at     VARCHAR(32),
             INDEX idx_changes_project (project_id)
         ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci""",
+    """CREATE TABLE IF NOT EXISTS todos (
+            id                     VARCHAR(64) PRIMARY KEY,
+            project_id             VARCHAR(64),
+            task                   TEXT,
+            assignee               TEXT,
+            start_date             VARCHAR(64),
+            start_time             VARCHAR(8),
+            duration_hours         FLOAT,
+            comment                TEXT,
+            notes                  TEXT,
+            status                 VARCHAR(32) NOT NULL DEFAULT 'Not Started',
+            completed_date         VARCHAR(64),
+            completed_time         VARCHAR(8),
+            priority               VARCHAR(32),
+            user_view              VARCHAR(120),
+            hours_estimate         FLOAT,
+            hours_estimate_approved TINYINT(1) NOT NULL DEFAULT 0,
+            hours_actual           FLOAT,
+            justification          TEXT,
+            added_by               VARCHAR(255),
+            added_at               VARCHAR(32),
+            edited_by              VARCHAR(255),
+            edited_at              VARCHAR(32),
+            INDEX idx_todos_project (project_id)
+        ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci""",
     """CREATE TABLE IF NOT EXISTS audit_log (
             id       BIGINT AUTO_INCREMENT PRIMARY KEY,
             at       VARCHAR(32) NOT NULL,
@@ -182,6 +207,48 @@ def _run_migrations(cur):
         cur.execute("ALTER TABLE roster ADD COLUMN email VARCHAR(255) UNIQUE")
     except Exception:
         pass
+    try:
+        cur.execute("ALTER TABLE todos ADD COLUMN start_date VARCHAR(64)")
+    except Exception:
+        pass
+    try:
+        cur.execute("ALTER TABLE todos ADD COLUMN duration_days INT")
+    except Exception:
+        pass
+    try:
+        cur.execute("UPDATE todos SET start_date=timeline WHERE start_date IS NULL AND timeline IS NOT NULL")
+    except Exception:
+        pass
+    try:
+        cur.execute("ALTER TABLE todos DROP COLUMN timeline")
+    except Exception:
+        pass
+    try:
+        cur.execute("ALTER TABLE todos ADD COLUMN duration_hours FLOAT")
+    except Exception:
+        pass
+    try:
+        cur.execute("UPDATE todos SET duration_hours=duration_days*8 WHERE duration_hours IS NULL AND duration_days IS NOT NULL")
+    except Exception:
+        pass
+    try:
+        cur.execute("ALTER TABLE todos DROP COLUMN duration_days")
+    except Exception:
+        pass
+    for stmt in [
+        "ALTER TABLE todos ADD COLUMN priority VARCHAR(32)",
+        "ALTER TABLE todos ADD COLUMN user_view VARCHAR(120)",
+        "ALTER TABLE todos ADD COLUMN hours_estimate FLOAT",
+        "ALTER TABLE todos ADD COLUMN hours_estimate_approved TINYINT(1) NOT NULL DEFAULT 0",
+        "ALTER TABLE todos ADD COLUMN hours_actual FLOAT",
+        "ALTER TABLE todos ADD COLUMN justification TEXT",
+        "ALTER TABLE todos ADD COLUMN start_time VARCHAR(8)",
+        "ALTER TABLE todos ADD COLUMN completed_time VARCHAR(8)",
+    ]:
+        try:
+            cur.execute(stmt)
+        except Exception:
+            pass
 
 
 def init_db():
@@ -234,6 +301,10 @@ PROJECTS_COLUMNS = ["id", "name", "description", "owner", "progress_summary",
                      "risks", "next_action", "kpi", "created_at", "updated_at"]
 CHANGES_COLUMNS  = ["id", "project_id", "change_type", "summary", "description",
                      "status", "added_by", "added_at", "edited_by", "edited_at"]
+TODOS_COLUMNS    = ["id", "project_id", "task", "assignee", "start_date", "start_time", "duration_hours",
+                     "comment", "notes", "status", "completed_date", "completed_time", "priority", "user_view",
+                     "hours_estimate", "hours_estimate_approved", "hours_actual", "justification",
+                     "added_by", "added_at", "edited_by", "edited_at"]
 
 
 def load_roster():
@@ -266,6 +337,14 @@ def load_changes():
 
 def save_changes(data):
     _save_table("changes", CHANGES_COLUMNS, data)
+
+
+def load_todos():
+    return _load_table("todos")
+
+
+def save_todos(data):
+    _save_table("todos", TODOS_COLUMNS, data)
 
 
 def upsert_projects(rows):

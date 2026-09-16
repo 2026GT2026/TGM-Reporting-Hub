@@ -26,6 +26,7 @@ PROJECT_STATUSES = ["Not Started", "In Progress", "Completed"]
 CHANGE_TYPES  = ["Behaviour Rule", "Instruction Update", "New Feature",
                  "Knowledge Base", "Greeting Update", "Bug Fix", "Other"]
 CHANGE_STATUSES = ["Live", "Pending Review", "Reverted"]
+TODO_PRIORITIES = ["Immediate", "High", "Medium", "Low"]
 
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY", "")
 openai_client = OpenAI(api_key=OPENAI_API_KEY) if OPENAI_API_KEY else None
@@ -51,6 +52,8 @@ load_projects  = db.load_projects
 save_projects  = db.save_projects
 load_changes   = db.load_changes
 save_changes   = db.save_changes
+load_todos     = db.load_todos
+save_todos     = db.save_todos
 
 def try_parse_date(value):
     if not value:
@@ -60,6 +63,88 @@ def try_parse_date(value):
     except (ValueError, TypeError):
         return None
 
+WORK_START_HOUR = 9
+WORK_END_HOUR   = 17
+WORK_HOURS_PER_DAY = WORK_END_HOUR - WORK_START_HOUR
+
+def parse_duration(raw):
+    raw = (raw or "").strip()
+    try:
+        return float(raw) if raw else None
+    except ValueError:
+        return None
+
+def try_parse_time(value):
+    try:
+        return datetime.strptime(value, "%H:%M").time()
+    except (ValueError, TypeError):
+        return None
+
+def pretty_time(hhmm):
+    t = try_parse_time(hhmm) if hhmm else None
+    if not t:
+        return None
+    hour12 = t.hour % 12 or 12
+    period = "AM" if t.hour < 12 else "PM"
+    return f"{hour12}:{t.minute:02d} {period}"
+
+def add_business_hours(date_str, time_str, duration_hours):
+    """Add duration_hours of effort to a start date/time, confined to the
+    9am-5pm working window — time that would run past 5pm rolls over to
+    9am the next day rather than into the evening."""
+    d = try_parse_date(date_str)
+    if not d or duration_hours is None:
+        return None, None
+    t = try_parse_time(time_str) or datetime.strptime(f"{WORK_START_HOUR:02d}:00", "%H:%M").time()
+
+    work_start_min = WORK_START_HOUR * 60
+    work_end_min   = WORK_END_HOUR * 60
+    cur_min = t.hour * 60 + t.minute
+    if cur_min < work_start_min:
+        cur_min = work_start_min
+    elif cur_min >= work_end_min:
+        d += timedelta(days=1)
+        cur_min = work_start_min
+
+    remaining = round(duration_hours * 60)
+    while remaining > 0:
+        left_today = work_end_min - cur_min
+        if remaining <= left_today:
+            cur_min += remaining
+            remaining = 0
+        else:
+            remaining -= left_today
+            d += timedelta(days=1)
+            cur_min = work_start_min
+
+    return d.isoformat(), f"{cur_min // 60:02d}:{cur_min % 60:02d}"
+
+def days_between(start_str, end_str):
+    a, b = try_parse_date(start_str), try_parse_date(end_str)
+    return (b - a).days if a and b else None
+
+def business_hours_between(start_date_str, start_time_str, end_date_str, end_time_str=None):
+    """Working hours elapsed between a start date/time and an end date/time,
+    confined to the 9am-5pm window each day (weekends count as full days,
+    same as add_business_hours). End time defaults to 5pm — completion is
+    only tracked by date, not time of day."""
+    a, b = try_parse_date(start_date_str), try_parse_date(end_date_str)
+    if not a or not b or b < a:
+        return None
+    work_start_min = WORK_START_HOUR * 60
+    work_end_min   = WORK_END_HOUR * 60
+
+    st = try_parse_time(start_time_str) or datetime.strptime(f"{WORK_START_HOUR:02d}:00", "%H:%M").time()
+    start_min = min(max(st.hour * 60 + st.minute, work_start_min), work_end_min)
+    et = try_parse_time(end_time_str) or datetime.strptime(f"{WORK_END_HOUR:02d}:00", "%H:%M").time()
+    end_min = min(max(et.hour * 60 + et.minute, work_start_min), work_end_min)
+
+    if a == b:
+        return max(0, end_min - start_min) / 60
+    full_days_between = (b - a).days - 1
+    total_min = (work_end_min - start_min) + max(0, full_days_between) * WORK_HOURS_PER_DAY * 60 + (end_min - work_start_min)
+    return round(total_min / 60, 2)
+
 def project_status_badge(status):
     return {"Completed": "completed", "In Progress": "inprogress",
             "Not Started": "notstarted"}.get(status, "notstarted")
@@ -67,6 +152,17 @@ def project_status_badge(status):
 def change_status_badge(status):
     return {"Live": "live", "Pending Review": "pendingreview",
             "Reverted": "reverted"}.get(status, "live")
+
+def priority_badge(priority):
+    return {"Immediate": "immediate", "High": "high",
+            "Medium": "medium", "Low": "low"}.get(priority, "none")
+
+def parse_hours(raw):
+    raw = (raw or "").strip()
+    try:
+        return float(raw) if raw else None
+    except ValueError:
+        return None
 
 def today_key():
     return date.today().isoformat()
@@ -661,6 +757,260 @@ def change_edit(change_id):
         return redirect(url_for("changes_list"))
     return render_template("change_form.html", change=changes[idx], projects=projects,
                            change_types=CHANGE_TYPES, change_statuses=CHANGE_STATUSES)
+
+@app.route("/todos")
+@login_required
+def todos_list():
+    all_todos = load_todos()
+    projects = load_projects()
+    project_names = {p["id"]: p["name"] for p in projects}
+    project_filter = request.args.get("project", "")
+    status_filter  = request.args.get("status", "")
+    tk = today_key()
+
+    scoped = [t for t in all_todos if not project_filter or t["project_id"]==project_filter]
+    stats = {
+        "total": len(scoped),
+        "Not Started": sum(1 for t in scoped if t["status"]=="Not Started"),
+        "In Progress": sum(1 for t in scoped if t["status"]=="In Progress"),
+        "Completed":   sum(1 for t in scoped if t["status"]=="Completed"),
+    }
+
+    todos = [t for t in scoped if not status_filter or t["status"]==status_filter]
+    for t in todos:
+        t["project_name"] = project_names.get(t["project_id"], "Unknown project")
+        t["expected_end_date"], t["expected_end_time"] = add_business_hours(
+            t.get("start_date"), t.get("start_time"), t.get("duration_hours"))
+        t["actual_duration_hours"] = business_hours_between(
+            t.get("start_date"), t.get("start_time"), t.get("completed_date"), t.get("completed_time"))
+        t["overdue"] = bool(t["expected_end_date"]) and t["expected_end_date"] < tk and t["status"] != "Completed"
+    todos.sort(key=lambda t: (t["status"]=="Completed", t["expected_end_date"] or "9999-99-99"))
+
+    project_counts = {}
+    for t in all_todos:
+        project_counts[t["project_id"]] = project_counts.get(t["project_id"], 0) + 1
+
+    return render_template("todos.html", todos=todos, projects=projects,
+                           project_filter=project_filter, status_filter=status_filter,
+                           project_filter_name=project_names.get(project_filter, ""),
+                           project_counts=project_counts, stats=stats,
+                           project_status_badge=project_status_badge,
+                           priority_badge=priority_badge, pretty_time=pretty_time,
+                           statuses=PROJECT_STATUSES, priorities=TODO_PRIORITIES)
+
+@app.route("/todos/<todo_id>/status", methods=["POST"])
+@login_required
+def todo_status(todo_id):
+    todos = load_todos()
+    idx = next((i for i,t in enumerate(todos) if t["id"]==todo_id), None)
+    if idx is None:
+        flash("To-do not found.", "error")
+        return redirect(url_for("todos_list"))
+    user = session["user"]
+    t = todos[idx]
+    status = request.form.get("status", t["status"])
+    completed_date = t.get("completed_date","")
+    completed_time = t.get("completed_time","")
+    if status == "Completed" and not completed_date:
+        completed_date = today_key()
+        completed_time = datetime.now().strftime("%H:%M")
+    elif status != "Completed":
+        completed_date = ""
+        completed_time = ""
+    t.update({
+        "status": status,
+        "completed_date": completed_date,
+        "completed_time": completed_time,
+        "edited_by": user["name"],
+        "edited_at": datetime.now().isoformat(),
+    })
+    save_todos(todos)
+    db.log_audit(user["name"], "Changed to-do status", f"{t['project_id']}: {t['task']} -> {status}")
+    return redirect(url_for("todos_list", project=request.form.get("project_filter",""),
+                            status=request.form.get("status_filter","")))
+
+@app.route("/todos/<todo_id>/priority", methods=["POST"])
+@login_required
+def todo_priority(todo_id):
+    todos = load_todos()
+    idx = next((i for i,t in enumerate(todos) if t["id"]==todo_id), None)
+    if idx is None:
+        flash("To-do not found.", "error")
+        return redirect(url_for("todos_list"))
+    user = session["user"]
+    t = todos[idx]
+    priority = request.form.get("priority", t["priority"])
+    t.update({
+        "priority": priority,
+        "edited_by": user["name"],
+        "edited_at": datetime.now().isoformat(),
+    })
+    save_todos(todos)
+    db.log_audit(user["name"], "Changed to-do priority", f"{t['project_id']}: {t['task']} -> {priority}")
+    return redirect(url_for("todos_list", project=request.form.get("project_filter",""),
+                            status=request.form.get("status_filter","")))
+
+@app.route("/todos/<todo_id>/completed", methods=["POST"])
+@login_required
+def todo_completed(todo_id):
+    todos = load_todos()
+    idx = next((i for i,t in enumerate(todos) if t["id"]==todo_id), None)
+    if idx is None:
+        flash("To-do not found.", "error")
+        return redirect(url_for("todos_list"))
+    user = session["user"]
+    t = todos[idx]
+    completed_date = request.form.get("completed_date","").strip()
+    completed_time = request.form.get("completed_time","").strip()
+    t.update({
+        "completed_date": completed_date,
+        "completed_time": completed_time,
+        "status": "Completed" if completed_date else t["status"],
+        "edited_by": user["name"],
+        "edited_at": datetime.now().isoformat(),
+    })
+    save_todos(todos)
+    db.log_audit(user["name"], "Logged to-do completion time", f"{t['project_id']}: {t['task']}")
+    return redirect(url_for("todos_list", project=request.form.get("project_filter",""),
+                            status=request.form.get("status_filter","")))
+
+@app.route("/todos/<todo_id>/notes", methods=["POST"])
+@login_required
+def todo_notes(todo_id):
+    todos = load_todos()
+    idx = next((i for i,t in enumerate(todos) if t["id"]==todo_id), None)
+    if idx is None:
+        flash("To-do not found.", "error")
+        return redirect(url_for("todos_list"))
+    user = session["user"]
+    t = todos[idx]
+    t.update({
+        "notes": request.form.get("notes","").strip(),
+        "edited_by": user["name"],
+        "edited_at": datetime.now().isoformat(),
+    })
+    save_todos(todos)
+    db.log_audit(user["name"], "Updated a to-do's notes", f"{t['project_id']}: {t['task']}")
+    return redirect(url_for("todos_list", project=request.form.get("project_filter",""),
+                            status=request.form.get("status_filter","")))
+
+@app.route("/todos/<todo_id>/justification", methods=["POST"])
+@login_required
+def todo_justification(todo_id):
+    todos = load_todos()
+    idx = next((i for i,t in enumerate(todos) if t["id"]==todo_id), None)
+    if idx is None:
+        flash("To-do not found.", "error")
+        return redirect(url_for("todos_list"))
+    user = session["user"]
+    t = todos[idx]
+    t.update({
+        "justification": request.form.get("justification","").strip(),
+        "edited_by": user["name"],
+        "edited_at": datetime.now().isoformat(),
+    })
+    save_todos(todos)
+    db.log_audit(user["name"], "Updated a to-do's justification", f"{t['project_id']}: {t['task']}")
+    return redirect(url_for("todos_list", project=request.form.get("project_filter",""),
+                            status=request.form.get("status_filter","")))
+
+@app.route("/todos/new", methods=["GET", "POST"])
+@login_required
+def todo_new():
+    projects = load_projects()
+    roster = load_roster()
+    if request.method == "POST":
+        user = session["user"]
+        todos = load_todos()
+        now = datetime.now().isoformat()
+        status = request.form.get("status", PROJECT_STATUSES[0])
+        completed_date = request.form.get("completed_date","").strip()
+        completed_time = request.form.get("completed_time","").strip()
+        if status == "Completed" and not completed_date:
+            completed_date = today_key()
+        elif status != "Completed":
+            completed_date = ""
+            completed_time = ""
+        todos.append({
+            "id": str(uuid.uuid4())[:8],
+            "project_id": request.form.get("project_id",""),
+            "task": request.form.get("task","").strip(),
+            "assignee": request.form.get("assignee","").strip(),
+            "start_date": request.form.get("start_date","").strip(),
+            "start_time": request.form.get("start_time","").strip(),
+            "duration_hours": parse_duration(request.form.get("duration_hours")),
+            "comment": request.form.get("comment","").strip(),
+            "notes": request.form.get("notes","").strip(),
+            "status": status,
+            "completed_date": completed_date,
+            "completed_time": completed_time,
+            "priority": request.form.get("priority", TODO_PRIORITIES[0]),
+            "user_view": request.form.get("user_view","").strip(),
+            "hours_estimate": parse_hours(request.form.get("hours_estimate")),
+            "hours_estimate_approved": 1 if request.form.get("hours_estimate_approved") else 0,
+            "hours_actual": parse_hours(request.form.get("hours_actual")),
+            "justification": request.form.get("justification","").strip(),
+            "added_by": user["name"],
+            "added_at": now,
+            "edited_by": None,
+            "edited_at": None,
+        })
+        save_todos(todos)
+        db.log_audit(user["name"], "Added a to-do", f"{todos[-1]['project_id']}: {todos[-1]['task']}")
+        flash("To-do added.", "success")
+        return redirect(url_for("todos_list", project=request.form.get("project_id","")))
+    return render_template("todo_form.html", todo=None, projects=projects, roster=roster,
+                           statuses=PROJECT_STATUSES, priorities=TODO_PRIORITIES,
+                           preselect_project=request.args.get("project", ""))
+
+@app.route("/todos/<todo_id>/edit", methods=["GET", "POST"])
+@login_required
+def todo_edit(todo_id):
+    todos = load_todos()
+    projects = load_projects()
+    roster = load_roster()
+    idx = next((i for i,t in enumerate(todos) if t["id"]==todo_id), None)
+    if idx is None:
+        flash("To-do not found.", "error")
+        return redirect(url_for("todos_list"))
+    if request.method == "POST":
+        user = session["user"]
+        t = todos[idx]
+        status = request.form.get("status", PROJECT_STATUSES[0])
+        completed_date = request.form.get("completed_date","").strip()
+        completed_time = request.form.get("completed_time","").strip()
+        if status == "Completed" and not completed_date:
+            completed_date = today_key()
+        elif status != "Completed":
+            completed_date = ""
+            completed_time = ""
+        t.update({
+            "project_id": request.form.get("project_id",""),
+            "task": request.form.get("task","").strip(),
+            "assignee": request.form.get("assignee","").strip(),
+            "start_date": request.form.get("start_date","").strip(),
+            "start_time": request.form.get("start_time","").strip(),
+            "duration_hours": parse_duration(request.form.get("duration_hours")),
+            "comment": request.form.get("comment","").strip(),
+            "notes": request.form.get("notes","").strip(),
+            "status": status,
+            "completed_date": completed_date,
+            "completed_time": completed_time,
+            "priority": request.form.get("priority", TODO_PRIORITIES[0]),
+            "user_view": request.form.get("user_view","").strip(),
+            "hours_estimate": parse_hours(request.form.get("hours_estimate")),
+            "hours_estimate_approved": 1 if request.form.get("hours_estimate_approved") else 0,
+            "hours_actual": parse_hours(request.form.get("hours_actual")),
+            "justification": request.form.get("justification","").strip(),
+            "edited_by": user["name"],
+            "edited_at": datetime.now().isoformat(),
+        })
+        save_todos(todos)
+        db.log_audit(user["name"], "Updated a to-do", f"{t['project_id']}: {t['task']}")
+        flash("To-do updated.", "success")
+        return redirect(url_for("todos_list", project=t["project_id"]))
+    return render_template("todo_form.html", todo=todos[idx], projects=projects, roster=roster,
+                           statuses=PROJECT_STATUSES, priorities=TODO_PRIORITIES)
 
 @app.route("/team")
 @login_required

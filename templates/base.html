@@ -131,6 +131,37 @@ body {
 .badge-live { background: var(--green-bg); color: var(--green-dark); }
 .badge-pendingreview { background: var(--amber-bg); color: var(--amber); }
 .badge-reverted { background: #FEF2F2; color: var(--red); }
+.badge-immediate { background: var(--red-light); color: var(--red); }
+.badge-high { background: var(--amber-bg); color: var(--amber); }
+.badge-medium { background: var(--blue-bg); color: var(--blue-dark); }
+.badge-low { background: #F1F5F9; color: var(--ink-soft); }
+.status-select {
+  border: 1px solid transparent; border-radius: 20px; padding: 3px 8px;
+  font-size: 0.68rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em;
+  cursor: pointer; outline: none;
+}
+.status-select:hover { border-color: var(--border); }
+.status-select.notstarted { background: #F1F5F9; color: var(--ink-soft); }
+.status-select.inprogress { background: var(--amber-bg); color: var(--amber); }
+.status-select.completed { background: var(--green-bg); color: var(--green-dark); }
+.status-select.immediate { background: var(--red-light); color: var(--red); }
+.status-select.high { background: var(--amber-bg); color: var(--amber); }
+.status-select.medium { background: var(--blue-bg); color: var(--blue-dark); }
+.status-select.low { background: #F1F5F9; color: var(--ink-soft); }
+.status-select.none { background: #F1F5F9; color: var(--ink-soft); }
+.inline-datetime-form { display: flex; flex-direction: column; gap: 2px; }
+.inline-date-input {
+  border: 1px solid transparent; border-radius: 5px; padding: 1px 3px;
+  font-size: 0.76rem; font-family: inherit; color: var(--ink); background: transparent; cursor: pointer;
+}
+.inline-date-input:hover { border-color: var(--border); background: #F8FAFC; }
+.inline-notes-input {
+  width: 100%; min-width: 200px; max-width: 320px; border: 1px solid transparent;
+  border-radius: 5px; padding: 3px 5px; font-size: 0.8rem; font-family: inherit;
+  color: var(--ink); background: transparent; resize: vertical;
+}
+.inline-notes-input:hover { border-color: var(--border); background: #F8FAFC; }
+.inline-notes-input:focus { border-color: var(--teal); background: #fff; outline: none; }
 .btn {
   display: inline-flex; align-items: center; gap: 6px;
   padding: 0.4rem 0.9rem; border-radius: 7px; font-weight: 600;
@@ -251,16 +282,39 @@ hr { border: none; border-top: 1px solid var(--border); margin: 1rem 0; }
 .stat-grid > *:nth-child(3) { animation-delay: 0.1s; }
 .stat-grid > *:nth-child(4) { animation-delay: 0.14s; }
 .stat-grid > *:nth-child(5) { animation-delay: 0.18s; }
-.data-table { width: 100%; min-width: 620px; border-collapse: collapse; font-size: 0.82rem; }
-.data-table th { text-align: left; color: var(--ink-soft); font-weight: 600; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.03em; padding: 0.5rem 0.6rem; border-bottom: 2px solid var(--border); }
-.data-table td { padding: 0.55rem 0.6rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+.data-table { width: 100%; min-width: 620px; border-collapse: collapse; font-size: 0.82rem; border: 1px solid var(--border); }
+.data-table th { text-align: left; color: var(--ink-soft); font-weight: 600; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.03em; padding: 0.5rem 0.6rem; background: #F8FAFC; border-bottom: 2px solid var(--border); border-right: 1px solid var(--border); }
+.data-table td { padding: 0.55rem 0.6rem; border-bottom: 1px solid var(--border); border-right: 1px solid var(--border); vertical-align: top; }
+.data-table th:last-child, .data-table td:last-child { border-right: none; }
 .data-table tr:last-child td { border-bottom: none; }
+.data-table th.nowrap, .data-table td.nowrap { white-space: nowrap; }
+.data-table td.truncate {
+  max-width: 260px; white-space: nowrap; overflow: hidden;
+  text-overflow: ellipsis; cursor: pointer;
+}
+.data-table td.truncate.expanded {
+  max-width: 420px; white-space: pre-wrap; overflow: visible; text-overflow: clip;
+}
+.data-table tbody tr { transition: background 0.12s; }
+.data-table tbody tr:nth-child(even) { background: #FCFCFD; }
+.data-table tbody tr:hover { background: #F1F5F9; }
+.assignee-cell { display: flex; align-items: center; gap: 6px; }
+.avatar-circle {
+  display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
+  width: 22px; height: 22px; border-radius: 50%;
+  background: var(--teal-light); color: var(--teal-dark);
+  font-size: 0.68rem; font-weight: 700;
+}
 .progress-track { background: var(--border); border-radius: 20px; height: 7px; width: 100%; overflow: hidden; }
 .progress-fill {
   background: linear-gradient(90deg, var(--teal), var(--teal-dark));
   height: 100%; border-radius: 20px; transition: width 0.4s ease-out;
 }
 .overdue-tag { color: var(--red); font-weight: 600; font-size: 0.72rem; }
+.tab-bar { display: flex; gap: 0.3rem; border-bottom: 2px solid var(--border); margin-bottom: 1rem; flex-wrap: wrap; }
+.tab-link { padding: 0.55rem 1rem; font-size: 0.84rem; font-weight: 600; color: var(--ink-soft); text-decoration: none; border-bottom: 2px solid transparent; margin-bottom: -2px; }
+.tab-link:hover { color: var(--teal); }
+.tab-link.active { color: var(--teal-dark); border-bottom-color: var(--teal); }
 .filter-bar { display: flex; gap: 0.6rem; margin-bottom: 1rem; flex-wrap: wrap; align-items: flex-end; }
 .filter-bar .form-group { margin-bottom: 0; }
 .filter-bar select { min-width: 160px; }
@@ -281,6 +335,16 @@ hr { border: none; border-top: 1px solid var(--border); margin: 1rem 0; }
 .report-item-accent-draft         { border-left: 4px solid var(--amber); }
 .report-item-header { flex-wrap: wrap; gap: 0.4rem; }
 .pending-item { flex-wrap: wrap; gap: 0.4rem; }
+
+.table-scroll { overflow-x: auto; }
+.hscroll-proxy {
+  position: fixed; left: 220px; right: 0; bottom: 0; height: 14px;
+  overflow-x: scroll; overflow-y: hidden;
+  background: white; border-top: 1px solid var(--border);
+  z-index: 60; display: none;
+}
+.hscroll-proxy.show { display: block; }
+.hscroll-proxy-inner { height: 1px; }
 
 /* ── Mobile nav (hamburger + slide-in sidebar) ─────────────────────────────── */
 .menu-toggle {
@@ -303,6 +367,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 1rem 0; }
   }
   .sidebar.open { transform: translateX(0); box-shadow: 4px 0 24px rgba(0,0,0,0.18); }
   .main { margin-left: 0; }
+  .hscroll-proxy { left: 0; }
   .topbar {
     height: auto; min-height: 52px; padding: 0.6rem 1rem;
     flex-wrap: wrap; gap: 0.5rem; row-gap: 0.5rem;
@@ -364,6 +429,9 @@ hr { border: none; border-top: 1px solid var(--border); margin: 1rem 0; }
       <a href="{{ url_for('projects_list') }}" class="nav-link {% if request.endpoint in ['projects_list','project_new','project_edit','project_detail'] %}active{% endif %}">
         ▤ Projects
       </a>
+      <a href="{{ url_for('todos_list') }}" class="nav-link {% if request.endpoint in ['todos_list','todo_new','todo_edit'] %}active{% endif %}">
+        ☑ To Do
+      </a>
       {% if current_user.role == 'admin' %}
       <a href="{{ url_for('team') }}" class="nav-link {% if request.endpoint=='team' %}active{% endif %}">
         ◈ Team Overview
@@ -418,6 +486,39 @@ document.querySelectorAll('.alert').forEach(a => setTimeout(() => { a.style.tran
     sidebar.classList.contains('open') ? closeMenu() : openMenu();
   });
   backdrop.addEventListener('click', closeMenu);
+})();
+
+(function () {
+  document.querySelectorAll('.table-scroll').forEach(function (container) {
+    const proxy = document.createElement('div');
+    proxy.className = 'hscroll-proxy';
+    const inner = document.createElement('div');
+    inner.className = 'hscroll-proxy-inner';
+    proxy.appendChild(inner);
+    document.body.appendChild(proxy);
+
+    function sync() {
+      const overflow = container.scrollWidth > container.clientWidth + 1;
+      proxy.classList.toggle('show', overflow);
+      inner.style.width = container.scrollWidth + 'px';
+    }
+    sync();
+    window.addEventListener('resize', sync);
+
+    let syncing = false;
+    container.addEventListener('scroll', function () {
+      if (syncing) return;
+      syncing = true;
+      proxy.scrollLeft = container.scrollLeft;
+      syncing = false;
+    });
+    proxy.addEventListener('scroll', function () {
+      if (syncing) return;
+      syncing = true;
+      container.scrollLeft = proxy.scrollLeft;
+      syncing = false;
+    });
+  });
 })();
 </script>
 {% block scripts %}{% endblock %}

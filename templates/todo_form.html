@@ -1,0 +1,183 @@
+{% extends "base.html" %}
+{% block title %}Reportly: {{ 'Edit To Do' if todo else 'Insert To Do' }}{% endblock %}
+{% block page_title %}To Do{% endblock %}
+{% block page_sub %}{{ 'Update an existing item' if todo else 'Add a new item to the tracker' }}{% endblock %}
+
+{% block content %}
+<div class="tab-bar">
+  <a href="{{ url_for('todo_new') }}" class="tab-link {% if not todo %}active{% endif %}">Insert To Do</a>
+  <a href="{{ url_for('todos_list') }}" class="tab-link {% if todo %}active{% endif %}">Tracker</a>
+</div>
+
+<div class="card">
+  <form method="POST">
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Project</label>
+        <select name="project_id" class="form-control" required>
+          <option value="">Select a project</option>
+          {% for p in projects %}
+          <option value="{{ p.id }}"
+            {% if todo and todo.project_id==p.id %}selected
+            {% elif not todo and preselect_project==p.id %}selected{% endif %}>{{ p.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Assigned To</label>
+        <select name="assignee" class="form-control" required>
+          <option value="">Select a team member</option>
+          {% for m in roster %}
+          <option value="{{ m.name }}" {% if todo and todo.assignee==m.name %}selected{% endif %}>{{ m.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Priority</label>
+        <select name="priority" class="form-control">
+          {% for pr in priorities %}
+          <option value="{{ pr }}" {% if todo and todo.priority==pr %}selected{% endif %}>{{ pr }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">User View</label>
+        <input type="text" name="user_view" class="form-control" placeholder="e.g. Super Admin, Student View" value="{{ todo.user_view if todo else '' }}">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">What Is To Be Done</label>
+      <textarea name="task" class="form-control" rows="3" required>{{ todo.task if todo else '' }}</textarea>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Start Date</label>
+        <input type="text" id="start_date" name="start_date" class="form-control" placeholder="YYYY-MM-DD" value="{{ todo.start_date if todo else '' }}" oninput="updateExpectedEnd()">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Start Time</label>
+        <input type="time" id="start_time" name="start_time" class="form-control" value="{{ (todo.start_time if todo else None) or '09:00' }}" oninput="updateExpectedEnd()">
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Duration (hours)</label>
+        <input type="number" id="duration_hours" name="duration_hours" class="form-control" min="0" step="0.5" placeholder="e.g. 16" value="{{ todo.duration_hours if todo and todo.duration_hours is not none else '' }}" oninput="updateExpectedEnd()">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Expected End</label>
+        <div class="form-control" id="expected_end_preview" style="background:#F8FAFC; color:#64748B;">—</div>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Status</label>
+        <select name="status" class="form-control">
+          {% for s in statuses %}
+          <option value="{{ s }}" {% if todo and todo.status==s %}selected{% endif %}>{{ s }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="form-group"></div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Completed Date</label>
+        <input type="text" name="completed_date" class="form-control" placeholder="YYYY-MM-DD (auto-filled when marked Completed)" value="{{ todo.completed_date if todo else '' }}">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Completed Time</label>
+        <input type="time" name="completed_time" class="form-control" value="{{ todo.completed_time if todo and todo.completed_time else '' }}">
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Hours Estimate</label>
+        <input type="number" name="hours_estimate" class="form-control" min="0" step="0.5" value="{{ todo.hours_estimate if todo and todo.hours_estimate is not none else '' }}">
+        <label style="display:flex; align-items:center; gap:6px; margin-top:0.4rem; font-size:0.8rem; color:var(--ink-soft); font-weight:500;">
+          <input type="checkbox" name="hours_estimate_approved" value="1" {% if todo and todo.hours_estimate_approved %}checked{% endif %}>
+          Estimate approved
+        </label>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Hours Actual</label>
+        <input type="number" name="hours_actual" class="form-control" min="0" step="0.5" value="{{ todo.hours_actual if todo and todo.hours_actual is not none else '' }}">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Justification of Functionality / Priority</label>
+      <textarea name="justification" class="form-control" rows="2" placeholder="Why this matters, or why the priority/estimate is what it is">{{ todo.justification if todo else '' }}</textarea>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Comment</label>
+      <textarea name="comment" class="form-control" rows="2" placeholder="Context for why this was added">{{ todo.comment if todo else '' }}</textarea>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Notes (latest update)</label>
+      <textarea name="notes" class="form-control" rows="3" placeholder="What's been done so far">{{ todo.notes if todo else '' }}</textarea>
+    </div>
+
+    <div style="display:flex; gap:0.6rem; flex-wrap:wrap;">
+      <button type="submit" class="btn btn-teal">{{ 'Save Changes' if todo else 'Add To Do' }}</button>
+      <a href="{{ url_for('todos_list') }}" class="btn btn-outline">Cancel</a>
+    </div>
+  </form>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+const WORK_START_MIN = 9 * 60;
+const WORK_END_MIN   = 17 * 60;
+
+function updateExpectedEnd() {
+  const start = document.getElementById('start_date').value.trim();
+  const timeStr = document.getElementById('start_time').value.trim();
+  const hrs   = parseFloat(document.getElementById('duration_hours').value);
+  const out   = document.getElementById('expected_end_preview');
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(start);
+  const tm = /^(\d{2}):(\d{2})$/.exec(timeStr);
+  if (!m || isNaN(hrs) || hrs <= 0) { out.textContent = '—'; return; }
+
+  let d = new Date(Date.UTC(+m[1], +m[2] - 1, +m[3]));
+  let curMin = tm ? (+tm[1] * 60 + +tm[2]) : WORK_START_MIN;
+  if (curMin < WORK_START_MIN) {
+    curMin = WORK_START_MIN;
+  } else if (curMin >= WORK_END_MIN) {
+    d.setUTCDate(d.getUTCDate() + 1);
+    curMin = WORK_START_MIN;
+  }
+
+  let remaining = Math.round(hrs * 60);
+  while (remaining > 0) {
+    const leftToday = WORK_END_MIN - curMin;
+    if (remaining <= leftToday) {
+      curMin += remaining;
+      remaining = 0;
+    } else {
+      remaining -= leftToday;
+      d.setUTCDate(d.getUTCDate() + 1);
+      curMin = WORK_START_MIN;
+    }
+  }
+
+  const mm = String(curMin % 60).padStart(2, '0');
+  const hour12 = (Math.floor(curMin / 60) % 12) || 12;
+  const period = Math.floor(curMin / 60) < 12 ? 'AM' : 'PM';
+  out.textContent = d.toISOString().slice(0, 10) + ' at ' + hour12 + ':' + mm + ' ' + period + ' (9am–5pm workday)';
+}
+updateExpectedEnd();
+</script>
+{% endblock %}
