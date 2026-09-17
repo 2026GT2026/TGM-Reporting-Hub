@@ -30,9 +30,9 @@
 </div>
 {% else %}
 {% for p in projects %}
-<div class="card card-accent-{{ project_status_badge(p.status) }}">
+<div class="card proj-card" style="border-left-color:{{ project_color(p.id) }};">
   <div class="report-item-header">
-    <a href="{{ url_for('project_detail', project_id=p.id) }}" style="color:#1C2B3A; font-weight:700; font-size:0.95rem; text-decoration:none;">{{ p.id }}, {{ p.name }}</a>
+    <a href="{{ url_for('project_detail', project_id=p.id) }}" style="color:#1C2B3A; font-weight:700; font-size:0.95rem; text-decoration:none;"><span class="proj-dot" style="background:{{ project_color(p.id) }};"></span>{{ p.id }}, {{ p.name }}</a>
     <span class="badge badge-{{ project_status_badge(p.status) }}">{{ p.status }}</span>
   </div>
   <p class="card-sub" style="margin:0.4rem 0 0.6rem;">{{ p.description }}</p>

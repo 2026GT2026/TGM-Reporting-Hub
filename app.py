@@ -1,5 +1,5 @@
 
-import os, json, uuid, io
+import os, json, uuid, io, re
 from datetime import datetime, date, timedelta
 from functools import wraps
 from dotenv import load_dotenv
@@ -156,6 +156,55 @@ def change_status_badge(status):
 def priority_badge(priority):
     return {"Immediate": "immediate", "High": "high",
             "Medium": "medium", "Low": "low"}.get(priority, "none")
+
+# A distinct colour per project so each one is easy to tell apart at a glance.
+# Curated to be well-separated around the wheel; keyed off the RD-### number so
+# a project always keeps the same colour (adding/removing projects never
+# reshuffles the others). Falls back to a stable char-sum for non-RD ids.
+_PROJECT_PALETTE = [
+    "#E11D48", "#F97316", "#F59E0B", "#CA8A04", "#65A30D",
+    "#16A34A", "#059669", "#0D9488", "#0891B2", "#0284C7",
+    "#2563EB", "#4F46E5", "#7C3AED", "#9333EA", "#C026D3",
+    "#DB2777", "#BE123C", "#B45309", "#0E7490", "#475569",
+]
+
+def _hsl_to_hex(h, s, l):
+    c = (1 - abs(2 * l - 1)) * s
+    x = c * (1 - abs((h / 60) % 2 - 1))
+    m = l - c / 2
+    r, g, b = [(c, x, 0), (x, c, 0), (0, c, x),
+               (0, x, c), (x, 0, c), (c, 0, x)][int(h // 60) % 6]
+    return "#%02X%02X%02X" % (round((r + m) * 255),
+                              round((g + m) * 255), round((b + m) * 255))
+
+def project_color(project_id):
+    pid = str(project_id or "")
+    m = re.search(r"(\d+)", pid)
+    idx = int(m.group(1)) - 1 if m else sum(ord(c) for c in pid)
+    if idx < len(_PROJECT_PALETTE):
+        return _PROJECT_PALETTE[idx]
+    # Beyond the curated palette: generate a fresh, well-spread hue so every
+    # project keeps its own distinct colour no matter how many there are.
+    hue = (idx * 137.508) % 360          # golden-angle spacing
+    return _hsl_to_hex(hue, 0.62, 0.42)
+
+def project_ink(project_id):
+    """Readable text colour (dark or white) for text placed on a project's
+    colour, chosen by the colour's perceived brightness (YIQ)."""
+    h = project_color(project_id).lstrip("#")
+    r, g, b = int(h[0:2], 16), int(h[2:4], 16), int(h[4:6], 16)
+    yiq = (r * 299 + g * 587 + b * 114) / 1000
+    return "#0F172A" if yiq >= 150 else "#FFFFFF"
+
+def project_tint(project_id, f=0.15):
+    """A soft, opaque pastel of the project's colour (mixed with white) — mild
+    enough to fill a whole row behind dark text while staying distinct."""
+    h = project_color(project_id).lstrip("#")
+    r, g, b = int(h[0:2], 16), int(h[2:4], 16), int(h[4:6], 16)
+    r = round(r * f + 255 * (1 - f))
+    g = round(g * f + 255 * (1 - f))
+    b = round(b * f + 255 * (1 - f))
+    return "#%02X%02X%02X" % (r, g, b)
 
 def parse_hours(raw):
     raw = (raw or "").strip()
@@ -1437,7 +1486,9 @@ def enumerate_filter(iterable):
 
 @app.context_processor
 def inject_user():
-    return {"current_user": session.get("user")}
+    return {"current_user": session.get("user"),
+            "project_color": project_color, "project_ink": project_ink,
+            "project_tint": project_tint}
 
 if __name__ == "__main__":
     import os

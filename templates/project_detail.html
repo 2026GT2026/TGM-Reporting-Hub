@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block content %}
-<div class="card card-accent-{{ project_status_badge(project.status) }}">
+<div class="card proj-card" style="border-left-color:{{ project_color(project.id) }};">
   <div class="report-item-header">
     <span class="badge badge-{{ project_status_badge(project.status) }}">{{ project.status }}</span>
     <span style="font-size:0.8rem; color:#64748B;">{{ project.percent_complete }}% complete</span>

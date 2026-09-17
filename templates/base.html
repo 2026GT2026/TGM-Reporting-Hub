@@ -335,6 +335,15 @@ hr { border: none; border-top: 1px solid var(--border); margin: 1rem 0; }
 .card-accent-completed  { border-left: 4px solid var(--green); }
 .card-accent-inprogress { border-left: 4px solid var(--amber); }
 .card-accent-notstarted { border-left: 4px solid var(--ink-soft); }
+/* Per-project colour coding (colour supplied inline via project_color()) */
+.proj-dot {
+  display: inline-block; width: 10px; height: 10px; border-radius: 50%;
+  margin-right: 7px; vertical-align: middle; flex-shrink: 0;
+  box-shadow: 0 0 0 2px rgba(255,255,255,0.9), 0 0 0 3px rgba(28,43,58,0.06);
+}
+.proj-card { border-left: 5px solid var(--ink-soft); }
+/* Project cell: bold name with a solid colour bar; row carries a mild tint */
+.data-table td.proj-cell { font-weight: 700; color: var(--ink); }
 .status-icon { display: inline-block; margin-right: 4px; }
 .report-item { transition: box-shadow 0.15s, border-color 0.15s; }
 .report-item:hover { box-shadow: 0 2px 8px rgba(28,43,58,0.06); }

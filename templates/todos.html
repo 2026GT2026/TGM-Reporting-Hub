@@ -88,8 +88,8 @@
     </thead>
     <tbody>
       {% for t in todos %}
-      <tr>
-        {% if not project_filter %}<td class="nowrap" style="font-weight:600;">{{ t.project_name }}</td>{% endif %}
+      <tr style="background:{{ project_tint(t.project_id) }};">
+        {% if not project_filter %}<td class="nowrap proj-cell" style="border-left:5px solid {{ project_color(t.project_id) }};">{{ t.project_name }}</td>{% endif %}
         <td class="nowrap">
           <form method="POST" action="{{ url_for('todo_priority', todo_id=t.id) }}">
             <input type="hidden" name="project_filter" value="{{ project_filter }}">
@@ -165,7 +165,7 @@
               >{{ t.justification or '' }}</textarea>
           </form>
         </td>
-        <td class="sticky-action"><a href="{{ url_for('todo_edit', todo_id=t.id) }}" class="btn btn-outline btn-sm">Edit</a></td>
+        <td class="sticky-action" style="background:{{ project_tint(t.project_id) }};"><a href="{{ url_for('todo_edit', todo_id=t.id) }}" class="btn btn-outline btn-sm">Edit</a></td>
       </tr>
       {% endfor %}
     </tbody>
