@@ -22,5 +22,5 @@ jobs:
             cd /var/www/reportly.tgmeducation.com
             git fetch origin main
             git reset --hard origin/main
-            service stop reportly.tgmeducation.com
-            service start reportly.tgmeducation.com
+            service reportly.tgmeducation.com stop
+            service reportly.tgmeducation.com start
