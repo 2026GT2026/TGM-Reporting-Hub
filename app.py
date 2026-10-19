@@ -509,16 +509,25 @@ def log_report():
     user        = session["user"]
     is_admin    = user.get("role") == "admin"
     roster      = load_roster()
-    # Non-admins can only ever log a report under their own name — the
-    # submitted "member" field, if any, is ignored for them rather than
-    # trusted, so no one can backfill a report as someone else.
-    member_name = request.form.get("member", "").strip() if is_admin else user["name"]
+    # Only the Team > Reports form sends a "member" field, and only an admin's
+    # is honoured. The My Reports form sends none, so anyone (admin included)
+    # using it logs under their own name, and no one else can backfill a
+    # report as someone else.
+    on_behalf   = is_admin and "member" in request.form
+    if on_behalf:
+        member_name = request.form.get("member", "").strip()
+    else:
+        # Look the user up again by username so a rename since login still
+        # matches the roster.
+        me = next((m for m in roster if m.get("username") and
+                   m.get("username") == user.get("username")), None)
+        member_name = me["name"] if me else user["name"]
     report_date = request.form.get("date", "").strip()
     raw_work    = request.form.get("raw_work", "").strip()
     raw_pending = request.form.get("raw_pending", "").strip()
 
-    back_endpoint = "admin_reports" if is_admin else "my_reports"
-    back_args     = {"member": member_name} if is_admin else {}
+    back_endpoint = "admin_reports" if on_behalf else "my_reports"
+    back_args     = {"member": member_name} if on_behalf else {}
 
     if not any(m["name"] == member_name for m in roster):
         flash("Member not found.", "error")
@@ -538,7 +547,7 @@ def log_report():
     reports = load_reports()
     existing = next((r for r in reports if r["name"]==member_name and r["date"]==report_date), None)
     if existing:
-        whose = f"{member_name} already has" if is_admin else "You already have"
+        whose = f"{member_name} already has" if on_behalf else "You already have"
         flash(f"{whose} a report for {pretty_date(report_date)}. Edit it instead.", "error")
         return redirect(url_for("report_edit", report_id=existing["id"]))
 
@@ -556,7 +565,7 @@ def log_report():
         "logged_at":    now,
     })
     save_reports(reports)
-    if is_admin:
+    if on_behalf:
         db.log_audit(user["name"], "Logged past report", f"for {member_name}, {report_date}")
         flash(f"Logged {pretty_date(report_date)}'s report for {member_name}.", "success")
     else:
@@ -1177,7 +1186,7 @@ def download_projects():
     wb = Workbook()
     ws = wb.active
     ws.title = "Projects"
-    headers = ["Project ID","Project Name","Description","Owner","What Has Been Done",
+    headers = ["Project ID","Project Name","Description","Project Lead / Contributors","What Has Been Done",
                "Status","Percent Complete","Start Date","Deadline","Risks",
                "Next Action","KPI"]
     widths = [12,26,45,18,45,14,10,14,14,40,40,30]
@@ -1260,7 +1269,7 @@ def download_all():
         row += 1
 
     ws = wb.create_sheet("Projects")
-    headers = ["Project ID", "Project Name", "Description", "Owner", "What Has Been Done",
+    headers = ["Project ID", "Project Name", "Description", "Project Lead / Contributors", "What Has Been Done",
                "Status", "Percent Complete", "Start Date", "Deadline", "Risks",
                "Next Action", "KPI", "Created At", "Updated At"]
     widths = [12, 26, 45, 18, 45, 14, 10, 14, 14, 40, 40, 30, 20, 20]
