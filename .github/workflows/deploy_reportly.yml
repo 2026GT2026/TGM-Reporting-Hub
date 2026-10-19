@@ -22,11 +22,5 @@ jobs:
             cd /var/www/reportly.tgmeducation.com
             git fetch origin main
             git reset --hard origin/main
-            # Use the project's virtualenv if it exists, otherwise system pip3
-            if [ -f venv/bin/activate ]; then . venv/bin/activate; PIP=pip;
-            elif [ -f .venv/bin/activate ]; then . .venv/bin/activate; PIP=pip;
-            elif [ -f env/bin/activate ]; then . env/bin/activate; PIP=pip;
-            else PIP=pip3; fi
-            $PIP install -r requirements.txt
             systemctl stop reportly.tgmeducation.com
             systemctl start reportly.tgmeducation.com
