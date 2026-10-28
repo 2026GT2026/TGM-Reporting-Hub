@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% block title %}Reportly: Import To Do{% endblock %}
+{% block page_title %}To Do{% endblock %}
+{% block page_sub %}Add many items to the tracker at once{% endblock %}
+
+{% block content %}
+<div class="tab-bar">
+  <a href="{{ url_for('todo_new') }}" class="tab-link">Insert To Do</a>
+  <a href="{{ url_for('todo_import') }}" class="tab-link active">Import To Do</a>
+  <a href="{{ url_for('todos_list') }}" class="tab-link">Tracker</a>
+</div>
+
+<div class="card">
+  <form method="POST" enctype="multipart/form-data">
+    <input type="hidden" name="step" value="preview">
+
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Project</label>
+        <select name="project_id" class="form-control" required>
+          <option value="">Select a project</option>
+          {% for p in projects %}
+          <option value="{{ p.id }}" {% if project_id==p.id %}selected{% endif %}>{{ p.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Assigned To</label>
+        <select name="assignee" class="form-control" required>
+          <option value="">Select a team member</option>
+          {% for m in roster %}
+          <option value="{{ m.name }}" {% if assignee==m.name %}selected{% endif %}>{{ m.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">File <span style="font-weight:400; color:#94A3B8;">(Excel .xlsx, or leave empty to use the saved October 2026 list of 78 To Dos)</span></label>
+      <input type="file" name="file" accept=".xlsx,.xlsm,.json" class="form-control">
+      <p style="font-size:0.8rem; margin:0.4rem 0 0;">
+        <a href="{{ url_for('todo_import_template') }}">Download the Excel template</a>
+        — one row per To Do. Columns: Date (YYYY-MM-DD), End Time (e.g. 5:00 PM), User View, What Is To Be Done, Justification, Notes.
+        The first two columns and What Is To Be Done are required.
+      </p>
+    </div>
+
+    <p style="font-size:0.85rem; color:var(--ink-soft); margin:0 0 1rem;">
+      Every item is saved as Completed, starting 9:00 AM, with the default priority, and with hours and comment left empty.
+      Items already in the tracker (same text, start date and project) are skipped, and nothing existing is changed.
+      You will see a preview before anything is saved.
+    </p>
+
+    <button type="submit" class="btn btn-teal">Preview</button>
+  </form>
+</div>
+
+{% if preview %}
+<div class="card" style="margin-top:1rem;">
+  <h3 style="margin-top:0;">Preview</h3>
+  <p><strong>{{ preview.rows|length }}</strong> in the file ·
+     <strong>{{ preview.new }}</strong> will be added ·
+     <strong>{{ preview.skipped }}</strong> already there (skipped)</p>
+
+  {% if preview.new %}
+  <form method="POST" style="margin-bottom:1rem;">
+    <input type="hidden" name="step" value="import">
+    <input type="hidden" name="project_id" value="{{ project_id }}">
+    <input type="hidden" name="assignee" value="{{ assignee }}">
+    <textarea name="payload" hidden>{{ payload }}</textarea>
+    <button type="submit" class="btn btn-teal">Import {{ preview.new }} To Do{{ '' if preview.new==1 else 's' }}</button>
+  </form>
+  {% else %}
+  <p>Nothing new to add.</p>
+  {% endif %}
+
+  <div class="table-scroll">
+    <table class="data-table">
+      <thead><tr><th>#</th><th>Start</th><th>Ends</th><th>User View</th><th>What Is To Be Done</th><th>Result</th></tr></thead>
+      <tbody>
+      {% for r in preview.rows %}
+        <tr>
+          <td>{{ loop.index }}</td>
+          <td>{{ r.start_date }} 9:00 AM</td>
+          <td>{{ r.completed_time }}</td>
+          <td>{{ r.user_view }}</td>
+          <td style="white-space:pre-line;">{{ r.task }}</td>
+          <td>{{ 'Will be added' if r.id in preview.new_ids else 'Already there' }}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endif %}
+{% endblock %}

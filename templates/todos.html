@@ -9,6 +9,7 @@
 {% block content %}
 <div class="tab-bar">
   <a href="{{ url_for('todo_new', project=project_filter) }}" class="tab-link">Insert To Do</a>
+  <a href="{{ url_for('todo_import') }}" class="tab-link">Import To Do</a>
   <a href="{{ url_for('todos_list') }}" class="tab-link active">Tracker</a>
 </div>
 

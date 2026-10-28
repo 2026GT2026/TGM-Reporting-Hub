@@ -1,0 +1,317 @@
+[
+  {
+    "date": "2026-09-30", "end_time": "17:00",
+    "entries": [
+      {"user_view": "Super Admin",
+       "task": "On the Targets page, counsellor targets are now set by named groups. When creating a group you can add several intakes. The group name and first intake sit on one line. A group can be renamed from its card.",
+       "justification": "Targets could not be set for a named group of counsellors across several intakes.",
+       "notes": "Several intakes can be added at creation."},
+      {"user_view": "Counsellor, Officer, Super Admin",
+       "task": "The Dashboard has a new My Targets card, and the Targets page is clearer. Super Admins who also work as Counsellor or Officer get My Targets too.",
+       "justification": "People could not see their own target progress on the Dashboard."},
+      {"user_view": "Counsellor, Super Admin",
+       "task": "Counsellor targets now count each deposit under the intake of the school it was paid to. The counting note on Targets was reworded to start \"A target counts…\" and to say \"intake session\".",
+       "justification": "A deposit could be counted under the wrong intake."},
+      {"user_view": "Counsellor",
+       "task": "The whole card is red, orange or green by progress and takes the colour of the nearest intake, with motion. It is the same height as a KPI card. Other intakes sit behind \"+N more intakes\", and clicking one shows it on the card. Student dots became a smooth glowing white progress line. The tooltip shows above the main line and opens to the right so the sidebar does not cut it off.",
+       "justification": "The first version was hard to read at a glance and the tooltip was cut off."},
+      {"user_view": "Officer",
+       "task": "Officers get a coloured \"My Target - Today\" card on the Dashboard like counsellors. Days show % of target in red, orange or green, and the Poor/Good labels are gone. Officer targets open on Today, not This Week.",
+       "justification": "Officers had no daily target card and the Poor/Good labels were not clear."},
+      {"user_view": "All roles",
+       "task": "Uploading documents never refuses or loses a file without telling the user.",
+       "justification": "An upload could disappear or be refused with no message."}
+    ]
+  },
+  {
+    "date": "2026-10-02", "end_time": "16:00",
+    "entries": [
+      {"user_view": "Super Admin, Admin, Manager",
+       "task": "On the Reports pages, the Intake Session filters now accept more than one choice.",
+       "justification": "Only one intake could be looked at at a time."},
+      {"user_view": "Super Admin, Admin, Manager",
+       "task": "On the CAS/LOE/LOA & Deposit report, the Year filter covers 2020 to 2040 and opens on the current year.",
+       "justification": "The Year list was too short and did not open on the current year."},
+      {"user_view": "Counsellor, Admin",
+       "task": "On Submit, on Edit, and when adding a school to an uploaded record, both the student's email and phone are required.",
+       "justification": "Records could be saved with a missing email or phone."},
+      {"user_view": "Admin",
+       "task": "When two records are merged, different schools keep their own App ID and the same school keeps the primary's.",
+       "justification": "Merging could give the wrong App ID."},
+      {"user_view": "Admin",
+       "task": "Archived Applications has a Revert button that undoes a merge.",
+       "justification": "A merge made by mistake could not be undone."},
+      {"user_view": "Counsellor, Admin",
+       "task": "Submit to Update, Submit to Assign and Edit no longer create a second copy of the student.",
+       "justification": "The same student could show up as two students."}
+    ]
+  },
+  {
+    "date": "2026-10-05", "end_time": "17:00",
+    "entries": [
+      {"user_view": "Super Admin, Developer",
+       "task": "On User Management, Counsellors can now be disabled. The Remove button is red.",
+       "justification": "Counsellors could only be removed, not paused. The red button warns it is permanent."},
+      {"user_view": "Admin, Developer",
+       "task": "The \"Log in a Student\" option is back under a New Record menu with two options.",
+       "justification": "Students already in process could not be logged in.",
+       "notes": "The earlier version was removed on 2026-09-25."},
+      {"user_view": "Admin, Developer",
+       "task": "Log in a Student never sends the student to an officer. The student is saved as Submitted, not Waiting Review. A compulsory \"Application made by (Application Officer)\" field was added, and its list includes everyone doing officer work.",
+       "justification": "Logged-in students were being assigned and given the wrong status, and no one was recorded as the officer who made the application."},
+      {"user_view": "Counsellor, Admin",
+       "task": "University, Programme, Degree, Intake Session and Year are required on every school form.",
+       "justification": "Schools could be saved with missing details."},
+      {"user_view": "Counsellor, Admin",
+       "task": "The \"Tagged?\" question is on Add New School (uploaded records) and Edit Application. Tagged is saved from every path and defaults to No. Bulk upload keeps Programme. The help text on Add New School was corrected.",
+       "justification": "Tagged was not saved from every path and Programme was lost on bulk upload."},
+      {"user_view": "Counsellor",
+       "task": "The Submit message never reads \"Assigned to: .\" when no officer is named.",
+       "justification": "The message showed a blank name."}
+    ]
+  },
+  {
+    "date": "2026-10-06", "end_time": "16:00",
+    "entries": [
+      {"user_view": "Admin, Developer, Counsellor",
+       "task": "Log in a Student is for Admin and Developer only. Counsellors go back to the plain Submit.",
+       "justification": "Counsellors should not log in students that way.",
+       "notes": "Counsellors got it back on 2026-10-26."},
+      {"user_view": "Counsellor, Admin",
+       "task": "Duplicate universities are blocked. Update Course changes the course in place and also sets Programme and Degree. The banner on the uploaded-student edit page says Course can be corrected too.",
+       "justification": "Updating a course could create a second copy of a school and leave Programme and Degree out of date."},
+      {"user_view": "Counsellor, Admin",
+       "task": "Submit to Assign asks first, then leaves the school for an Admin to assign. The existing officer is kept, and only the new school waits for the Admin. An Assignments badge shows what is waiting.",
+       "justification": "Adding a school to an existing student could disturb the officer already working on it."}
+    ]
+  },
+  {
+    "date": "2026-10-07", "end_time": "16:00",
+    "entries": [
+      {"user_view": "Counsellor, Super Admin",
+       "task": "On Targets, a January target covers Jan–Mar and a September target covers Apr–Oct.",
+       "justification": "Targets only counted a single month of intakes."},
+      {"user_view": "Manager",
+       "task": "Managers can open the CAS/LOE/LOA & Deposit and Amounts reports for the branch or branches they pick.",
+       "justification": "Managers could not see these reports for their branches."},
+      {"user_view": "Counsellor, Admin",
+       "task": "The layout of the saved-school corrections section was tidied.",
+       "justification": "The section looked cluttered."}
+    ]
+  },
+  {
+    "date": "2026-10-08", "end_time": "16:00",
+    "entries": [
+      {"user_view": "Counsellor, Admin",
+       "task": "Submit to Assign now uploads the documents. Every school page shows the student's documents.",
+       "justification": "Documents added at Submit to Assign were not saved, and a school page could show none."},
+      {"user_view": "Counsellor, Admin",
+       "task": "The app says when documents were not saved, and warns before a same-name file replaces another.",
+       "justification": "A document could fail to save, or be replaced, with no warning."}
+    ]
+  },
+  {
+    "date": "2026-10-12", "end_time": "17:00",
+    "entries": [
+      {"user_view": "Counsellor, Admin",
+       "task": "The same university can be added more than once on Submit, Log in a Student, Edit Application and Add New School. An older Edit page never doubles a saved school.",
+       "justification": "A student applying to the same university for different courses was blocked."},
+      {"user_view": "Counsellor, Admin",
+       "task": "A file whose name is already on the application is refused, and the user is told to rename it. The message shows for 60 seconds.",
+       "justification": "A same-name upload overwrote the existing document."},
+      {"user_view": "Counsellor, Admin",
+       "task": "On the Edit page, uploaded documents show clearly with Remove until Save Changes. Unfinished edits are listed in Drafts. Save Changes sends the picked documents, waits for any still uploading, and no longer leaves an unfinished edit behind.",
+       "justification": "Picked documents could be missed on save, and a finished edit could still show as a draft."},
+      {"user_view": "Counsellor, Admin",
+       "task": "An intake update changes the school's intake everywhere. A course or intake update also changes the same school saved on the student's other records. Resume Draft never brings back old details of saved schools.",
+       "justification": "Old intake or course details kept showing on other records."},
+      {"user_view": "Super Admin, Developer",
+       "task": "On User Management, On Leave is separate from Currently Active. On Leave catches up on return. Currently Active means out on other duties and rejoining with no catch-up.",
+       "justification": "There was no way to tell someone on leave from someone busy on other duties."}
+    ]
+  },
+  {
+    "date": "2026-10-16", "end_time": "16:00",
+    "entries": [
+      {"user_view": "Developer, Super Admin",
+       "task": "The AI Assistant chat is redesigned, and the Developer/Super Admin Tools are re-themed to match.",
+       "justification": "The old chat and tools did not match the rest of the app."}
+    ]
+  },
+  {
+    "date": "2026-10-20", "end_time": "17:00",
+    "entries": [
+      {"user_view": "Super Admin, Admin, Manager",
+       "task": "The Intake Session filters now treat January as Jan–Mar intakes and September as Apr–Oct.",
+       "justification": "The filters did not match how intakes are grouped in Targets.",
+       "notes": "Changed to exact months on 2026-10-22."},
+      {"user_view": "Super Admin, Admin, Manager",
+       "task": "One filter at the top of the tab drives the cards, charts and table. The Status filter gets \"Offer Letter Received Only\".",
+       "justification": "The cards, charts and table could disagree."},
+      {"user_view": "Super Admin, Developer, Admin, Manager",
+       "task": "The leave option \"Still receiving applications\" was added, with a 24-hour rule. A top-right pop-up with a heading naming the officer on leave shows for Super Admin, Developer, Admin and Manager. Leave notifications show as a floating circle with one entry per student naming its schools. The circle tucks into the right edge and slides back out. Once read, the entries move into Notifications in red.",
+       "justification": "There was no way to handle applications for an officer on leave."},
+      {"user_view": "Super Admin",
+       "task": "A view-only Audit Admin role was added, and Admin is now shown as \"Officer Admin\". Managers and Audit Admins can be disabled on User Management. The User Management page was failing to load because of an apostrophe in the Audit Admin help text, and that is fixed.",
+       "justification": "There was no view-only admin, and the page broke after the first version."},
+      {"user_view": "All roles",
+       "task": "An orange loading bar runs across the top while a page loads.",
+       "justification": "Users could not tell a page was loading.",
+       "notes": "Replaced on 2026-10-28 by a centred spinner."},
+      {"user_view": "Super Admin, Admin, Manager",
+       "task": "Custom Range waits for both dates before loading. The Filter tab only narrows its own table and the Overview boxes, and the three summary cards follow its filters. The New Students / Received / Worked On boxes are bigger and aligned.",
+       "justification": "Custom Range loaded after one date, and the filters changed numbers they should not have."},
+      {"user_view": "Counsellor, Admin",
+       "task": "A student's email and phone must be filled and unique before adding a school or updating.",
+       "justification": "Two students could share the same email or phone."},
+      {"user_view": "Super Admin, Admin, Manager",
+       "task": "The Amounts rows are numbered. The filters that Amounts and CAS/LOE/LOA follow were corrected.",
+       "justification": "The two reports reacted to the wrong filters."},
+      {"user_view": "All roles",
+       "task": "On phone and tablet there is a bottom navigation bar and an open/close left menu. Fields are normal size. The Dashboard cards and filters are compact in two columns. On the phone Dashboard the top bar is one row, the banner is two lines, and Viewing and Intake sit side by side.",
+       "justification": "The app was hard to use on a phone."},
+      {"user_view": "All roles",
+       "task": "My Profile has a new Appearance setting with Light, Dark and Same as my device.",
+       "justification": "There was no dark theme."}
+    ]
+  },
+  {
+    "date": "2026-10-21", "end_time": "17:00",
+    "entries": [
+      {"user_view": "All roles",
+       "task": "The dark theme colours were changed to a navy palette that matches the left menu.",
+       "justification": "The first dark theme did not match the left menu."},
+      {"user_view": "All roles",
+       "task": "The whole student now has one overall profile page.\n- Update Student Status is on the header card, with school statuses aligned.\n- The course shows under the priority school, and \"Last updated\" is aligned right.\n- Copy icons appear on hover beside the student's and counsellor's email and phone.\n- All Applications shows 3 schools first and the rest behind See more. Managers and branch Admins see all schools.\n- \"Uploaded record\" shows as a grey pill, and header tags line up.",
+       "justification": "A student's details were spread across school pages with no single overview."},
+      {"user_view": "Counsellor",
+       "task": "The student profile has Note, Task and Log conversation, with an Activity box.\n- Each conversation shows its own icon: WhatsApp, Email, In person or Call.\n- The Activity box shows the 3 most recent per tab, with See more for the rest.\n- Notes can be edited by their author and show \"Edited <date>\". Clicking the pen icon edits.\n- Only a task's creator or assignee can tick it.\n- Only the student's owner can add notes, tasks or conversations.\n- The task pop-up has quick due-date buttons.",
+       "justification": "There was nowhere to record notes, follow-up tasks or conversations with a student."},
+      {"user_view": "All roles",
+       "task": "The school application page is laid out like the student profile. App ID is removed from the School application box because it is in the header. Assignment and Ownership History are two cards side by side.",
+       "justification": "The two pages looked different."},
+      {"user_view": "Counsellor, Admin",
+       "task": "The student Edit button is renamed \"Edit Profile\" (orange) and opens a pop-up. School limit sits under Phone and in that pop-up. There is one current Application officer. An orange \"+ Add a school\" is at the top right of All Applications. Edit Application (or Request Edit Access) is at the bottom right of the School application box, and Application view Edit is a pop-up.",
+       "justification": "Editing a student meant leaving the profile for a separate page."},
+      {"user_view": "All roles",
+       "task": "You hover the label itself and the \"i\" icons are gone. One floating tip box sits on top of the page, always fully on screen, and the text wraps neatly inside it.",
+       "justification": "Tips were cut off by the edge of the screen and spilled over other fields (the Intake tip over Apply)."},
+      {"user_view": "All roles",
+       "task": "The layout keeps its structure when people enlarge or shrink text.",
+       "justification": "Changing the browser text size broke the layout."},
+      {"user_view": "Counsellor, Admin",
+       "task": "The Status filter has a \"Tagged\" option on All Applications and My Applications, in both views.",
+       "justification": "Tagged applications could not be filtered."}
+    ]
+  },
+  {
+    "date": "2026-10-22", "end_time": "16:00",
+    "entries": [
+      {"user_view": "Super Admin, Admin, Manager",
+       "task": "The Intake Session filters let you tick one month or several, and each matches that exact month.",
+       "justification": "January and September grouped several months, so a single month could not be picked."},
+      {"user_view": "Counsellor",
+       "task": "Counsellors see every school of a shared student. Schools belonging to others show \"Not your application · view only\".",
+       "justification": "Counsellors could not see the full picture of a shared student."},
+      {"user_view": "Counsellor, Admin",
+       "task": "On My Applications, Drafts (including unfinished edits) are folded into one line until opened.",
+       "justification": "Drafts took too much space."},
+      {"user_view": "All roles",
+       "task": "A moon/sun button beside My Profile in the left menu switches between Light and Dark in one click.",
+       "justification": "Switching meant going into My Profile."},
+      {"user_view": "Counsellor",
+       "task": "Note, Task and Log conversation are round icons with the word underneath. Update Student Status sits below them.",
+       "justification": "The old buttons were crowded and the order was unclear."},
+      {"user_view": "Developer",
+       "task": "The real Brevo login details were removed from the .env.example file.",
+       "justification": "Real login details were sitting in a shared example file."},
+      {"user_view": "Counsellor, Super Admin, Developer",
+       "task": "Deposits now have receipts and approvals. The priority school only moves when a deposit is newly paid. Currency is required for Paid Deposit and not needed for Not Paid. The Deposit Amount tooltip is removed.",
+       "justification": "Priority could move on old deposits, and a Paid Deposit could be saved with no currency."}
+    ]
+  },
+  {
+    "date": "2026-10-23", "end_time": "17:00",
+    "entries": [
+      {"user_view": "Counsellor",
+       "task": "Counsellors can edit their own student's profile. There are new \"Different Counsellors\" and \"Different Officers\" filters. The page scrolls to a newly added note, task or conversation.",
+       "justification": "Counsellors had to ask someone else to fix their own student's details."},
+      {"user_view": "Counsellor, Manager, Super Admin",
+       "task": "An offer letter or CAS at any one school ends the lag for all of the student's schools.",
+       "justification": "Schools of a student who already had an offer letter or CAS still showed as lagging."},
+      {"user_view": "All roles",
+       "task": "New emails follow the corrected sheet: task reminders, a milestone email and a weekly manager summary. Only reminders, deposit approvals, milestones and the weekly summary are emailed. Everything else is notification only.",
+       "justification": "Too many things were emailed, and the new reminder and summary emails were missing.",
+       "notes": "The milestone email was switched off on 2026-10-28."},
+      {"user_view": "Counsellor",
+       "task": "Tasks have an optional \"Remind me\" before the due time, and reminders are checked every minute. A task notification opens the task on the student's profile. Clicking a task opens a pop-up to read it, and you can edit it there (title, due, reminder, type, priority, assignee, notes). See more only shows with more than 3 tasks.",
+       "justification": "Tasks could be missed, and could not be read in full or edited."},
+      {"user_view": "Counsellor",
+       "task": "The priority school can be moved to any school. A deposit only counts as Paid when a counsellor marks it. On the Schools card the headline is the priority school, with a small \"Priority school\" label right above it.",
+       "justification": "Priority was stuck, and a deposit could show as Paid without the counsellor marking it."},
+      {"user_view": "Developer",
+       "task": "Officer Admin and Super Admin accounts can be disabled and enabled on User Management.",
+       "justification": "These accounts could not be paused."},
+      {"user_view": "Counsellor, All roles",
+       "task": "An email change shows up everywhere, and counsellors can change their own email on My Profile. The counsellor's email and phone are read live from the account everywhere, and saved copies were synced once. Phone follows too.",
+       "justification": "Old copies of a counsellor's email and phone kept showing on student records."}
+    ]
+  },
+  {
+    "date": "2026-10-26", "end_time": "17:00",
+    "entries": [
+      {"user_view": "Counsellor, Admin, Developer",
+       "task": "Counsellors can Log in a Student again. Submit Application and Log in a Student sit under one \"New Record\" menu. The form is split into \"Log in Submitted Application\" (Admin/Developer) and \"Log in a Student\" (counsellors), which asks whether to submit. The Counsellor Information card is removed from the counsellor form. The duplicate-student message on the Admin/Developer form names the counsellor. The dashes after Yes and No are removed from the submit pop-up.",
+       "justification": "Counsellors and Admins need different forms because a counsellor's student is not yet submitted."},
+      {"user_view": "Counsellor, Admin, Developer",
+       "task": "Source of Lead is required on Submit an Application and Log in a Student, as a searchable dropdown only (it cannot be typed). It shows on the student profile. It was added in two batches of sources. A Developer manages the options (add, rename, remove) under Schools & Programmes → Lead Sources. Reports also has a Source of Lead filter.",
+       "justification": "There was no record of where a student came from."},
+      {"user_view": "Counsellor",
+       "task": "Taking a school off Paid Deposit takes the student off the target, and another unmarked \"paid\" school cannot take its place. The messages are clearer. A school duplicated on two records shows the paid copy.",
+       "justification": "A student could stay on the target after the paid school was removed, or be counted through a different school."},
+      {"user_view": "Counsellor",
+       "task": "The card shows applications newest first, with the date.",
+       "justification": "The order was unclear and had no date."},
+      {"user_view": "Counsellor, Manager",
+       "task": "The Winners & Losers card replaces Recent Activity, with winners on the left and losers on the right in the same card size. Losers at 0% glow red and keep pulsing. A new Performance Overview page sits under Targets.",
+       "justification": "Counsellors could not see how they compare against target."}
+    ]
+  },
+  {
+    "date": "2026-10-27", "end_time": "16:00",
+    "entries": [
+      {"user_view": "Counsellor",
+       "task": "On the Winners & Losers card, the 5 lowest losers blink red, not only those at 0%.",
+       "justification": "Only counsellors at exactly 0% stood out."},
+      {"user_view": "Counsellor, Super Admin",
+       "task": "A student can have only one paid school. The other must be taken off, with approval, before another is marked paid. The \"only one paid school\" sentence was then dropped from the deposit message.",
+       "justification": "A student could show two Paid Deposits."}
+    ]
+  },
+  {
+    "date": "2026-10-28", "end_time": "17:00",
+    "entries": [
+      {"user_view": "All roles",
+       "task": "Milestone notifications are in-app only and no longer emailed. Emails use a card layout with a greeting, a details box and a button into the app.",
+       "justification": "Milestone emails were too many, and the old emails were plain."},
+      {"user_view": "All roles",
+       "task": "Search matches every word typed, in any order or position.",
+       "justification": "A search with several words could miss a student unless the words were in order."},
+      {"user_view": "All roles, including Audit Admin",
+       "task": "When a deposit is paid, confetti and a slide-in banner show on every open page. The confetti fires from all four corners and meets in the middle. The person who saved it sees it instantly, and everyone else gets what they missed, with the day and time of the payment. The banner has a \"View student\" button that opens the exact paid school. Each browser gets its own celebration. Page loading now shows a centred spinner instead of the top line.",
+       "justification": "A paid deposit went unnoticed by the team."},
+      {"user_view": "Super Admin",
+       "task": "A Super Admin who also acts as Manager can be put in a counsellor target group.",
+       "justification": "They could not be added to a group."},
+      {"user_view": "Counsellor, Manager",
+       "task": "Winners & Losers takes Application Trend's place. Application Trend moves to where Winners & Losers / Recent Activity was.",
+       "justification": "Winners & Losers is the card people check first."},
+      {"user_view": "Counsellor, Manager",
+       "task": "- Promising counsellors are those who paid a deposit this week. There is a toggle on the card and a table on the performance page.\n- A winner is now 70% and over (it was 50%).\n- Promising counsellors also stay in their winners/losers table with a star.\n- The Promising card is first on Performance Overview and renamed.\n- Losers' percentage badges flash like an alarm, and the 5 lowest flash whether or not they are at 0%.\n- The card has equal row heights and smaller header buttons. On Performance Overview, the Winners, Losers and Promising tables share one column grid.\n- The \"they keep their place\" wording was removed.",
+       "justification": "Counsellors who paid a deposit this week but were low on target showed only as losers."},
+      {"user_view": "Counsellor, Manager",
+       "task": "On Lagging Applications, the count and arrow sit at the far right end of each row.",
+       "justification": "They were not lined up across rows."}
+    ]
+  }
+]

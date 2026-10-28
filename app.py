@@ -12,6 +12,7 @@ from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
 from openai import OpenAI
 
 import db
+import import_todos
 from import_projects import import_projects as parse_projects_workbook
 from import_daily_log import import_daily_logs
 
@@ -1020,6 +1021,82 @@ def todo_new():
     return render_template("todo_form.html", todo=None, projects=projects, roster=roster,
                            statuses=PROJECT_STATUSES, priorities=TODO_PRIORITIES,
                            preselect_project=request.args.get("project", ""))
+
+@app.route("/todos/import/template")
+@login_required
+def todo_import_template():
+    wb = Workbook()
+    ws = wb.active
+    ws.title = "To Dos"
+    ws.append(import_todos.TEMPLATE_HEADERS)
+    ws.append(["2026-10-30", "5:00 PM", "Counsellor, Admin",
+               "Describe what was done, in your own words.", "Why it was needed.", "Optional extra note."])
+    ws.append(["2026-10-30", "5:00 PM", "All roles", "A second item on the same day.", "", ""])
+    for c in ws[1]:
+        c.font = Font(bold=True)
+    for col, w in zip("ABCDEF", (14, 12, 28, 70, 50, 40)):
+        ws.column_dimensions[col].width = w
+    buf = io.BytesIO()
+    wb.save(buf)
+    buf.seek(0)
+    return send_file(buf, as_attachment=True, download_name="todo_import_template.xlsx",
+                     mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+
+@app.route("/todos/import", methods=["GET", "POST"])
+@login_required
+def todo_import():
+    """Bulk-add To Dos from a JSON file (or the saved import_todos_data.json).
+    Step 1 previews what would be added; step 2 (confirm) saves it. Rows are saved
+    exactly as the Insert To Do form saves them; existing To Dos are never changed."""
+    projects = load_projects()
+    roster = load_roster()
+    default_project = next((p["id"] for p in projects if p["name"] == import_todos.PROJECT_NAME), "")
+    default_person = next((m["name"] for m in roster if m["name"] == import_todos.PERSON), "")
+    ctx = dict(projects=projects, roster=roster, project_id=default_project, assignee=default_person,
+               preview=None, payload="")
+    if request.method == "GET":
+        return render_template("todo_import.html", **ctx)
+
+    project_id = request.form.get("project_id", "")
+    assignee = request.form.get("assignee", "")
+    ctx.update(project_id=project_id, assignee=assignee)
+    if project_id not in {p["id"] for p in projects} or assignee not in {m["name"] for m in roster}:
+        flash("Pick a project and a team member.", "error")
+        return render_template("todo_import.html", **ctx)
+
+    step = request.form.get("step", "preview")
+    try:
+        if step == "import":
+            raw = request.form.get("payload", "")
+        else:
+            upload = request.files.get("file")
+            if upload and upload.filename.lower().endswith((".xlsx", ".xlsm")):
+                days = import_todos.days_from_xlsx(upload)
+            elif upload and upload.filename:
+                days = json.loads(upload.read().decode("utf-8-sig"))
+            else:
+                with open(import_todos.DATA_FILE, encoding="utf-8") as f:
+                    days = json.load(f)
+            raw = json.dumps(days, ensure_ascii=False)
+        if step == "import":
+            days = json.loads(raw)
+        import_todos.validate(days)
+    except Exception as exc:
+        flash(f"Could not read that file: {exc}", "error")
+        return render_template("todo_import.html", **ctx)
+
+    rows = import_todos.build_rows(days, project_id, assignee, session["user"]["name"])
+    with db._db() as (conn, cur):
+        new, skipped = import_todos.import_rows(cur, rows, dry_run=(step != "import"))
+
+    if step == "import":
+        db.log_audit(session["user"]["name"], "Imported to-dos", f"{len(new)} added, {len(skipped)} skipped")
+        flash(f"Imported {len(new)} to-do(s). {len(skipped)} already existed and were skipped.", "success")
+        return redirect(url_for("todos_list", project=project_id))
+
+    new_ids = {r["id"] for r in new}
+    ctx.update(payload=raw, preview=dict(rows=rows, new_ids=new_ids, new=len(new), skipped=len(skipped)))
+    return render_template("todo_import.html", **ctx)
 
 @app.route("/todos/<todo_id>/edit", methods=["GET", "POST"])
 @login_required

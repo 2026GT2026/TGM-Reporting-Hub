@@ -6,6 +6,7 @@
 {% block content %}
 <div class="tab-bar">
   <a href="{{ url_for('todo_new') }}" class="tab-link {% if not todo %}active{% endif %}">Insert To Do</a>
+  <a href="{{ url_for('todo_import') }}" class="tab-link">Import To Do</a>
   <a href="{{ url_for('todos_list') }}" class="tab-link {% if todo %}active{% endif %}">Tracker</a>
 </div>
 
