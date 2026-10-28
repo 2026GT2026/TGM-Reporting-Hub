@@ -288,6 +288,12 @@ hr { border: none; border-top: 1px solid var(--border); margin: 1rem 0; }
 .data-table th:last-child, .data-table td:last-child { border-right: none; }
 .data-table tr:last-child td { border-bottom: none; }
 .data-table th.nowrap, .data-table td.nowrap { white-space: nowrap; }
+/* Click-to-sort headers. A faint ⇅ marks every sortable column up front; it becomes a
+   solid ▲/▼ in the accent colour on whichever column is sorted. */
+th.sortable-th { cursor: pointer; user-select: none; }
+th.sortable-th:hover { color: var(--ink); }
+th.sortable-th .sort-indicator { display: inline-block; width: 1em; margin-left: 0.25rem; color: #CBD5E1; font-size: 1.1em; }
+th.sortable-th[data-sort-dir] .sort-indicator { color: var(--teal); font-weight: 700; font-size: 1.15em; }
 /* Action column pinned to the right edge so it stays visible on wide tables */
 .data-table th.sticky-action, .data-table td.sticky-action {
   position: sticky; right: 0; white-space: nowrap;
@@ -505,6 +511,74 @@ document.querySelectorAll('.alert').forEach(a => setTimeout(() => { a.style.tran
     sidebar.classList.contains('open') ? closeMenu() : openMenu();
   });
   backdrop.addEventListener('click', closeMenu);
+})();
+
+// Click a column header to sort that table: first click ascending, next descending.
+// Numbers sort as numbers, dates as dates, everything else alphabetically; empty cells go last.
+(function () {
+  var NUMERIC_RE = /^[^\d\s]{0,5}[\d,]+(\.\d+)?[^\d\s]{0,3}$/;
+  var DATE_RE = /^(\d{4})-(\d{2})-(\d{2})(?:[ T](\d{1,2}):(\d{2}))?/;
+  function isEmpty(v) { return v === '' || v === '—'; }
+  function cellSortKey(td) {
+    if (!td) return '';
+    if (td.dataset.sortValue !== undefined) return td.dataset.sortValue.trim();
+    var sel = td.querySelector('select');
+    if (sel) return sel.options[sel.selectedIndex] ? sel.options[sel.selectedIndex].textContent.trim() : '';
+    var ta = td.querySelector('textarea');
+    if (ta) return ta.value.trim();
+    return td.textContent.trim().replace(/\s+/g, ' ');
+  }
+  function toNumber(v) { return parseFloat(v.replace(/[^0-9.\-]/g, '')); }
+  function toTime(v) {
+    var m = DATE_RE.exec(v);
+    return Date.UTC(+m[1], +m[2] - 1, +m[3], +(m[4] || 0), +(m[5] || 0));
+  }
+  function sortTable(table, colIndex, dir) {
+    var tbody = table.querySelector('tbody');
+    if (!tbody) return;
+    var rows = Array.prototype.slice.call(tbody.children);
+    var keys = rows.map(function (r) { return cellSortKey(r.children[colIndex]); });
+    var filled = keys.filter(function (k) { return !isEmpty(k); });
+    var numeric = filled.length && filled.every(function (k) { return NUMERIC_RE.test(k); });
+    var dated = !numeric && filled.length && filled.every(function (k) { return DATE_RE.test(k); });
+    var order = rows.map(function (_, i) { return i; });
+    order.sort(function (ia, ib) {
+      var a = keys[ia], b = keys[ib];
+      var ea = isEmpty(a), eb = isEmpty(b);
+      if (ea || eb) return ea && eb ? ia - ib : (ea ? 1 : -1);   // empty always last
+      var cmp = numeric ? toNumber(a) - toNumber(b)
+              : dated   ? toTime(a) - toTime(b)
+              : a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' });
+      return cmp ? (dir === 'desc' ? -cmp : cmp) : ia - ib;
+    });
+    var frag = document.createDocumentFragment();
+    order.forEach(function (i) { frag.appendChild(rows[i]); });
+    tbody.appendChild(frag);
+  }
+  document.querySelectorAll('table').forEach(function (table) {
+    var headRow = table.querySelector('thead tr:last-child');
+    var tbody = table.querySelector('tbody');
+    if (!headRow || !tbody || tbody.children.length < 2) return;   // nothing worth sorting
+    Array.prototype.forEach.call(headRow.children, function (th, colIndex) {
+      if (th.tagName !== 'TH' || !th.textContent.trim() || th.classList.contains('no-sort')) return;
+      th.classList.add('sortable-th');
+      var indicator = document.createElement('span');
+      indicator.className = 'sort-indicator';
+      indicator.textContent = '⇅';
+      th.appendChild(indicator);
+      th.addEventListener('click', function () {
+        var next = th.getAttribute('data-sort-dir') === 'asc' ? 'desc' : 'asc';
+        Array.prototype.forEach.call(headRow.children, function (other) {
+          other.removeAttribute('data-sort-dir');
+          var ind = other.querySelector('.sort-indicator');
+          if (ind) ind.textContent = '⇅';
+        });
+        th.setAttribute('data-sort-dir', next);
+        indicator.textContent = next === 'asc' ? '▲' : '▼';
+        sortTable(table, colIndex, next);
+      });
+    });
+  });
 })();
 
 (function () {

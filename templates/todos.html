@@ -91,7 +91,7 @@
       {% for t in todos %}
       <tr style="background:{{ project_tint(t.project_id) }};">
         {% if not project_filter %}<td class="nowrap proj-cell" style="border-left:5px solid {{ project_color(t.project_id) }};">{{ t.project_name }}</td>{% endif %}
-        <td class="nowrap">
+        <td class="nowrap" data-sort-value="{{ priorities.index(t.priority) if t.priority in priorities else '' }}">
           <form method="POST" action="{{ url_for('todo_priority', todo_id=t.id) }}">
             <input type="hidden" name="project_filter" value="{{ project_filter }}">
             <input type="hidden" name="status_filter" value="{{ status_filter }}">
@@ -105,16 +105,16 @@
         </td>
         <td class="nowrap">{{ t.user_view or '—' }}</td>
         <td class="truncate" title="{{ t.task }}" onclick="this.classList.toggle('expanded')">{{ t.task }}</td>
-        <td class="nowrap">
+        <td class="nowrap" data-sort-value="{{ t.assignee }}">
           <span class="assignee-cell">
             <span class="avatar-circle">{{ t.assignee[:1]|upper }}</span>{{ t.assignee }}
           </span>
         </td>
-        <td class="nowrap">
+        <td class="nowrap" data-sort-value="{% if t.start_date %}{{ t.start_date }} {{ t.start_time or '09:00' }}{% endif %}">
           {{ t.start_date or '—' }}
           {% if t.start_date %}<div style="font-size:0.7rem; color:#94A3B8;">{{ pretty_time(t.start_time) or '9:00 AM' }}</div>{% endif %}
         </td>
-        <td class="nowrap">
+        <td class="nowrap" data-sort-value="{% if t.expected_end_date %}{{ t.expected_end_date }} {{ t.expected_end_time }}{% endif %}">
           {{ t.expected_end_date or '—' }}
           {% if t.expected_end_date %}<div style="font-size:0.7rem; color:#94A3B8;">{{ pretty_time(t.expected_end_time) }} · {{ t.duration_hours }} hr{{ 's' if t.duration_hours != 1 }}</div>{% endif %}
           {% if t.overdue %}<span class="overdue-tag">Overdue</span>{% endif %}
@@ -130,7 +130,7 @@
             </select>
           </form>
         </td>
-        <td class="nowrap">
+        <td class="nowrap" data-sort-value="{% if t.completed_date %}{{ t.completed_date }} {{ t.completed_time or '00:00' }}{% endif %}">
           <form method="POST" action="{{ url_for('todo_completed', todo_id=t.id) }}" class="inline-datetime-form">
             <input type="hidden" name="project_filter" value="{{ project_filter }}">
             <input type="hidden" name="status_filter" value="{{ status_filter }}">
@@ -139,7 +139,7 @@
           </form>
           {% if t.actual_duration_hours is not none %}<div style="font-size:0.7rem; color:#94A3B8;">{{ t.actual_duration_hours }} hr{{ 's' if t.actual_duration_hours != 1 }}</div>{% endif %}
         </td>
-        <td class="nowrap">
+        <td class="nowrap" data-sort-value="{{ t.hours_estimate if t.hours_estimate is not none else '' }}">
           <span {% if t.hours_estimate_approved %}style="color:var(--green-dark); font-weight:700;"{% endif %}>{{ t.hours_estimate if t.hours_estimate is not none else '—' }}</span>
           {% if t.hours_estimate_approved %}<span title="Estimate approved" style="color:var(--green-dark);">✓</span>{% endif %}
           <span style="color:#94A3B8;"> / </span>{{ t.hours_actual if t.hours_actual is not none else '—' }}

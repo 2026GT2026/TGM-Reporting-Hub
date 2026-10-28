@@ -61,7 +61,7 @@
         <td><a href="{{ url_for('project_detail', project_id=p.id) }}" style="color:#1C2B3A; font-weight:600; text-decoration:none;">{{ p.name }}</a></td>
         <td>{{ p.owner }}</td>
         <td><span class="badge badge-{{ project_status_badge(p.status) }}">{{ p.status }}</span></td>
-        <td style="min-width:100px;">
+        <td style="min-width:100px;" data-sort-value="{{ p.percent_complete }}">
           <div class="progress-track"><div class="progress-fill" style="width:{{ p.percent_complete }}%;"></div></div>
         </td>
         <td>{{ p.deadline }}</td>

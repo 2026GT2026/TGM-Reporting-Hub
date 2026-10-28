@@ -81,7 +81,7 @@
       {% for r in preview.rows %}
         <tr>
           <td>{{ loop.index }}</td>
-          <td>{{ r.start_date }} 9:00 AM</td>
+          <td data-sort-value="{{ r.start_date }}">{{ r.start_date }} 9:00 AM</td>
           <td>{{ r.completed_time }}</td>
           <td>{{ r.user_view }}</td>
           <td style="white-space:pre-line;">{{ r.task }}</td>
