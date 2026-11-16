@@ -241,11 +241,19 @@ def get_recent_reports(name, before_date, limit=None):
     )
     return mine if limit is None else mine[:limit]
 
+DISABLED_MSG = "This account has been disabled. Contact an administrator."
+
+def active_roster(roster):
+    """People who can still use the system (not disabled)."""
+    return [m for m in roster if not m.get("disabled")]
+
 def today_submission_status(roster, reports):
     tk = today_key()
+    # Disabled people are not expected to submit, so they never show as pending.
+    pending_roster = active_roster(roster)
     submitted_names = {r["name"] for r in reports
                        if r["date"]==tk and r["status"]=="submitted"}
-    pending_today   = [m for m in roster if m["name"] not in submitted_names]
+    pending_today   = [m for m in pending_roster if m["name"] not in submitted_names]
     submitted_today = sorted(
         [r for r in reports if r["date"]==tk and r["status"]=="submitted"],
         key=lambda x: [m["name"] for m in roster].index(x["name"])
@@ -271,6 +279,20 @@ def admin_required(f):
         return f(*args, **kwargs)
     return decorated
 
+@app.before_request
+def block_disabled_users():
+    """Disabling takes effect immediately: a signed-in user who has since been
+    disabled (or removed) is signed out on their very next request."""
+    if "user" not in session or request.endpoint in (None, "static"):
+        return
+    me = next((m for m in load_roster() if m["id"] == session["user"].get("id")), None)
+    if me is None or me.get("disabled"):
+        was_disabled = me is not None
+        session.clear()
+        if was_disabled:
+            flash(DISABLED_MSG, "error")
+        return redirect(url_for("login"))
+
 # ── Routes ─────────────────────────────────────────────────────────────────────
 @app.route("/", methods=["GET", "POST"])
 def login():
@@ -291,6 +313,11 @@ def login():
             flash("This account hasn't been activated yet. Ask your admin to set a password.", "error")
         elif not check_password_hash(member["password_hash"], password):
             flash("Invalid username or password.", "error")
+        elif member.get("disabled"):
+            # Only shown once the password is right, so the message can't be used
+            # to find out which usernames exist.
+            db.log_audit(member["name"], "Blocked sign-in (account disabled)")
+            flash(DISABLED_MSG, "error")
         else:
             session["user"] = {k: v for k, v in member.items() if k != "password_hash"}
             db.log_audit(member["name"], "Logged in")
@@ -540,6 +567,9 @@ def log_report():
 
     if not any(m["name"] == member_name for m in roster):
         flash("Member not found.", "error")
+        return redirect(url_for(back_endpoint, **back_args))
+    if any(m["name"] == member_name and m.get("disabled") for m in roster):
+        flash(f"{member_name}'s account is disabled. Re-enable it before logging a report for them.", "error")
         return redirect(url_for(back_endpoint, **back_args))
 
     parsed = try_parse_date(report_date)
@@ -859,7 +889,8 @@ def todos_list():
     for t in all_todos:
         project_counts[t["project_id"]] = project_counts.get(t["project_id"], 0) + 1
 
-    return render_template("todos.html", todos=todos, projects=projects,
+    disabled_names = {m["name"] for m in load_roster() if m.get("disabled")}
+    return render_template("todos.html", todos=todos, projects=projects, disabled_names=disabled_names,
                            project_filter=project_filter, status_filter=status_filter,
                            project_filter_name=project_names.get(project_filter, ""),
                            project_counts=project_counts, stats=stats,
@@ -1180,7 +1211,14 @@ def team():
     week_total = sum(len(d["names"]) for d in week_preview)
 
     pending_today, submitted_today = today_submission_status(roster, reports)
+    # Open to-dos still sitting with disabled people, so an admin can hand them over
+    open_by_disabled = {}
+    disabled_names = {m["name"] for m in roster if m.get("disabled")}
+    for t in load_todos():
+        if t["assignee"] in disabled_names and t["status"] != "Completed":
+            open_by_disabled[t["assignee"]] = open_by_disabled.get(t["assignee"], 0) + 1
     return render_template("team.html", user=session["user"], roster=roster,
+                           open_by_disabled=open_by_disabled,
                            pending_today=pending_today, submitted_today=submitted_today,
                            monday=monday_date.isoformat(), prev_monday=prev_monday, next_monday=next_monday,
                            week_preview=week_preview, week_total=week_total,
@@ -1345,10 +1383,11 @@ def download_all():
 
     ws = wb.active
     ws.title = "Roster"
-    bd = styled_export_sheet(ws, ["Name", "Role", "Username"], [26, 14, 22])
+    bd = styled_export_sheet(ws, ["Name", "Role", "Username", "Status"], [26, 14, 22, 14])
     row = 2
     for m in roster:
-        values = [m["name"], m.get("role", ""), m.get("username", "")]
+        values = [m["name"], m.get("role", ""), m.get("username", ""),
+                  "Disabled" if m.get("disabled") else "Active"]
         for col, val in enumerate(values, 1):
             c = ws.cell(row=row, column=col, value=val)
             c.alignment = Alignment(vertical="top")
@@ -1560,6 +1599,67 @@ def update_member():
     detail = f"{old_name} -> {new_name}" if old_name != new_name else new_name
     db.log_audit(session["user"]["name"], "Updated team member", detail)
     flash(f"{new_name}'s details updated.", "success")
+    return redirect(url_for("team"))
+
+@app.route("/disable-member", methods=["POST"])
+@login_required
+@admin_required
+def disable_member():
+    member_id = request.form.get("id")
+    reason    = request.form.get("reason", "").strip()
+    roster = load_roster()
+    member = next((m for m in roster if m["id"] == member_id), None)
+    if not member:
+        flash("Member not found.", "error")
+        return redirect(url_for("team"))
+    if not reason:
+        flash("Give a reason for disabling the account.", "error")
+        return redirect(url_for("team"))
+    if member["id"] == session["user"]["id"]:
+        flash("You can't disable your own account.", "error")
+        return redirect(url_for("team"))
+    if member.get("disabled"):
+        flash(f"{member['name']} is already disabled.", "error")
+        return redirect(url_for("team"))
+    if member["role"] == "admin" and not any(
+            m["role"] == "admin" and not m.get("disabled") and m["id"] != member_id for m in roster):
+        flash("Can't disable the last active admin. Make someone else an admin first.", "error")
+        return redirect(url_for("team"))
+    member["disabled"]        = 1
+    member["disabled_at"]     = datetime.now().isoformat()
+    member["disabled_by"]     = session["user"]["name"]
+    member["disabled_reason"] = reason
+    save_roster(roster)
+    open_count = sum(1 for t in load_todos()
+                     if t["assignee"] == member["name"] and t["status"] != "Completed")
+    db.log_audit(session["user"]["name"], "Disabled team member", f"{member['name']}. Reason: {reason}")
+    msg = f"{member['name']} has been disabled and will be signed out on their next click."
+    if open_count:
+        msg += f" They still have {open_count} open to-do(s) to hand over."
+    flash(msg, "success")
+    return redirect(url_for("team"))
+
+@app.route("/enable-member", methods=["POST"])
+@login_required
+@admin_required
+def enable_member():
+    member_id = request.form.get("id")
+    reason    = request.form.get("reason", "").strip()
+    roster = load_roster()
+    member = next((m for m in roster if m["id"] == member_id), None)
+    if not member or not member.get("disabled"):
+        flash("That account isn't disabled.", "error")
+        return redirect(url_for("team"))
+    if not reason:
+        flash("Give a reason for re-enabling the account.", "error")
+        return redirect(url_for("team"))
+    member["disabled"]        = 0
+    member["disabled_at"]     = None
+    member["disabled_by"]     = None
+    member["disabled_reason"] = None
+    save_roster(roster)
+    db.log_audit(session["user"]["name"], "Re-enabled team member", f"{member['name']}. Reason: {reason}")
+    flash(f"{member['name']} can sign in again.", "success")
     return redirect(url_for("team"))
 
 @app.route("/remove-member", methods=["POST"])

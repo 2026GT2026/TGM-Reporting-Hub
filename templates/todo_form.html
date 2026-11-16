@@ -29,7 +29,9 @@
         <select name="assignee" class="form-control" required>
           <option value="">Select a team member</option>
           {% for m in roster %}
-          <option value="{{ m.name }}" {% if todo and todo.assignee==m.name %}selected{% endif %}>{{ m.name }}</option>
+          {% if not m.disabled or (todo and todo.assignee==m.name) %}
+          <option value="{{ m.name }}" {% if todo and todo.assignee==m.name %}selected{% endif %}>{{ m.name }}{% if m.disabled %} (disabled){% endif %}</option>
+          {% endif %}
           {% endfor %}
         </select>
       </div>

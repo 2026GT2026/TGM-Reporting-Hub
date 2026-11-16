@@ -28,7 +28,7 @@
         <label class="form-label">Assigned To</label>
         <select name="assignee" class="form-control" required>
           <option value="">Select a team member</option>
-          {% for m in roster %}
+          {% for m in roster if not m.disabled %}
           <option value="{{ m.name }}" {% if assignee==m.name %}selected{% endif %}>{{ m.name }}</option>
           {% endfor %}
         </select>

@@ -6,7 +6,7 @@
 {% block content %}
 <div class="hero-banner">
   <div class="hero-greeting">◈ Team Overview</div>
-  <div class="hero-sub">{{ submitted_today|length }} submitted, {{ pending_today|length }} still pending today · {{ roster|length }} people on the roster.</div>
+  <div class="hero-sub">{{ submitted_today|length }} submitted, {{ pending_today|length }} still pending today · {{ roster|length }} people on the roster{% set dn = roster|selectattr("disabled")|list|length %}{% if dn %} ({{ dn }} disabled){% endif %}.</div>
 </div>
 
 <!-- Pending today -->
@@ -140,11 +140,19 @@
       <div class="card-sub">Sets the fixed order for exports. Add members here so they can sign in. Email is optional but lets that person sign in with either their username or their email.</div>
     </div>
   </div>
+  {% if open_by_disabled %}
+  <div class="alert alert-error" style="margin-bottom:0.8rem;">
+    Hand over needed:
+    {% for name, n in open_by_disabled.items() %}{{ name }} has {{ n }} open to-do{{ 's' if n != 1 }}{% if not loop.last %}; {% endif %}{% endfor %}.
+    Reassign them from the <a href="{{ url_for('todos_list') }}">To Do page</a> (Edit, then Assigned To).
+  </div>
+  {% endif %}
   {% for m in roster %}
-  <div class="roster-item" style="flex-direction:column; align-items:stretch; gap:0.4rem;">
+  <div class="roster-item" style="flex-direction:column; align-items:stretch; gap:0.4rem;{% if m.disabled %} background:#F1F5F9; opacity:.85;{% endif %}">
     <form method="POST" action="{{ url_for('update_member') }}" style="display:flex; gap:0.5rem; align-items:center; flex-wrap:wrap;">
       <span class="roster-num">{{ loop.index }}.</span>
       <input type="hidden" name="id" value="{{ m.id }}">
+      <input type="hidden" name="reason" value="">
       <input type="text" name="name" value="{{ m.name }}" class="form-control" placeholder="Full name" style="flex:1; min-width:110px; padding:0.3rem 0.6rem; font-size:0.84rem;">
       <input type="text" name="username" value="{{ m.username or '' }}" class="form-control" placeholder="Username" style="width:120px; padding:0.3rem 0.6rem; font-size:0.84rem;">
       <input type="email" name="email" value="{{ m.email or '' }}" class="form-control" placeholder="Email (optional)" style="width:170px; padding:0.3rem 0.6rem; font-size:0.84rem;">
@@ -153,10 +161,22 @@
         <option value="member" {% if m.role != 'admin' %}selected{% endif %}>Team Member</option>
         <option value="admin" {% if m.role == 'admin' %}selected{% endif %}>Admin</option>
       </select>
+      {% if m.disabled %}
+      <span class="badge" style="background:#FEE2E2;color:#B91C1C;" title="Disabled {{ (m.disabled_at or '')[:10] }} by {{ m.disabled_by or '?' }}: {{ m.disabled_reason or '' }}">Disabled</span>
+      {% endif %}
       {% if not m.password_hash %}
       <span class="badge badge-pending">Not activated</span>
       {% endif %}
       <button type="submit" class="btn btn-outline btn-sm">Save</button>
+      {% if m.disabled %}
+      <button type="submit" formaction="{{ url_for('enable_member') }}" formnovalidate class="btn btn-outline btn-sm"
+              style="color:#15803D; border-color:#BBF7D0;"
+              onclick="var r=prompt('Re-enable {{ m.name|e }}?\n\nThey will be able to sign in again, with the same access as before.\n\nReason:'); if(r===null||!r.trim()) return false; this.form.reason.value=r;">Re-enable</button>
+      {% elif m.id != current_user.id %}
+      <button type="submit" formaction="{{ url_for('disable_member') }}" formnovalidate class="btn btn-outline btn-sm"
+              style="color:#B45309; border-color:#FDE68A;"
+              onclick="var r=prompt('Disable {{ m.name|e }}?\n\nThey will be signed out right away and cannot sign in. Nothing is deleted: their name stays on old reports and to-dos, and you can re-enable them any time. They will no longer appear in pick lists or as pending reports.\n\nReason:'); if(r===null||!r.trim()) return false; this.form.reason.value=r;">Disable</button>
+      {% endif %}
       <button type="submit" formaction="{{ url_for('remove_member') }}" formnovalidate
               class="btn btn-outline btn-sm" style="color:#DC2626; border-color:#FECACA;"
               onclick="return confirm('Remove {{ m.name }}?')">Remove</button>

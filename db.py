@@ -116,7 +116,11 @@ _SCHEMA = [
             role          VARCHAR(32) NOT NULL DEFAULT 'member',
             username      VARCHAR(255) NOT NULL UNIQUE,
             password_hash TEXT,
-            email         VARCHAR(255) UNIQUE
+            email         VARCHAR(255) UNIQUE,
+            disabled        TINYINT(1) NOT NULL DEFAULT 0,
+            disabled_at     VARCHAR(32),
+            disabled_by     VARCHAR(120),
+            disabled_reason TEXT
         ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci""",
     """CREATE TABLE IF NOT EXISTS reports (
             id            VARCHAR(64) PRIMARY KEY,
@@ -236,6 +240,16 @@ def _run_migrations(cur):
         cur.execute("ALTER TABLE todos DROP COLUMN duration_days")
     except Exception:
         pass
+    for stmt in [
+        "ALTER TABLE roster ADD COLUMN disabled TINYINT(1) NOT NULL DEFAULT 0",
+        "ALTER TABLE roster ADD COLUMN disabled_at VARCHAR(32)",
+        "ALTER TABLE roster ADD COLUMN disabled_by VARCHAR(120)",
+        "ALTER TABLE roster ADD COLUMN disabled_reason TEXT",
+    ]:
+        try:
+            cur.execute(stmt)
+        except Exception:
+            pass
     try:
         cur.execute("ALTER TABLE projects ADD COLUMN secondary_owner TEXT")
     except Exception:
@@ -297,7 +311,8 @@ def _save_table(table, columns, rows):
             cur.executemany(sql, values)
 
 
-ROSTER_COLUMNS   = ["id", "name", "role", "username", "password_hash", "email"]
+ROSTER_COLUMNS   = ["id", "name", "role", "username", "password_hash", "email",
+                     "disabled", "disabled_at", "disabled_by", "disabled_reason"]
 REPORTS_COLUMNS  = ["id", "name", "date", "raw_work", "raw_pending", "generated",
                      "status", "submitted_at", "logged_by", "logged_at",
                      "edited_by", "edited_at"]

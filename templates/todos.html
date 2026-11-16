@@ -108,6 +108,7 @@
         <td class="nowrap" data-sort-value="{{ t.assignee }}">
           <span class="assignee-cell">
             <span class="avatar-circle">{{ t.assignee[:1]|upper }}</span>{{ t.assignee }}
+            {% if t.assignee in disabled_names and t.status != 'Completed' %}<span class="badge" style="background:#FEE2E2;color:#B91C1C;font-size:0.62rem;" title="This person's account is disabled. Reassign this to-do.">owner disabled</span>{% endif %}
           </span>
         </td>
         <td class="nowrap" data-sort-value="{% if t.start_date %}{{ t.start_date }} {{ t.start_time or '09:00' }}{% endif %}">

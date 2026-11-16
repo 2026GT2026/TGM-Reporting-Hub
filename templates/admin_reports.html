@@ -17,7 +17,7 @@
       <label class="form-label">Member</label>
       <select name="member" class="form-control" style="width:200px;" onchange="this.form.submit()">
         {% for m in roster %}
-        <option value="{{ m.name }}" {% if m.name==member %}selected{% endif %}>{{ m.name }}</option>
+        <option value="{{ m.name }}" {% if m.name==member %}selected{% endif %}>{{ m.name }}{% if m.disabled %} (disabled){% endif %}</option>
         {% endfor %}
       </select>
     </div>
@@ -40,7 +40,7 @@
         <label class="form-label">Member</label>
         <select name="member" class="form-control">
           {% for m in roster %}
-          <option value="{{ m.name }}" {% if m.name==member %}selected{% endif %}>{{ m.name }}</option>
+          <option value="{{ m.name }}" {% if m.name==member %}selected{% endif %}>{{ m.name }}{% if m.disabled %} (disabled){% endif %}</option>
           {% endfor %}
         </select>
       </div>
