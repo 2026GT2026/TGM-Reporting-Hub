@@ -689,7 +689,8 @@ def project_new():
         db.log_audit(session["user"]["name"], "Added project", f"{project_id} ({projects[-1]['name']})")
         flash(f"Project {project_id} added.", "success")
         return redirect(url_for("projects_list"))
-    return render_template("project_form.html", project=None, statuses=PROJECT_STATUSES)
+    return render_template("project_form.html", project=None, statuses=PROJECT_STATUSES,
+                           owner_names=[m["name"] for m in active_roster(load_roster())])
 
 @app.route("/projects/<project_id>")
 @login_required
@@ -754,7 +755,8 @@ def project_edit(project_id):
         db.log_audit(session["user"]["name"], "Updated project", f"{detail} ({p['name']})")
         flash(f"Project {new_id} updated.", "success")
         return redirect(url_for("project_detail", project_id=new_id))
-    return render_template("project_form.html", project=projects[idx], statuses=PROJECT_STATUSES)
+    return render_template("project_form.html", project=projects[idx], statuses=PROJECT_STATUSES,
+                           owner_names=[m["name"] for m in active_roster(load_roster())])
 
 @app.route("/projects/<project_id>/delete", methods=["POST"])
 @login_required
