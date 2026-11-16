@@ -20,8 +20,8 @@ load_dotenv()
 
 app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", "reporthub-secret-2026")
-# Sign users out after 5 minutes of inactivity (timer resets on every request)
-IDLE_TIMEOUT_MINUTES = 5
+# Sign users out after 30 minutes of inactivity (timer resets on every request)
+IDLE_TIMEOUT_MINUTES = 30
 app.permanent_session_lifetime = timedelta(minutes=IDLE_TIMEOUT_MINUTES)
 
 db.init_db()

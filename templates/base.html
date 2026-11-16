@@ -625,10 +625,10 @@ document.querySelectorAll('.alert').forEach(a => setTimeout(() => { a.style.tran
       JSON.stringify({url: p + location.search, title: document.title.replace(/^Reportly:\s*/, '')}));
   } catch (e) {}
 })();
-// Sign out after 5 minutes with no mouse, keyboard, scroll or touch activity
+// Sign out after 30 minutes with no mouse, keyboard, scroll or touch activity
 (function () {
   var t;
-  function reset() { clearTimeout(t); t = setTimeout(function () { location.href = '/logout'; }, 5 * 60 * 1000); }
+  function reset() { clearTimeout(t); t = setTimeout(function () { location.href = '/logout'; }, 30 * 60 * 1000); }
   ['mousemove','mousedown','keydown','scroll','touchstart','click'].forEach(function (e) {
     document.addEventListener(e, reset, {passive: true});
   });
