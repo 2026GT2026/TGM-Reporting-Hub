@@ -175,7 +175,7 @@
       <button type="submit" formaction="{{ url_for('enable_member') }}" formnovalidate class="btn btn-outline btn-sm"
               style="color:#15803D; border-color:#BBF7D0;"
               onclick="var r=prompt('Re-enable {{ m.name|e }}?\n\nThey will be able to sign in again, with the same access as before.\n\nReason:'); if(r===null||!r.trim()) return false; this.form.reason.value=r;">Re-enable</button>
-      {% elif m.id != current_user.id %}
+      {% elif m.role != 'admin' %}
       <button type="submit" formaction="{{ url_for('disable_member') }}" formnovalidate class="btn btn-outline btn-sm"
               style="color:#B45309; border-color:#FDE68A;"
               onclick="var r=prompt('Disable {{ m.name|e }}?\n\nThey will be signed out right away and cannot sign in. Nothing is deleted: their name stays on old reports and to-dos, and you can re-enable them any time. They will no longer appear in pick lists or as pending reports.\n\nReason:'); if(r===null||!r.trim()) return false; this.form.reason.value=r;">Disable</button>
