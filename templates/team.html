@@ -161,12 +161,15 @@
         <option value="member" {% if m.role != 'admin' %}selected{% endif %}>Team Member</option>
         <option value="admin" {% if m.role == 'admin' %}selected{% endif %}>Admin</option>
       </select>
+      <span style="flex:0 1 96px; width:96px; display:flex; gap:4px; flex-wrap:wrap; align-items:center;">
       {% if m.disabled %}
       <span class="badge" style="background:#FEE2E2;color:#B91C1C;" title="Disabled {{ (m.disabled_at or '')[:10] }} by {{ m.disabled_by or '?' }}: {{ m.disabled_reason or '' }}">Disabled</span>
       {% endif %}
       {% if not m.password_hash %}
       <span class="badge badge-pending">Not activated</span>
       {% endif %}
+      </span>
+      <span style="flex:0 1 230px; width:230px; display:flex; gap:6px; justify-content:flex-end; align-items:center;">
       <button type="submit" class="btn btn-outline btn-sm">Save</button>
       {% if m.disabled %}
       <button type="submit" formaction="{{ url_for('enable_member') }}" formnovalidate class="btn btn-outline btn-sm"
@@ -180,6 +183,7 @@
       <button type="submit" formaction="{{ url_for('remove_member') }}" formnovalidate
               class="btn btn-outline btn-sm" style="color:#DC2626; border-color:#FECACA;"
               onclick="return confirm('Remove {{ m.name }}?')">Remove</button>
+      </span>
     </form>
   </div>
   {% endfor %}
