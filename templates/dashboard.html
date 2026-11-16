@@ -52,7 +52,7 @@
   <table class="data-table">
     <thead>
       <tr>
-        <th>Project</th><th>Lead / Contributors</th><th>Status</th><th>Percent</th><th>Deadline</th><th></th>
+        <th>Project</th><th>Primary Owner</th><th>Secondary Owner</th><th>Status</th><th>Percent</th><th>Deadline</th><th></th>
       </tr>
     </thead>
     <tbody>
@@ -60,14 +60,15 @@
       <tr>
         <td><a href="{{ url_for('project_detail', project_id=p.id) }}" style="color:#1C2B3A; font-weight:600; text-decoration:none;">{{ p.name }}</a></td>
         <td>{{ p.owner }}</td>
+        <td>{{ p.secondary_owner }}</td>
         <td><span class="badge badge-{{ project_status_badge(p.status) }}">{{ p.status }}</span></td>
         <td style="min-width:100px;" data-sort-value="{{ p.percent_complete }}">
           <div class="progress-track"><div class="progress-fill" style="width:{{ p.percent_complete }}%;"></div></div>
         </td>
-        <td>{{ p.deadline }}</td>
+        <td style="white-space:nowrap;">{{ p.deadline }}</td>
         <td>
           {% if current_user.role == 'admin' %}
-          <a href="{{ url_for('project_edit', project_id=p.id) }}" class="btn btn-outline btn-sm">Edit</a>
+          <a href="{{ url_for('project_edit', project_id=p.id) }}" class="btn btn-outline btn-sm" style="white-space:nowrap;">Edit</a>
           {% endif %}
         </td>
       </tr>

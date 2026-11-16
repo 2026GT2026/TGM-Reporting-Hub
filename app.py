@@ -643,6 +643,7 @@ def project_new():
             "name": request.form.get("name","").strip(),
             "description": request.form.get("description","").strip(),
             "owner": request.form.get("owner","").strip(),
+            "secondary_owner": request.form.get("secondary_owner","").strip(),
             "progress_summary": request.form.get("progress_summary","").strip(),
             "status": request.form.get("status","Not Started"),
             "percent_complete": int(request.form.get("percent_complete") or 0),
@@ -699,6 +700,7 @@ def project_edit(project_id):
             "name": request.form.get("name","").strip(),
             "description": request.form.get("description","").strip(),
             "owner": request.form.get("owner","").strip(),
+            "secondary_owner": request.form.get("secondary_owner","").strip(),
             "progress_summary": request.form.get("progress_summary","").strip(),
             "status": request.form.get("status","Not Started"),
             "percent_complete": int(request.form.get("percent_complete") or 0),
@@ -1271,14 +1273,14 @@ def download_projects():
     wb = Workbook()
     ws = wb.active
     ws.title = "Projects"
-    headers = ["Project ID","Project Name","Description","Project Lead / Contributors","What Has Been Done",
+    headers = ["Project ID","Project Name","Description","Primary Owner","Secondary Owner","What Has Been Done",
                "Status","Percent Complete","Start Date","Deadline","Risks",
                "Next Action","KPI"]
-    widths = [12,26,45,18,45,14,10,14,14,40,40,30]
+    widths = [12,26,45,18,18,45,14,10,14,14,40,40,30]
     bd = styled_export_sheet(ws, headers, widths)
     row = 2
     for p in projects:
-        values = [p["id"], p["name"], p["description"], p["owner"], p["progress_summary"],
+        values = [p["id"], p["name"], p["description"], p["owner"], p.get("secondary_owner",""), p["progress_summary"],
                   p["status"], p["percent_complete"], p["start_date"], p["deadline"],
                   p["risks"], p["next_action"], p["kpi"]]
         for col, val in enumerate(values, 1):
@@ -1354,14 +1356,14 @@ def download_all():
         row += 1
 
     ws = wb.create_sheet("Projects")
-    headers = ["Project ID", "Project Name", "Description", "Project Lead / Contributors", "What Has Been Done",
+    headers = ["Project ID", "Project Name", "Description", "Primary Owner","Secondary Owner", "What Has Been Done",
                "Status", "Percent Complete", "Start Date", "Deadline", "Risks",
                "Next Action", "KPI", "Created At", "Updated At"]
-    widths = [12, 26, 45, 18, 45, 14, 10, 14, 14, 40, 40, 30, 20, 20]
+    widths = [12, 26, 45, 18, 18, 45, 14, 10, 14, 14, 40, 40, 30, 20, 20]
     bd = styled_export_sheet(ws, headers, widths)
     row = 2
     for p in projects:
-        values = [p["id"], p["name"], p["description"], p["owner"], p["progress_summary"],
+        values = [p["id"], p["name"], p["description"], p["owner"], p.get("secondary_owner",""), p["progress_summary"],
                   p["status"], p["percent_complete"], p["start_date"], p["deadline"],
                   p["risks"], p["next_action"], p["kpi"], p.get("created_at", ""), p.get("updated_at", "")]
         for col, val in enumerate(values, 1):

@@ -69,6 +69,11 @@ def import_projects(wb=None):
     # Skip the two title rows and the column-header row.
     data_rows = rows[3:]
 
+    # Newer sheets have a "Secondary Owner" column right after the owner column.
+    has_secondary = any("secondary owner" in str(c or "").lower()
+                        for hdr in rows[:3] for c in hdr)
+    off = 1 if has_secondary else 0
+
     projects = []
     now = datetime.now().isoformat()
     for row in data_rows:
@@ -80,14 +85,15 @@ def import_projects(wb=None):
             "name":             clean_field(row[1]),
             "description":      clean_field(row[2]),
             "owner":            clean_field(row[3]),
-            "progress_summary": clean_field(row[4]),
-            "status":           clean_field(row[5]) or "Not Started",
-            "percent_complete": normalize_percent(row[6]),
-            "start_date":       strip_em_dash(normalize_date(row[7])),
-            "deadline":         strip_em_dash(normalize_date(row[8])),
-            "risks":            clean_field(row[9]),
-            "next_action":      clean_field(row[10]),
-            "kpi":              clean_field(row[11]),
+            "secondary_owner":  clean_field(row[4]) if has_secondary else "",
+            "progress_summary": clean_field(row[4 + off]),
+            "status":           clean_field(row[5 + off]) or "Not Started",
+            "percent_complete": normalize_percent(row[6 + off]),
+            "start_date":       strip_em_dash(normalize_date(row[7 + off])),
+            "deadline":         strip_em_dash(normalize_date(row[8 + off])),
+            "risks":            clean_field(row[9 + off]),
+            "next_action":      clean_field(row[10 + off]),
+            "kpi":              clean_field(row[11 + off]),
             "created_at":       now,
             "updated_at":       now,
         })

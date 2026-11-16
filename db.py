@@ -139,6 +139,7 @@ _SCHEMA = [
             name              TEXT NOT NULL,
             description       TEXT,
             owner             TEXT,
+            secondary_owner   TEXT,
             progress_summary  TEXT,
             status            VARCHAR(32) NOT NULL DEFAULT 'Not Started',
             percent_complete  INT NOT NULL DEFAULT 0,
@@ -235,6 +236,10 @@ def _run_migrations(cur):
         cur.execute("ALTER TABLE todos DROP COLUMN duration_days")
     except Exception:
         pass
+    try:
+        cur.execute("ALTER TABLE projects ADD COLUMN secondary_owner TEXT")
+    except Exception:
+        pass
     for stmt in [
         "ALTER TABLE todos ADD COLUMN priority VARCHAR(32)",
         "ALTER TABLE todos ADD COLUMN user_view VARCHAR(120)",
@@ -296,7 +301,7 @@ ROSTER_COLUMNS   = ["id", "name", "role", "username", "password_hash", "email"]
 REPORTS_COLUMNS  = ["id", "name", "date", "raw_work", "raw_pending", "generated",
                      "status", "submitted_at", "logged_by", "logged_at",
                      "edited_by", "edited_at"]
-PROJECTS_COLUMNS = ["id", "name", "description", "owner", "progress_summary",
+PROJECTS_COLUMNS = ["id", "name", "description", "owner", "secondary_owner", "progress_summary",
                      "status", "percent_complete", "start_date", "deadline",
                      "risks", "next_action", "kpi", "created_at", "updated_at"]
 CHANGES_COLUMNS  = ["id", "project_id", "change_type", "summary", "description",
