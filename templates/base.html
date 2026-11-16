@@ -43,8 +43,13 @@ body {
 }
 .brand-logo { width: 32px; height: 32px; flex-shrink: 0; border-radius: 9px; display: block; }
 .brand-logo.lg { width: 40px; height: 40px; border-radius: 11px; }
-.brand-logo.xmas { width: auto; height: 40px; border-radius: 0; }
-.brand-logo.lg.xmas { width: auto; height: 50px; border-radius: 0; }
+.logo-wrap { position: relative; display: inline-block; line-height: 0; flex-shrink: 0; }
+.season-cap {
+  position: absolute; top: -9px; left: -5px; width: 24px; height: 20px;
+  transform: rotate(-14deg); pointer-events: none;
+  filter: drop-shadow(0 1px 1px rgba(0,0,0,.35));
+}
+.brand-logo.lg ~ .season-cap { top: -12px; left: -6px; width: 30px; height: 25px; }
 .sidebar-logo-text { color: #F1F5F9; font-weight: 700; font-size: 0.9rem; }
 .sidebar-sub { color: #64748B; font-size: 0.68rem; margin-top: 2px; }
 .sidebar-user {
@@ -429,7 +434,7 @@ th.sortable-th[data-sort-dir] .sort-indicator { color: var(--teal); font-weight:
   <aside class="sidebar">
     <div class="sidebar-logo">
       <div class="sidebar-logo-mark">
-        <img class="brand-logo{% if logo_xmas %} xmas{% endif %}" src="{{ url_for('static', filename=logo_file) }}" alt="Reportly">
+        <span class="logo-wrap"><img class="brand-logo" src="{{ url_for('static', filename='logo.svg') }}" alt="Reportly">{% include "_season_cap.html" %}</span>
         <div>
           <div class="sidebar-logo-text">Reportly</div>
           <div class="sidebar-sub">TGM Education</div>
