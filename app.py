@@ -241,6 +241,16 @@ def get_recent_reports(name, before_date, limit=None):
     )
     return mine if limit is None else mine[:limit]
 
+def secondary_owners_from_form():
+    """Secondary owners can be several people, but never the Primary Owner."""
+    primary = request.form.get("owner", "").strip().lower()
+    seen, out = set(), []
+    for n in request.form.getlist("secondary_owner"):
+        n = n.strip()
+        if n and n.lower() != primary and n.lower() not in seen:
+            seen.add(n.lower()); out.append(n)
+    return ", ".join(out)
+
 DISABLED_MSG = "This account has been disabled. Contact an administrator."
 
 def active_roster(roster):
@@ -673,7 +683,7 @@ def project_new():
             "name": request.form.get("name","").strip(),
             "description": request.form.get("description","").strip(),
             "owner": request.form.get("owner","").strip(),
-            "secondary_owner": request.form.get("secondary_owner","").strip(),
+            "secondary_owner": secondary_owners_from_form(),
             "progress_summary": request.form.get("progress_summary","").strip(),
             "status": request.form.get("status","Not Started"),
             "percent_complete": int(request.form.get("percent_complete") or 0),
@@ -731,7 +741,7 @@ def project_edit(project_id):
             "name": request.form.get("name","").strip(),
             "description": request.form.get("description","").strip(),
             "owner": request.form.get("owner","").strip(),
-            "secondary_owner": request.form.get("secondary_owner","").strip(),
+            "secondary_owner": secondary_owners_from_form(),
             "progress_summary": request.form.get("progress_summary","").strip(),
             "status": request.form.get("status","Not Started"),
             "percent_complete": int(request.form.get("percent_complete") or 0),

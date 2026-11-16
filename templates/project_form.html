@@ -39,12 +39,20 @@
       <div class="form-group">
         <label class="form-label">Secondary Owner</label>
         {% set cur2 = project.secondary_owner if project and project.secondary_owner else '' %}
-        <select name="secondary_owner" class="form-control">
-          <option value="">None</option>
-          {% if cur2 and cur2 not in owner_names %}<option value="{{ cur2 }}" selected>{{ cur2 }} (not on Team Overview)</option>{% endif %}
-          {% for n in owner_names %}<option value="{{ n }}" {% if cur2 == n %}selected{% endif %}>{{ n }}</option>{% endfor %}
-        </select>
-        <div style="font-size:0.72rem;color:#64748B;margin-top:3px;">Also has the app locally; handles issues when the Primary Owner is unavailable.</div>
+        {% set chosen = cur2.replace('/', ',').replace('&', ',').split(',') | map('trim') | list %}
+        <div id="secondary-owners" style="border:1px solid var(--border);border-radius:8px;padding:0.4rem 0.6rem;max-height:150px;overflow-y:auto;background:#fff;">
+          {% for n in owner_names %}
+          <label class="sec-opt" data-name="{{ n }}" style="display:flex;align-items:center;gap:6px;font-size:0.84rem;padding:2px 0;">
+            <input type="checkbox" name="secondary_owner" value="{{ n }}" {% if n in chosen %}checked{% endif %}> {{ n }}
+          </label>
+          {% endfor %}
+          {% for n in chosen if n and n not in owner_names %}
+          <label class="sec-opt" data-name="{{ n }}" style="display:flex;align-items:center;gap:6px;font-size:0.84rem;padding:2px 0;">
+            <input type="checkbox" name="secondary_owner" value="{{ n }}" checked> {{ n }} (not on Team Overview)
+          </label>
+          {% endfor %}
+        </div>
+        <div style="font-size:0.72rem;color:#64748B;margin-top:3px;">Tick one or more. Also have the app locally; handle issues when the Primary Owner is unavailable. The Primary Owner can't be picked here.</div>
       </div>
       <div class="form-group">
         <label class="form-label">Current Status</label>
@@ -106,4 +114,25 @@
     </div>
   </form>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// The Primary Owner can't also be a Secondary Owner
+(function () {
+  var primary = document.querySelector('select[name="owner"]');
+  if (!primary) return;
+  function sync() {
+    document.querySelectorAll('.sec-opt').forEach(function (l) {
+      var same = l.dataset.name === primary.value;
+      var box = l.querySelector('input');
+      if (same) box.checked = false;
+      box.disabled = same;
+      l.style.opacity = same ? '.45' : '1';
+    });
+  }
+  primary.addEventListener('change', sync);
+  sync();
+})();
+</script>
 {% endblock %}
