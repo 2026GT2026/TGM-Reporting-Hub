@@ -1633,8 +1633,9 @@ def disable_member():
     if member.get("disabled"):
         flash(f"{member['name']} is already disabled.", "error")
         return redirect(url_for("team"))
-    if member["role"] == "admin":
-        flash("Admin accounts can't be disabled. Change their role to Team Member first if they are leaving.", "error")
+    if member["role"] == "admin" and not any(
+            m["role"] == "admin" and not m.get("disabled") and m["id"] != member_id for m in roster):
+        flash("Can't disable the last active admin. Make someone else an admin first.", "error")
         return redirect(url_for("team"))
     member["disabled"]        = 1
     member["disabled_at"]     = datetime.now().isoformat()
