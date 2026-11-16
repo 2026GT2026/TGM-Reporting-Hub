@@ -1,7 +1,8 @@
 {% extends "base.html" %}
+{% from "_pager.html" import pager %}
 {% block title %}Reportly: Changes{% endblock %}
 {% block page_title %}Changes{% endblock %}
-{% block page_sub %}{{ changes|length }} change(s) logged{% endblock %}
+{% block page_sub %}{{ pg.total }} change(s) logged{% endblock %}
 {% block topbar_actions %}
   <a href="{{ url_for('change_new') }}" class="btn btn-teal btn-sm">Log a Change</a>
 {% endblock %}
@@ -51,5 +52,6 @@
   <a href="{{ url_for('change_edit', change_id=c.id) }}" class="btn btn-outline btn-sm" style="margin-top:0.5rem;">Edit</a>
 </div>
 {% endfor %}
+{{ pager(pg) }}
 {% endif %}
 {% endblock %}

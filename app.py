@@ -1,6 +1,7 @@
 
 import os, json, uuid, io, re
 from datetime import datetime, date, timedelta
+from urllib.parse import urlencode
 from functools import wraps
 from dotenv import load_dotenv
 from flask import (Flask, render_template, request, redirect,
@@ -251,6 +252,35 @@ def secondary_owners_from_form():
             seen.add(n.lower()); out.append(n)
     return ", ".join(out)
 
+def page_info(total, per_page=15, param="page"):
+    """Pagination details for the current request (?page=N), keeping every
+    other filter in the address."""
+    pages = max(1, -(-total // per_page))
+    try:
+        page = int(request.args.get(param, 1))
+    except (TypeError, ValueError):
+        page = 1
+    page = min(max(page, 1), pages)
+    def url(n):
+        args = request.args.to_dict()
+        args[param] = n
+        return request.path + "?" + urlencode(args)
+    shown = sorted({1, pages, page - 1, page, page + 1} & set(range(1, pages + 1)))
+    window, prev = [], 0
+    for n in shown:
+        if n - prev > 1:
+            window.append(None)
+        window.append(n)
+        prev = n
+    offset = (page - 1) * per_page
+    return {"page": page, "pages": pages, "total": total, "per_page": per_page, "offset": offset,
+            "start": offset + 1 if total else 0, "end": min(offset + per_page, total),
+            "url": url, "window": window}
+
+def paginate(items, per_page=15, param="page"):
+    pg = page_info(len(items), per_page, param)
+    return items[pg["offset"]:pg["offset"] + per_page], pg
+
 DISABLED_MSG = "This account has been disabled. Contact an administrator."
 
 def active_roster(roster):
@@ -372,9 +402,10 @@ def dashboard():
     # Only ask "pick up where you left off?" right after signing in
     just_logged_in = session.pop("just_logged_in", False)
 
+    projects_page, pg = paginate(projects, 10)
     return render_template("dashboard.html",
-        just_logged_in=just_logged_in,
-        projects=projects, total=total, completed=completed, in_progress=in_progress,
+        just_logged_in=just_logged_in, pg=pg,
+        projects=projects_page, total=total, completed=completed, in_progress=in_progress,
         not_started=not_started, avg_percent=avg_percent, upcoming=upcoming,
         recent_changes=recent_changes, pending_today=pending_today,
         submitted_today=submitted_today, project_status_badge=project_status_badge,
@@ -546,7 +577,8 @@ def admin_reports():
     member  = request.args.get("member", roster[0]["name"] if roster else "")
     mine    = sorted([r for r in reports if r["name"]==member],
                      key=lambda x: x["date"], reverse=True)
-    return render_template("admin_reports.html", roster=roster, member=member,
+    mine, pg = paginate(mine, 10)
+    return render_template("admin_reports.html", roster=roster, member=member, pg=pg,
                            reports=mine, pretty_date=pretty_date, today_key=today_key())
 
 @app.route("/team/log-report", methods=["POST"])
@@ -629,7 +661,9 @@ def my_reports():
     reports = load_reports()
     mine    = sorted([r for r in reports if r["name"]==user["name"]],
                      key=lambda x: x["date"], reverse=True)
-    return render_template("my_reports.html", user=user, reports=mine,
+    submitted_count = sum(1 for r in mine if r["status"] == "submitted")
+    mine, pg = paginate(mine, 10)
+    return render_template("my_reports.html", user=user, reports=mine, pg=pg, submitted_count=submitted_count,
                            pretty_date=pretty_date, today_key=today_key())
 
 @app.route("/download-my-reports")
@@ -661,7 +695,10 @@ def projects_list():
     status_filter = request.args.get("status", "")
     if status_filter:
         projects = [p for p in projects if p["status"]==status_filter]
-    return render_template("projects.html", projects=projects, status_filter=status_filter,
+    in_progress_count = sum(1 for p in projects if p["status"] == "In Progress")
+    projects, pg = paginate(projects, 8)
+    return render_template("projects.html", projects=projects, pg=pg, in_progress_count=in_progress_count,
+                           status_filter=status_filter,
                            statuses=PROJECT_STATUSES, project_status_badge=project_status_badge)
 
 @app.route("/projects/new", methods=["GET", "POST"])
@@ -809,7 +846,8 @@ def changes_list():
     changes = sorted(changes, key=lambda c: c["added_at"], reverse=True)
     for c in changes:
         c["project_name"] = project_names.get(c["project_id"], "Unknown project")
-    return render_template("changes.html", changes=changes, projects=projects,
+    changes, pg = paginate(changes, 12)
+    return render_template("changes.html", changes=changes, pg=pg, projects=projects,
                            change_types=CHANGE_TYPES, project_filter=project_filter,
                            type_filter=type_filter, change_status_badge=change_status_badge)
 
@@ -902,7 +940,8 @@ def todos_list():
         project_counts[t["project_id"]] = project_counts.get(t["project_id"], 0) + 1
 
     disabled_names = {m["name"] for m in load_roster() if m.get("disabled")}
-    return render_template("todos.html", todos=todos, projects=projects, disabled_names=disabled_names,
+    todos, pg = paginate(todos, 20)
+    return render_template("todos.html", todos=todos, pg=pg, projects=projects, disabled_names=disabled_names,
                            project_filter=project_filter, status_filter=status_filter,
                            project_filter_name=project_names.get(project_filter, ""),
                            project_counts=project_counts, stats=stats,
@@ -1240,8 +1279,9 @@ def team():
 @login_required
 @admin_required
 def audit_log():
-    entries = db.load_audit_log(limit=300)
-    return render_template("audit_log.html", entries=entries)
+    pg = page_info(db.count_audit_log(), 25)
+    entries = db.load_audit_log(limit=pg["per_page"], offset=pg["offset"])
+    return render_template("audit_log.html", entries=entries, pg=pg)
 
 @app.route("/download-week")
 @login_required

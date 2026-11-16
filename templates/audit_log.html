@@ -1,7 +1,8 @@
 {% extends "base.html" %}
+{% from "_pager.html" import pager %}
 {% block title %}Reportly: Audit Log{% endblock %}
 {% block page_title %}Audit Log{% endblock %}
-{% block page_sub %}Most recent {{ entries|length }} action(s), newest first{% endblock %}
+{% block page_sub %}{{ pg.total }} action(s), newest first{% endblock %}
 
 {% block content %}
 {% if not entries %}
@@ -10,17 +11,25 @@
   <div>Nothing logged yet.</div>
 </div>
 {% else %}
-{% for e in entries %}
-<div class="report-item">
-  <div class="report-item-header">
-    <span class="report-item-name">{{ e.action }}</span>
-    <span style="font-size:0.72rem; color:#94A3B8;">{{ e.at[:16].replace('T', ' ') }}</span>
+<div class="card" style="padding:0.5rem 0.8rem;">
+  <div style="overflow-x:auto;">
+  <table class="data-table" style="font-size:0.74rem;">
+    <thead>
+      <tr><th style="padding:0.35rem 0.5rem;">When</th><th style="padding:0.35rem 0.5rem;">Who</th><th style="padding:0.35rem 0.5rem;">Action</th><th style="padding:0.35rem 0.5rem;">Details</th></tr>
+    </thead>
+    <tbody>
+      {% for e in entries %}
+      <tr>
+        <td style="padding:0.3rem 0.5rem; white-space:nowrap; color:#94A3B8;">{{ e.at[:16].replace('T', ' ') }}</td>
+        <td style="padding:0.3rem 0.5rem; white-space:nowrap; font-weight:600; color:#1C2B3A;">{{ e.actor }}</td>
+        <td style="padding:0.3rem 0.5rem; white-space:nowrap;">{{ e.action }}</td>
+        <td style="padding:0.3rem 0.5rem; color:#64748B;">{{ e.details }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
   </div>
-  <p class="report-item-text">
-    <strong style="color:#1C2B3A;">{{ e.actor }}</strong>{% if e.details %} — {{ e.details }}{% endif %}
-  </p>
+  {{ pager(pg) }}
 </div>
-{% endfor %}
-<p class="card-sub" style="text-align:center; margin-top:0.5rem;">Showing the most recent {{ entries|length }} action(s).</p>
 {% endif %}
 {% endblock %}

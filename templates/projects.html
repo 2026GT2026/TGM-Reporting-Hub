@@ -1,7 +1,8 @@
 {% extends "base.html" %}
+{% from "_pager.html" import pager %}
 {% block title %}Reportly: Projects{% endblock %}
 {% block page_title %}Projects{% endblock %}
-{% block page_sub %}{{ projects|length }} project(s) · {{ projects|selectattr('status','equalto','In Progress')|list|length }} actively in motion{% endblock %}
+{% block page_sub %}{{ pg.total }} project(s) · {{ in_progress_count }} actively in motion{% endblock %}
 {% block topbar_actions %}
   {% if current_user.role == 'admin' %}
   <a href="{{ url_for('project_new') }}" class="btn btn-teal btn-sm">Add Project</a>
@@ -48,5 +49,6 @@
   </div>
 </div>
 {% endfor %}
+{{ pager(pg) }}
 {% endif %}
 {% endblock %}

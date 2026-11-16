@@ -1,0 +1,18 @@
+{% macro pager(pg) %}
+{% if pg.pages > 1 %}
+<div class="pager" style="display:flex; align-items:center; justify-content:space-between; gap:0.6rem; flex-wrap:wrap; margin:0.9rem 0 0.4rem; font-size:0.78rem; color:#64748B;">
+  <span>Showing {{ pg.start }}&ndash;{{ pg.end }} of {{ pg.total }}</span>
+  <span style="display:flex; gap:4px; align-items:center; flex-wrap:wrap;">
+    {% if pg.page > 1 %}<a href="{{ pg.url(pg.page - 1) }}" class="btn btn-outline btn-sm">&larr; Prev</a>{% endif %}
+    {% for n in pg.window %}
+      {% if n is none %}<span style="padding:0 4px;">&hellip;</span>
+      {% elif n == pg.page %}<span class="btn btn-teal btn-sm" style="cursor:default;">{{ n }}</span>
+      {% else %}<a href="{{ pg.url(n) }}" class="btn btn-outline btn-sm">{{ n }}</a>{% endif %}
+    {% endfor %}
+    {% if pg.page < pg.pages %}<a href="{{ pg.url(pg.page + 1) }}" class="btn btn-outline btn-sm">Next &rarr;</a>{% endif %}
+  </span>
+</div>
+{% elif pg.total > 0 %}
+<div style="font-size:0.74rem; color:#94A3B8; margin:0.7rem 0 0.2rem;">{{ pg.total }} item{{ 's' if pg.total != 1 }}</div>
+{% endif %}
+{% endmacro %}

@@ -433,9 +433,16 @@ def log_audit(actor, action, details=""):
         )
 
 
-def load_audit_log(limit=300):
-    """Most recent entries first, capped at `limit` — this table only ever
+def load_audit_log(limit=300, offset=0):
+    """Most recent entries first, one page at a time — this table only ever
     grows, so unlike everything else in this file it's never loaded in full."""
     with _db() as (conn, cur):
-        cur.execute("SELECT * FROM audit_log ORDER BY id DESC LIMIT %s", (limit,))
+        cur.execute("SELECT * FROM audit_log ORDER BY id DESC LIMIT %s OFFSET %s", (limit, offset))
         return list(cur.fetchall())
+
+
+def count_audit_log():
+    with _db() as (conn, cur):
+        cur.execute("SELECT COUNT(*) AS n FROM audit_log")
+        row = cur.fetchone()
+        return int(row["n"] if isinstance(row, dict) else row[0])
