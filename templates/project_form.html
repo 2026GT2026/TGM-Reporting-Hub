@@ -40,7 +40,11 @@
         <label class="form-label">Secondary Owner</label>
         {% set cur2 = project.secondary_owner if project and project.secondary_owner else '' %}
         {% set chosen = cur2.replace('/', ',').replace('&', ',').split(',') | map('trim') | list %}
-        <div id="secondary-owners" style="border:1px solid var(--border);border-radius:8px;padding:0.4rem 0.6rem;max-height:150px;overflow-y:auto;background:#fff;">
+        <details id="secondary-owners" style="position:relative;">
+        <summary class="form-control" id="sec-summary" style="cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;">
+          <span id="sec-text">None</span><span style="font-size:0.7rem;color:#64748B;">&#9660;</span>
+        </summary>
+        <div style="position:absolute;z-index:20;left:0;right:0;margin-top:2px;border:1px solid var(--border);border-radius:8px;padding:0.4rem 0.6rem;max-height:170px;overflow-y:auto;background:#fff;box-shadow:0 8px 20px rgba(0,0,0,.12);">
           {% for n in owner_names %}
           <label class="sec-opt" data-name="{{ n }}" style="display:flex;align-items:center;gap:6px;font-size:0.84rem;padding:2px 0;">
             <input type="checkbox" name="secondary_owner" value="{{ n }}" {% if n in chosen %}checked{% endif %}> {{ n }}
@@ -52,7 +56,8 @@
           </label>
           {% endfor %}
         </div>
-        <div style="font-size:0.72rem;color:#64748B;margin-top:3px;">Tick one or more. Also have the app locally; handle issues when the Primary Owner is unavailable. The Primary Owner can't be picked here.</div>
+        </details>
+        <div style="font-size:0.72rem;color:#64748B;margin-top:3px;">Choose one or more. Also have the app locally; handle issues when the Primary Owner is unavailable. The Primary Owner can't be picked here.</div>
       </div>
       <div class="form-group">
         <label class="form-label">Current Status</label>
@@ -131,8 +136,16 @@
       l.style.opacity = same ? '.45' : '1';
     });
   }
-  primary.addEventListener('change', sync);
-  sync();
+  var box = document.getElementById('secondary-owners');
+  function label() {
+    var names = [];
+    box.querySelectorAll('input:checked').forEach(function (i) { names.push(i.value); });
+    document.getElementById('sec-text').textContent = names.length ? names.join(', ') : 'None';
+  }
+  box.addEventListener('change', label);
+  document.addEventListener('click', function (e) { if (!box.contains(e.target)) box.open = false; });
+  primary.addEventListener('change', function () { sync(); label(); });
+  sync(); label();
 })();
 </script>
 {% endblock %}
