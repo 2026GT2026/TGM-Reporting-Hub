@@ -614,6 +614,28 @@ document.querySelectorAll('.alert').forEach(a => setTimeout(() => { a.style.tran
   });
 })();
 </script>
+{% if current_user %}
+<script>
+// Remember the last page this user was on (so we can offer to resume after login)
+(function () {
+  try {
+    var p = location.pathname;
+    if (p === '/' || p === '/dashboard' || p === '/logout') return;
+    localStorage.setItem('reportly_last_{{ current_user.username or current_user.name }}',
+      JSON.stringify({url: p + location.search, title: document.title.replace(/^Reportly:\s*/, '')}));
+  } catch (e) {}
+})();
+// Sign out after 5 minutes with no mouse, keyboard, scroll or touch activity
+(function () {
+  var t;
+  function reset() { clearTimeout(t); t = setTimeout(function () { location.href = '/logout'; }, 5 * 60 * 1000); }
+  ['mousemove','mousedown','keydown','scroll','touchstart','click'].forEach(function (e) {
+    document.addEventListener(e, reset, {passive: true});
+  });
+  reset();
+})();
+</script>
+{% endif %}
 {% block scripts %}{% endblock %}
 </body>
 </html>

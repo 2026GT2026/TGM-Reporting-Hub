@@ -20,6 +20,9 @@ load_dotenv()
 
 app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", "reporthub-secret-2026")
+# Sign users out after 5 minutes of inactivity (timer resets on every request)
+IDLE_TIMEOUT_MINUTES = 5
+app.permanent_session_lifetime = timedelta(minutes=IDLE_TIMEOUT_MINUTES)
 
 db.init_db()
 
@@ -291,6 +294,8 @@ def login():
         else:
             session["user"] = {k: v for k, v in member.items() if k != "password_hash"}
             db.log_audit(member["name"], "Logged in")
+            session.permanent = True
+            session["just_logged_in"] = True
             return redirect(url_for("dashboard"))
     return render_template("login.html")
 
@@ -327,8 +332,11 @@ def dashboard():
         c["project_name"] = project_names.get(c["project_id"], "Unknown project")
 
     pending_today, submitted_today = today_submission_status(roster, reports)
+    # Only ask "pick up where you left off?" right after signing in
+    just_logged_in = session.pop("just_logged_in", False)
 
     return render_template("dashboard.html",
+        just_logged_in=just_logged_in,
         projects=projects, total=total, completed=completed, in_progress=in_progress,
         not_started=not_started, avg_percent=avg_percent, upcoming=upcoming,
         recent_changes=recent_changes, pending_today=pending_today,
