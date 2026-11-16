@@ -1694,7 +1694,10 @@ def enumerate_filter(iterable):
 
 @app.context_processor
 def inject_user():
-    return {"current_user": session.get("user"),
+    # Christmas hat on the logo, automatically off after 31 Dec 2026
+    xmas = date.today() <= date(2026, 12, 31)
+    return {"logo_file": "logo-xmas.svg" if xmas else "logo.svg", "logo_xmas": xmas,
+            "current_user": session.get("user"),
             "project_color": project_color, "project_ink": project_ink,
             "project_tint": project_tint}
 
