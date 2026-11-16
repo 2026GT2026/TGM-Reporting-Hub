@@ -31,7 +31,7 @@
         {% set cur = project.owner if project and project.owner else '' %}
         <select name="owner" class="form-control">
           <option value="">Select a person</option>
-          {% if cur and cur not in owner_names %}<option value="{{ cur }}" selected>{{ cur }} (not in user management)</option>{% endif %}
+          {% if cur and cur not in owner_names %}<option value="{{ cur }}" selected>{{ cur }} (not on Team Overview)</option>{% endif %}
           {% for n in owner_names %}<option value="{{ n }}" {% if cur == n %}selected{% endif %}>{{ n }}</option>{% endfor %}
         </select>
         <div style="font-size:0.72rem;color:#64748B;margin-top:3px;">Contact person who built the app and has it locally.</div>
@@ -41,7 +41,7 @@
         {% set cur2 = project.secondary_owner if project and project.secondary_owner else '' %}
         <select name="secondary_owner" class="form-control">
           <option value="">None</option>
-          {% if cur2 and cur2 not in owner_names %}<option value="{{ cur2 }}" selected>{{ cur2 }} (not in user management)</option>{% endif %}
+          {% if cur2 and cur2 not in owner_names %}<option value="{{ cur2 }}" selected>{{ cur2 }} (not on Team Overview)</option>{% endif %}
           {% for n in owner_names %}<option value="{{ n }}" {% if cur2 == n %}selected{% endif %}>{{ n }}</option>{% endfor %}
         </select>
         <div style="font-size:0.72rem;color:#64748B;margin-top:3px;">Also has the app locally; handles issues when the Primary Owner is unavailable.</div>
