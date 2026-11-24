@@ -332,6 +332,10 @@ def load_roster():
 
 
 def save_roster(data):
+    # "disabled" can't be empty in the database, so anyone without a value is active
+    for m in data:
+        if m.get("disabled") is None:
+            m["disabled"] = 0
     _save_table("roster", ROSTER_COLUMNS, data)
 
 

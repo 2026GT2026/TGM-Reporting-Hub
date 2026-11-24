@@ -1587,6 +1587,7 @@ def add_member():
         "password_hash": generate_password_hash(password),
         "role": role,
         "email": email,
+        "disabled": 0,
     })
     save_roster(roster)
     db.log_audit(session["user"]["name"], "Added team member", f"{name} ({role})")
